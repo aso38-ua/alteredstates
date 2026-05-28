@@ -1,0 +1,25 @@
+{
+  "itemGroup.alteredstates": "Altered States",
+  "block.alteredstates.example_block": "Example Block",
+  "item.alteredstates.example_item": "Example Item",
+
+  "alteredstates.configuration.title": "Altered States Configs",
+  "alteredstates.configuration.section.alteredstates.common.toml": "Altered States Configs",
+  "alteredstates.configuration.section.alteredstates.common.toml.title": "Altered States Configs",
+  "alteredstates.configuration.items": "Item List",
+  "alteredstates.configuration.logDirtBlock": "Log Dirt Block",
+  "alteredstates.configuration.magicNumberIntroduction": "Magic Number Text",
+  "alteredstates.configuration.magicNumber": "Magic Number",
+  "tooltip.alteredstates.quality": "Quality: ",
+  "quality.alteredstates.basura": "Trash",
+  "quality.alteredstates.regular": "Regular",
+  "quality.alteredstates.buena": "Good",
+  "quality.alteredstates.premium": "Premium",
+  "block.alteredstates.indica_crop": "Indica Crop",
+  "block.alteredstates.drying_rack": "Drying Rack",
+
+  "item.alteredstates.indica_seeds": "Indica Seeds",
+  "item.alteredstates.indica_buds_fresh": "Fresh Indica Buds",
+  "item.alteredstates.indica_buds_dry": "Dry Indica Buds",
+  "item.alteredstates.cannabis_trimming": "Cannabis Trimmings"
+}

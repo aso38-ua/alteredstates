@@ -1,0 +1,56 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "glass": "minecraft:block/glass",
+    "cork": "minecraft:block/spruce_planks",
+    "label": "minecraft:block/white_concrete"
+  },
+  "elements": [
+    {
+      "name": "CuerpoCristal",
+      "from": [4, 0, 4],
+      "to": [12, 10, 12],
+      "faces": {
+        "north": {"uv": [4, 6, 12, 16], "texture": "#glass"},
+        "east": {"uv": [4, 6, 12, 16], "texture": "#glass"},
+        "south": {"uv": [4, 6, 12, 16], "texture": "#glass"},
+        "west": {"uv": [4, 6, 12, 16], "texture": "#glass"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#glass"},
+        "down": {"uv": [4, 4, 12, 12], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "CuelloCristal",
+      "from": [5, 10, 5],
+      "to": [11, 12, 11],
+      "faces": {
+        "north": {"uv": [5, 4, 11, 6], "texture": "#glass"},
+        "east": {"uv": [5, 4, 11, 6], "texture": "#glass"},
+        "south": {"uv": [5, 4, 11, 6], "texture": "#glass"},
+        "west": {"uv": [5, 4, 11, 6], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "TapaMadera",
+      "from": [4.5, 12, 4.5],
+      "to": [11.5, 14, 11.5],
+      "faces": {
+        "north": {"uv": [4.5, 2, 11.5, 4], "texture": "#cork"},
+        "east": {"uv": [4.5, 2, 11.5, 4], "texture": "#cork"},
+        "south": {"uv": [4.5, 2, 11.5, 4], "texture": "#cork"},
+        "west": {"uv": [4.5, 2, 11.5, 4], "texture": "#cork"},
+        "up": {"uv": [4.5, 4.5, 11.5, 11.5], "texture": "#cork"},
+        "down": {"uv": [4.5, 4.5, 11.5, 11.5], "texture": "#cork"}
+      }
+    },
+    {
+      "name": "Etiqueta",
+      "from": [3.9, 3, 5],
+      "to": [4.1, 7, 11],
+      "faces": {
+        "west": {"uv": [5, 9, 11, 13], "texture": "#label"}
+      }
+    }
+  ]
+}

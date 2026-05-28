@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "age=0": { "model": "alteredstates:block/indica_stage0" },
+    "age=1": { "model": "alteredstates:block/indica_stage1" },
+    "age=2": { "model": "alteredstates:block/indica_stage2" },
+    "age=3": { "model": "alteredstates:block/indica_stage3" },
+    "age=4": { "model": "alteredstates:block/indica_stage4" },
+    "age=5": { "model": "alteredstates:block/indica_stage5" },
+    "age=6": { "model": "alteredstates:block/indica_stage6" },
+    "age=7": { "model": "alteredstates:block/indica_stage7" }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "alteredstates:indica_crop",
+                  "properties": { "age": "7" }
+                }
+              ],
+              "name": "alteredstates:indica_buds_fresh",
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": { "type": "minecraft:uniform", "min": 2.0, "max": 3.0 }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:binomial_with_bonus_count",
+                  "parameters": { "extra": 2, "probability": 0.5 }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "alteredstates:indica_seeds"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alteredstates:indica_crop",
+          "properties": { "age": "7" }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alteredstates:indica_seeds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alteredstates:indica_crop",
+          "properties": { "age": "7" }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alteredstates:cannabis_trimming",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
