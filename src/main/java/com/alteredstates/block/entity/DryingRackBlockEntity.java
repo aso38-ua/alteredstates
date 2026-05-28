@@ -21,7 +21,7 @@ public class DryingRackBlockEntity extends BlockEntity {
     private final int[] dryingTimes = new int[INVENTORY_SIZE];
 
     // ⏱️ Tiempo de secado por ítem (100 ticks = 5 segundos para pruebas)
-    public static final int DRYING_TIME = 100;
+    public static final int DRYING_TIME = 6000;
 
     public DryingRackBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRYING_RACK.get(), pos, state);

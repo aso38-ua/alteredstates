@@ -44,6 +44,9 @@ public class ModItems {
     public static final DeferredItem<Item> DRYING_RACK = ITEMS.register("drying_rack",
             () -> new BlockItem(ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
+    public static final DeferredItem<Item> CURING_JAR = ITEMS.register("curing_jar",
+            () -> new BlockItem(ModBlocks.CURING_JAR.get(), new Item.Properties()));
+
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo
     // ════════════════════════════════════════════════════════════

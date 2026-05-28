@@ -16,6 +16,13 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("drying_rack", () ->
                     BlockEntityType.Builder.of(DryingRackBlockEntity::new, ModBlocks.DRYING_RACK.get()).build(null));
 
+    public static final java.util.function.Supplier<net.minecraft.world.level.block.entity.BlockEntityType<com.alteredstates.block.entity.CuringJarBlockEntity>> CURING_JAR =
+            BLOCK_ENTITIES.register("curing_jar", () ->
+                    net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(
+                            com.alteredstates.block.entity.CuringJarBlockEntity::new,
+                            com.alteredstates.registry.ModBlocks.CURING_JAR.get() // ¡Asegúrate de que apunte a tu bloque!
+                    ).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }
