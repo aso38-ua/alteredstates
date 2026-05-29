@@ -25,6 +25,9 @@ public class ModBlocks {
                     .instabreak()
                     .sound(SoundType.CROP)));
 
+    public static final DeferredBlock<Block> SATIVA_CROP = BLOCKS.register("sativa_crop",
+            () -> new com.alteredstates.block.SativaCropBlock(Block.Properties.of().noCollission().noOcclusion().instabreak()));
+
     // ════════════════════════════════════════════════════════════
     //  CANNABIS
     // ════════════════════════════════════════════════════════════

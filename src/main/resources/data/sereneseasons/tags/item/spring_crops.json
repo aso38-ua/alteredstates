@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "alteredstates:indica_seeds"
+    "alteredstates:indica_seeds",
+    "alteredstates:sativa_crop"
   ]
 }

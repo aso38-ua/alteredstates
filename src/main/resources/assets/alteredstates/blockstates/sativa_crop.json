@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "age=0,half=lower": { "model": "alteredstates:block/sativa_stage0" },
+    "age=1,half=lower": { "model": "alteredstates:block/sativa_stage1" },
+    "age=2,half=lower": { "model": "alteredstates:block/sativa_stage2" },
+    "age=3,half=lower": { "model": "alteredstates:block/sativa_stage3" },
+    "age=4,half=lower": { "model": "alteredstates:block/sativa_stage4" },
+
+    "age=5,half=lower": { "model": "alteredstates:block/sativa_stage5_bottom" },
+    "age=6,half=lower": { "model": "alteredstates:block/sativa_stage6_bottom" },
+    "age=7,half=lower": { "model": "alteredstates:block/sativa_stage7_bottom" },
+    "age=8,half=lower": { "model": "alteredstates:block/sativa_stage8_bottom" },
+
+    "age=0,half=upper": { "model": "alteredstates:block/empty" },
+    "age=1,half=upper": { "model": "alteredstates:block/empty" },
+    "age=2,half=upper": { "model": "alteredstates:block/empty" },
+    "age=3,half=upper": { "model": "alteredstates:block/empty" },
+    "age=4,half=upper": { "model": "alteredstates:block/empty" },
+
+    "age=5,half=upper": { "model": "alteredstates:block/sativa_stage5_top" },
+    "age=6,half=upper": { "model": "alteredstates:block/sativa_stage6_top" },
+    "age=7,half=upper": { "model": "alteredstates:block/sativa_stage7_top" },
+    "age=8,half=upper": { "model": "alteredstates:block/sativa_stage8_top" }
+  }
+}

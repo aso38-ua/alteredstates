@@ -20,8 +20,9 @@ public class ModItems {
     // ════════════════════════════════════════════════════════════
     public static final DeferredItem<Item> INDICA_SEEDS = ITEMS.register("indica_seeds",
             () -> new ItemNameBlockItem(ModBlocks.INDICA_CROP.get(), new Item.Properties()));
-    public static final DeferredItem<Item> SATIVA_SEEDS = ITEMS.register("sativa_seeds", () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> SATIVA_SEEDS = ITEMS.register("sativa_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.SATIVA_CROP.get(), new Item.Properties()));
     // ════════════════════════════════════════════════════════════
     //  CANNABIS — Cogollos
     // ════════════════════════════════════════════════════════════
