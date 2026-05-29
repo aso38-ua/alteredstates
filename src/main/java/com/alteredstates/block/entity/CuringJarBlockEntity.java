@@ -16,8 +16,8 @@ public class CuringJarBlockEntity extends BlockEntity {
     private ItemStack storedItem = ItemStack.EMPTY;
     private int curingProgress = 0;
 
-    // ⏱️ Tiempo para curar (200 ticks = 10 segundos para probar rápido, luego puedes subirlo)
-    public static final int MAX_CURE_TIME = 200;
+    // Tiempo para curar
+    public static final int MAX_CURE_TIME = 6000;
 
     public CuringJarBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CURING_JAR.get(), pos, state);
@@ -29,10 +29,11 @@ public class CuringJarBlockEntity extends BlockEntity {
 
     // Intenta meter cogollos al tarro
     public boolean insertItem(ItemStack stack) {
-        // Solo entran cogollos secos que NO sean ya premium (calidad < 3)
         if (!stack.is(ModItems.INDICA_BUDS_DRY.get())) return false;
         int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-        if (quality >= 3) return false;
+
+        // 🛑 EL FIX: Permitimos la entrada de cualquier cogollo seco (0 a 4) para Curado Artesanal [cite: 60]
+        if (quality > 4) return false;
 
         if (this.storedItem.isEmpty()) {
             this.storedItem = stack.copyWithCount(stack.getCount());
@@ -46,7 +47,7 @@ public class CuringJarBlockEntity extends BlockEntity {
             return false;
         }
 
-        this.curingProgress = 0; // Reinicia el progreso al añadir producto fresco
+        this.curingProgress = 0;
         setChanged();
         if (level != null) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         return true;
@@ -69,19 +70,21 @@ public class CuringJarBlockEntity extends BlockEntity {
 
         ItemStack stack = blockEntity.storedItem;
         if (!stack.isEmpty() && stack.is(ModItems.INDICA_BUDS_DRY.get())) {
-            int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 2);
+            int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
-            if (quality < 3) {
+            // 🛑 EL FIX: El tarro solo progresa si es calidad < 4 (Premium) [cite: 61]
+            if (quality < 4) {
                 blockEntity.curingProgress++;
 
                 if (blockEntity.curingProgress >= MAX_CURE_TIME) {
-                    // ¡BUM! Subimos la calidad al máximo (3 = Premium)
-                    stack.set(ModDataComponentTypes.QUALITY.get(), 3);
+                    // ¡BUM! Subimos la calidad al máximo (4 = Premium en Opción B)
+                    stack.set(ModDataComponentTypes.QUALITY.get(), 4);
                     blockEntity.curingProgress = 0;
                     blockEntity.setChanged();
                     level.sendBlockUpdated(pos, state, state, 3);
                 }
             }
+            // Si ya es 4, las partículas salen por animateTick(...) pero el tiempo no corre
         }
     }
 

@@ -15,13 +15,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DryingRackBlockEntity extends BlockEntity {
-    // Definimos el tamaño del inventario (6 huecos)
     private static final int INVENTORY_SIZE = 6;
     private final ItemStack[] items = new ItemStack[INVENTORY_SIZE];
     private final int[] dryingTimes = new int[INVENTORY_SIZE];
 
-    // ⏱️ Tiempo de secado por ítem (100 ticks = 5 segundos para pruebas)
-    public static final int DRYING_TIME = 6000;
+    public static final int DRYING_TIME = 6000; // Ajusta según tus necesidades
 
     public DryingRackBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRYING_RACK.get(), pos, state);
@@ -31,35 +29,25 @@ public class DryingRackBlockEntity extends BlockEntity {
         }
     }
 
-    // Devuelve la lista completa para que el renderizador la dibuje
-    public ItemStack[] getItems() {
-        return this.items;
-    }
+    public ItemStack[] getItems() { return this.items; }
 
-    // Intenta meter un cogollo en el primer hueco libre
     public boolean addItem(ItemStack stack) {
-        // Asegúrate de que el ítem registrado en ModItems se llama exactamente INDICA_BUDS_FRESH
         if (!stack.is(ModItems.INDICA_BUDS_FRESH.get())) return false;
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             if (this.items[i].isEmpty()) {
-                // Copiamos el ítem con sus componentes de datos (calidad)
                 this.items[i] = stack.copyWithCount(1);
                 this.dryingTimes[i] = 0;
                 setChanged();
-
-                // Medida de seguridad extra para evitar NullPointerException
                 if (level != null) {
                     level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
                 }
-
                 return true;
             }
         }
         return false;
     }
 
-    // Intenta sacar el primer cogollo YA SECO que encuentre
     public ItemStack takeFinishedItem() {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             if (!this.items[i].isEmpty() && this.items[i].is(ModItems.INDICA_BUDS_DRY.get())) {
@@ -74,27 +62,42 @@ public class DryingRackBlockEntity extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
-    // El corazón del bloque: procesa cada hueco de forma independiente
     public static void tick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity blockEntity) {
         boolean changed = false;
+
+        // Evaluamos si el entorno actual del secadero destruye el proceso
+        boolean envFails = level.isRainingAt(pos.above());
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             ItemStack stack = blockEntity.items[i];
 
-            // Si hay un cogollo fresco, aumenta su temporizador
             if (!stack.isEmpty() && stack.is(ModItems.INDICA_BUDS_FRESH.get())) {
+                int currentQuality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+
+                // 🛑 BLOQUEO DE CALIDAD: Si es Basura (0), queda totalmente congelado
+                if (currentQuality == 0) {
+                    continue;
+                }
+
+                // 🌧️ ENTORNO INCORRECTO: Castigo inmediato convirtiéndose en residuo inservible (Calidad 0)
+                if (envFails) {
+                    ItemStack ruinedStack = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
+                    ruinedStack.set(ModDataComponentTypes.QUALITY.get(), 0); // Bloqueado en Basura
+                    blockEntity.items[i] = ruinedStack;
+                    blockEntity.dryingTimes[i] = 0;
+                    changed = true;
+                    continue;
+                }
+
                 blockEntity.dryingTimes[i]++;
 
-                // Si llega al tiempo requerido, se seca
+                // Secado exitoso bajo condiciones óptimas
                 if (blockEntity.dryingTimes[i] >= DRYING_TIME) {
-                    int currentQuality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-
-                    // Creamos el cogollo seco
                     ItemStack dryStack = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-                    // Subimos la calidad a BUENA (2)
-                    dryStack.set(ModDataComponentTypes.QUALITY.get(), Math.max(currentQuality, 2));
 
-                    // Reemplazamos en el slot
+                    // 🛑 EL FIX: Sube un escalón de calidad hasta el tope de 4 (Premium en Opción B)
+                    dryStack.set(ModDataComponentTypes.QUALITY.get(), Math.min(4, currentQuality));
+
                     blockEntity.items[i] = dryStack;
                     blockEntity.dryingTimes[i] = 0;
                     changed = true;
@@ -108,7 +111,6 @@ public class DryingRackBlockEntity extends BlockEntity {
         }
     }
 
-    // --- GUARDAR Y CARGAR DATOS (NBT) ---
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
@@ -117,8 +119,6 @@ public class DryingRackBlockEntity extends BlockEntity {
             if (!this.items[i].isEmpty()) {
                 CompoundTag slotTag = new CompoundTag();
                 slotTag.putByte("Slot", (byte) i);
-
-                // 🛑 LA CLAVE DE 1.21.1: Guardar el ítem en un sub-tag llamado "Item"
                 slotTag.put("Item", this.items[i].saveOptional(registries));
                 slotTag.putInt("DryingTime", this.dryingTimes[i]);
                 listTag.add(slotTag);
@@ -130,21 +130,16 @@ public class DryingRackBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-
-        // Limpiamos el inventario antes de cargar
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             this.items[i] = ItemStack.EMPTY;
             this.dryingTimes[i] = 0;
         }
-
         if (tag.contains("Inventory", Tag.TAG_LIST)) {
             ListTag listTag = tag.getList("Inventory", Tag.TAG_COMPOUND);
             for (int i = 0; i < listTag.size(); i++) {
                 CompoundTag slotTag = listTag.getCompound(i);
                 int slot = slotTag.getByte("Slot") & 255;
                 if (slot >= 0 && slot < INVENTORY_SIZE) {
-
-                    // 🛑 LA CLAVE DE 1.21.1: Leer el sub-tag "Item" correctamente
                     this.items[slot] = ItemStack.parseOptional(registries, slotTag.getCompound("Item"));
                     this.dryingTimes[slot] = slotTag.getInt("DryingTime");
                 }
@@ -153,9 +148,7 @@ public class DryingRackBlockEntity extends BlockEntity {
     }
 
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
+    public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {

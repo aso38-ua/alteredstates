@@ -2,98 +2,28 @@
   "parent": "minecraft:block/block",
   "render_type": "minecraft:translucent",
   "textures": {
-    "particle": "minecraft:block/glass",
+    "particle": "minecraft:block/white_concrete",
     "glass": "minecraft:block/glass",
-    "frame": "minecraft:block/dark_oak_planks",
-    "lid": "minecraft:block/spruce_planks"
+    "frame": "minecraft:block/white_concrete",
+    "cork": "minecraft:block/jungle_planks"
   },
   "elements": [
-    {
-      "name": "BaseFrame",
-      "from": [4, 0, 4],
-      "to": [12, 1, 12],
-      "faces": {
-        "north": {"uv": [4, 15, 12, 16], "texture": "#frame"},
-        "east": {"uv": [4, 15, 12, 16], "texture": "#frame"},
-        "south": {"uv": [4, 15, 12, 16], "texture": "#frame"},
-        "west": {"uv": [4, 15, 12, 16], "texture": "#frame"},
-        "up": {"uv": [4, 4, 12, 12], "texture": "#frame"},
-        "down": {"uv": [4, 4, 12, 12], "texture": "#frame"}
-      }
-    },
-    {
-      "name": "TopFrameRim",
-      "from": [4, 10, 4],
-      "to": [12, 11, 12],
-      "faces": {
-        "north": {"uv": [4, 5, 12, 6], "texture": "#frame"},
-        "east": {"uv": [4, 5, 12, 6], "texture": "#frame"},
-        "south": {"uv": [4, 5, 12, 6], "texture": "#frame"},
-        "west": {"uv": [4, 5, 12, 6], "texture": "#frame"},
-        "up": {"uv": [4, 4, 12, 12], "texture": "#frame"},
-        "down": {"uv": [4, 4, 12, 12], "texture": "#frame"}
-      }
-    },
-    {
-      "name": "GlassPanelN",
-      "from": [4.5, 1, 4.1],
-      "to": [11.5, 10, 4.2],
-      "faces": {
-        "north": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"},
-        "south": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"}
-      }
-    },
-    {
-      "name": "GlassPanelS",
-      "from": [4.5, 1, 11.8],
-      "to": [11.5, 10, 11.9],
-      "faces": {
-        "north": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"},
-        "south": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"}
-      }
-    },
-    {
-      "name": "GlassPanelW",
-      "from": [4.1, 1, 4.5],
-      "to": [4.2, 10, 11.5],
-      "faces": {
-        "east": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"},
-        "west": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"}
-      }
-    },
-    {
-      "name": "GlassPanelE",
-      "from": [11.8, 1, 4.5],
-      "to": [11.9, 10, 11.5],
-      "faces": {
-        "east": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"},
-        "west": {"uv": [4.5, 6, 11.5, 15], "texture": "#glass"}
-      }
-    },
-    {
-      "name": "NeckFrame",
-      "from": [5, 11, 5],
-      "to": [11, 12, 11],
-      "faces": {
-        "north": {"uv": [5, 4, 11, 5], "texture": "#frame"},
-        "east": {"uv": [5, 4, 11, 5], "texture": "#frame"},
-        "south": {"uv": [5, 4, 11, 5], "texture": "#frame"},
-        "west": {"uv": [5, 4, 11, 5], "texture": "#frame"},
-        "up": {"uv": [5, 5, 11, 11], "texture": "#frame"}
-      }
-    },
-    {
-      "name": "LidCork",
-      "from": [4.5, 12, 4.5],
-      "to": [11.5, 14, 11.5],
-      "faces": {
-        "north": {"uv": [4.5, 2, 11.5, 4], "texture": "#lid"},
-        "east": {"uv": [4.5, 2, 11.5, 4], "texture": "#lid"},
-        "south": {"uv": [4.5, 2, 11.5, 4], "texture": "#lid"},
-        "west": {"uv": [4.5, 2, 11.5, 4], "texture": "#lid"},
-        "up": {"uv": [4.5, 4.5, 11.5, 11.5], "texture": "#lid"},
-        "down": {"uv": [4.5, 4.5, 11.5, 11.5], "texture": "#lid"}
-      }
-    }
+    { "name": "Pilar_NW", "from": [4, 1, 4], "to": [5, 11, 5], "faces": { "north": {"uv": [4, 5, 5, 15], "texture": "#frame"}, "west": {"uv": [4, 5, 5, 15], "texture": "#frame"}, "up": {"uv": [4, 4, 5, 5], "texture": "#frame"}, "down": {"uv": [4, 4, 5, 5], "texture": "#frame"} } },
+    { "name": "Pilar_NE", "from": [11, 1, 4], "to": [12, 11, 5], "faces": { "north": {"uv": [11, 5, 12, 15], "texture": "#frame"}, "east": {"uv": [4, 5, 5, 15], "texture": "#frame"}, "up": {"uv": [11, 4, 12, 5], "texture": "#frame"}, "down": {"uv": [11, 4, 12, 5], "texture": "#frame"} } },
+    { "name": "Pilar_SW", "from": [4, 1, 11], "to": [5, 11, 12], "faces": { "south": {"uv": [4, 5, 5, 15], "texture": "#frame"}, "west": {"uv": [11, 5, 12, 15], "texture": "#frame"}, "up": {"uv": [4, 11, 5, 12], "texture": "#frame"}, "down": {"uv": [4, 11, 5, 12], "texture": "#frame"} } },
+    { "name": "Pilar_SE", "from": [11, 1, 11], "to": [12, 11, 12], "faces": { "south": {"uv": [11, 5, 12, 15], "texture": "#frame"}, "east": {"uv": [11, 5, 12, 15], "texture": "#frame"}, "up": {"uv": [11, 11, 12, 12], "texture": "#frame"}, "down": {"uv": [11, 11, 12, 12], "texture": "#frame"} } },
+    { "name": "Marco_Abajo_N", "from": [5, 0, 4], "to": [11, 1, 5], "faces": { "north": {"uv": [5, 15, 11, 16], "texture": "#frame"}, "up": {"uv": [5, 4, 11, 5], "texture": "#frame"}, "down": {"uv": [5, 4, 11, 5], "texture": "#frame"} } },
+    { "name": "Marco_Abajo_S", "from": [5, 0, 11], "to": [11, 1, 12], "faces": { "south": {"uv": [5, 15, 11, 16], "texture": "#frame"}, "up": {"uv": [5, 11, 11, 12], "texture": "#frame"}, "down": {"uv": [5, 11, 11, 12], "texture": "#frame"} } },
+    { "name": "Marco_Abajo_W", "from": [4, 0, 5], "to": [5, 1, 11], "faces": { "west": {"uv": [5, 15, 11, 16], "texture": "#frame"}, "up": {"uv": [4, 5, 5, 11], "texture": "#frame"}, "down": {"uv": [4, 5, 5, 11], "texture": "#frame"} } },
+    { "name": "Marco_Abajo_E", "from": [11, 0, 5], "to": [12, 1, 11], "faces": { "east": {"uv": [5, 15, 11, 16], "texture": "#frame"}, "up": {"uv": [11, 5, 12, 11], "texture": "#frame"}, "down": {"uv": [11, 5, 12, 11], "texture": "#frame"} } },
+    { "name": "Marco_Arriba_N", "from": [4, 11, 4], "to": [12, 12, 5], "faces": { "north": {"uv": [4, 4, 12, 5], "texture": "#frame"}, "up": {"uv": [4, 4, 12, 5], "texture": "#frame"}, "down": {"uv": [4, 4, 12, 5], "texture": "#frame"} } },
+    { "name": "Marco_Arriba_S", "from": [4, 11, 11], "to": [12, 12, 12], "faces": { "south": {"uv": [4, 4, 12, 5], "texture": "#frame"}, "up": {"uv": [4, 11, 12, 12], "texture": "#frame"}, "down": {"uv": [4, 11, 12, 12], "texture": "#frame"} } },
+    { "name": "Marco_Arriba_W", "from": [4, 11, 5], "to": [5, 12, 11], "faces": { "west": {"uv": [5, 4, 11, 5], "texture": "#frame"}, "up": {"uv": [4, 5, 5, 11], "texture": "#frame"}, "down": {"uv": [4, 5, 5, 11], "texture": "#frame"} } },
+    { "name": "Marco_Arriba_E", "from": [11, 11, 5], "to": [12, 12, 11], "faces": { "east": {"uv": [5, 4, 11, 5], "texture": "#frame"}, "up": {"uv": [11, 5, 12, 11], "texture": "#frame"}, "down": {"uv": [11, 5, 12, 11], "texture": "#frame"} } },
+    { "name": "Cristal_N", "from": [5, 1, 4.5], "to": [11, 11, 4.6], "faces": { "north": {"uv": [5, 5, 11, 15], "texture": "#glass"}, "south": {"uv": [5, 5, 11, 15], "texture": "#glass"} } },
+    { "name": "Cristal_S", "from": [5, 1, 11.4], "to": [11, 11, 11.5], "faces": { "north": {"uv": [5, 5, 11, 15], "texture": "#glass"}, "south": {"uv": [5, 5, 11, 15], "texture": "#glass"} } },
+    { "name": "Cristal_W", "from": [4.5, 1, 5], "to": [4.6, 11, 11], "faces": { "east": {"uv": [5, 5, 11, 15], "texture": "#glass"}, "west": {"uv": [5, 5, 11, 15], "texture": "#glass"} } },
+    { "name": "Cristal_E", "from": [11.4, 1, 5], "to": [11.5, 11, 11], "faces": { "east": {"uv": [5, 5, 11, 15], "texture": "#glass"}, "west": {"uv": [5, 5, 11, 15], "texture": "#glass"} } },
+    { "name": "Tapon_Corcho", "from": [5, 12, 5], "to": [11, 15, 11], "faces": { "north": {"uv": [5, 13, 11, 16], "texture": "#cork"}, "east": {"uv": [5, 13, 11, 16], "texture": "#cork"}, "south": {"uv": [5, 13, 11, 16], "texture": "#cork"}, "west": {"uv": [5, 13, 11, 16], "texture": "#cork"}, "up": {"uv": [5, 5, 11, 11], "texture": "#cork"}, "down": {"uv": [5, 5, 11, 11], "texture": "#cork"} } }
   ]
 }

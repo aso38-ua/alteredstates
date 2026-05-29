@@ -43,6 +43,9 @@ public class ModBlocks {
                     .strength(1.0f) // Un poco más frágil que la madera
                     .sound(SoundType.GLASS))); // ¡Que suene a cristal al romperlo o colocarlo!
 
+    public static final DeferredBlock<Block> ROLLING_TRAY = BLOCKS.register("rolling_tray",
+            () -> new com.alteredstates.block.RollingTrayBlock(Block.Properties.of().noOcclusion().strength(0.5f)));
+
     // ════════════════════════════════════════════════════════════
     //  SETAS
     // ════════════════════════════════════════════════════════════

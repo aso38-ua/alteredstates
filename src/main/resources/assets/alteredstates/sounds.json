@@ -1,0 +1,9 @@
+{
+  "item.grinder.crush": {
+    "category": "player",
+    "subtitle": "subtitles.alteredstates.grinder_crush",
+    "sounds": [
+      "alteredstates:item/grinder_crush"
+    ]
+  }
+}

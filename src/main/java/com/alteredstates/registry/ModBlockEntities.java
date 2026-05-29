@@ -2,6 +2,7 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.block.entity.DryingRackBlockEntity;
+import com.alteredstates.block.entity.RollingTrayBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -22,6 +23,10 @@ public class ModBlockEntities {
                             com.alteredstates.block.entity.CuringJarBlockEntity::new,
                             com.alteredstates.registry.ModBlocks.CURING_JAR.get() // ¡Asegúrate de que apunte a tu bloque!
                     ).build(null));
+
+    public static final Supplier<BlockEntityType<RollingTrayBlockEntity>> ROLLING_TRAY =
+            BLOCK_ENTITIES.register("rolling_tray", () ->
+                    BlockEntityType.Builder.of(RollingTrayBlockEntity::new, ModBlocks.ROLLING_TRAY.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

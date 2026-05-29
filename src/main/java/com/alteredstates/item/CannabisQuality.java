@@ -7,8 +7,9 @@ import net.minecraft.network.chat.Component;
 public enum CannabisQuality implements StringRepresentable {
     BASURA(0, "basura", "quality.alteredstates.basura", ChatFormatting.GRAY),
     REGULAR(1, "regular", "quality.alteredstates.regular", ChatFormatting.WHITE),
-    BUENA(2, "buena", "quality.alteredstates.buena", ChatFormatting.GREEN),
-    PREMIUM(3, "premium", "quality.alteredstates.premium", ChatFormatting.GOLD);
+    NORMAL(2, "normal", "quality.alteredstates.normal", ChatFormatting.AQUA),
+    BUENA(3, "buena", "quality.alteredstates.buena", ChatFormatting.GREEN),
+    PREMIUM(4, "premium", "quality.alteredstates.premium", ChatFormatting.GOLD);
 
     private final int level;
     private final String name;
@@ -25,7 +26,6 @@ public enum CannabisQuality implements StringRepresentable {
     public int getLevel() { return level; }
     public ChatFormatting getFormat() { return format; }
 
-    // Método nuevo que devuelve el texto traducido y coloreado
     public Component getTranslatedName() {
         return Component.translatable(this.translationKey).withStyle(this.format);
     }
@@ -36,7 +36,8 @@ public enum CannabisQuality implements StringRepresentable {
     public static CannabisQuality byLevel(int level) {
         if (level <= 0) return BASURA;
         if (level == 1) return REGULAR;
-        if (level == 2) return BUENA;
+        if (level == 2) return NORMAL;
+        if (level == 3) return BUENA;
         return PREMIUM;
     }
 }

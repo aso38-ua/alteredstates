@@ -54,7 +54,7 @@ public class CuringJarBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        // 🧠 Esto es lo que vincula el bloque físico con su "cerebro" lógico
+        // Esto es lo que vincula el bloque físico con su "cerebro" lógico
         return new CuringJarBlockEntity(pos, state);
     }
 
@@ -115,16 +115,19 @@ public class CuringJarBlock extends BaseEntityBlock {
             // 🎨 Definimos los colores (RGB Float 0-1 range)
             float r, g, b;
             switch (quality) {
-                case 0 -> { // Trash: Gris sucio
+                case 0 -> { // Basura: Gris sucio
                     r = 0.4f; g = 0.4f; b = 0.4f;
                 }
                 case 1 -> { // Regular: Blanco/crema
                     r = 1.0f; g = 1.0f; b = 0.95f;
                 }
-                case 2 -> { // Good: Verde intenso
+                case 2 -> { // Normal: Aqua / Azul clarito
+                    r = 0.33f; g = 1.0f; b = 1.0f;
+                }
+                case 3 -> { // Buena: Verde intenso
                     r = 0.1f; g = 0.9f; b = 0.1f;
                 }
-                case 3 -> { // Premium: Dorado brillante
+                case 4 -> { // Premium: Dorado brillante
                     r = 1.0f; g = 0.85f; b = 0.0f;
                 }
                 default -> { // Fallback: Blanco

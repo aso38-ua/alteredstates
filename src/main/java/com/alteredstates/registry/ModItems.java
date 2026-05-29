@@ -2,6 +2,8 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.item.CannabisBudItem;
+import com.alteredstates.item.GrinderItem;
+import com.alteredstates.item.RollingTrayItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -34,6 +36,9 @@ public class ModItems {
     public static final DeferredItem<Item> INDICA_BUDS_DRY = ITEMS.register("indica_buds_dry",
             () -> new CannabisBudItem(new Item.Properties()));
 
+    public static final DeferredItem<Item> CANNABIS_GROUND = ITEMS.register("cannabis_ground",
+            () -> new CannabisBudItem(new Item.Properties()));
+
     // ════════════════════════════════════════════════════════════
     //  CANNABIS — Productos finales
     // ════════════════════════════════════════════════════════════
@@ -41,11 +46,23 @@ public class ModItems {
     //   JOINT, BLUNT, SPLIFF, BLUNT_MOONROCK
     //   WOODEN_PIPE, GRINDER, CURING_JAR
     //   CANNABUTTER, BROWNIE, CANNABIS_COOKIE, CANNABIS_TEA
+    // Durabilidad de 128 usos y stacks de 1 sola unidad (máximo para herramientas)
+    public static final DeferredItem<GrinderItem> GRINDER = ITEMS.register("grinder",
+            () -> new GrinderItem(new Item.Properties().durability(128).stacksTo(1)));
+
     public static final DeferredItem<Item> DRYING_RACK = ITEMS.register("drying_rack",
             () -> new BlockItem(ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
     public static final DeferredItem<Item> CURING_JAR = ITEMS.register("curing_jar",
             () -> new BlockItem(ModBlocks.CURING_JAR.get(), new Item.Properties()));
+
+    // El bloque-item de la bandeja (Que lanza las instrucciones de Shift)
+    public static final DeferredItem<Item> ROLLING_TRAY = ITEMS.register("rolling_tray",
+            () -> new RollingTrayItem(ModBlocks.ROLLING_TRAY.get(), new Item.Properties()));
+
+    // El producto final
+    public static final DeferredItem<Item> JOINT = ITEMS.register("joint",
+            () -> new CannabisBudItem(new Item.Properties()));
 
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo

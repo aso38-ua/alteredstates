@@ -27,6 +27,7 @@ public class AlteredStates {
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModSounds.SOUND_EVENTS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

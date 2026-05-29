@@ -13,6 +13,7 @@
   "tooltip.alteredstates.quality": "Quality: ",
   "quality.alteredstates.basura": "Trash",
   "quality.alteredstates.regular": "Regular",
+  "quality.alteredstates.normal": "Normal",
   "quality.alteredstates.buena": "Good",
   "quality.alteredstates.premium": "Premium",
   "block.alteredstates.indica_crop": "Indica Crop",
@@ -21,5 +22,19 @@
   "item.alteredstates.indica_seeds": "Indica Seeds",
   "item.alteredstates.indica_buds_fresh": "Fresh Indica Buds",
   "item.alteredstates.indica_buds_dry": "Dry Indica Buds",
-  "item.alteredstates.cannabis_trimming": "Cannabis Trimmings"
+  "item.alteredstates.cannabis_trimming": "Cannabis Trimmings",
+  "block.alteredstates.curing_jar": "Curing Jar",
+  "jei.alteredstates.drying": "Drying Rack Processing",
+  "jei.alteredstates.curing": "Jar Curing Process",
+  "jei.alteredstates.improves_quality": "➔ Increases Quality",
+  "jei.alteredstates.grinding": "Grinding Process",
+  "tooltip.alteredstates.rolling_tray.title": "How to Use:",
+  "tooltip.alteredstates.rolling_tray.step1": "1. Right-Click with Rolling Paper.",
+  "tooltip.alteredstates.rolling_tray.step2": "2. Right-Click with Ground Cannabis.",
+  "tooltip.alteredstates.rolling_tray.step3": "3. (Optional) Add an extra additive.",
+  "tooltip.alteredstates.rolling_tray.step4": "4. SHIFT + Right-Click with empty hand to roll.",
+  "tooltip.alteredstates.hold_shift": "Hold [SHIFT] for instructions",
+  "item.alteredstates.cannabis_ground": "Cannabis Ground",
+  "item.alteredstates.grinder": "Grinder",
+  "block.alteredstates.rolling_tray": "Rolling Tray"
 }

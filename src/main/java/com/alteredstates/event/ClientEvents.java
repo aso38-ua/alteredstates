@@ -15,5 +15,7 @@ public class ClientEvents {
 
         //Registramos el renderizador dinámico del Tarro
         event.registerBlockEntityRenderer(ModBlockEntities.CURING_JAR.get(), CuringJarRenderer::new);
+
+        event.registerBlockEntityRenderer(ModBlockEntities.ROLLING_TRAY.get(), com.alteredstates.client.render.RollingTrayRenderer::new);
     }
 }

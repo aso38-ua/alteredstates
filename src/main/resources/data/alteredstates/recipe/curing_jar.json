@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": { "item": "minecraft:glass" },
+    "S": { "tag": "minecraft:slabs" }
+  },
+  "pattern": [
+    " S ",
+    "G G",
+    "GGG"
+  ],
+  "result": { "count": 1, "id": "alteredstates:curing_jar" }
+}
