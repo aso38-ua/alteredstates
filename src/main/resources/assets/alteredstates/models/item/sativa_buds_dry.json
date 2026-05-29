@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alteredstates:item/cannabis_ground"
+    "layer0": "alteredstates:item/sativa_buds_dry"
   }
 }

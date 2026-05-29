@@ -60,7 +60,7 @@ public class DryingRackBlock extends BaseEntityBlock {
             ItemStack itemInHand = player.getMainHandItem();
 
             // CASO A: El jugador tiene un cogollo fresco en la mano -> Intentamos colgarlo
-            if (itemInHand.is(ModItems.INDICA_BUDS_FRESH.get())) {
+            if (itemInHand.is(ModItems.INDICA_BUDS_FRESH.get()) || itemInHand.is(ModItems.SATIVA_BUDS_FRESH.get())) {
                 if (blockEntity.addItem(itemInHand)) {
                     if (!player.getAbilities().instabuild) {
                         itemInHand.shrink(1); // Consumimos uno si no está en creativo

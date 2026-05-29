@@ -32,7 +32,8 @@ public class DryingRackBlockEntity extends BlockEntity {
     public ItemStack[] getItems() { return this.items; }
 
     public boolean addItem(ItemStack stack) {
-        if (!stack.is(ModItems.INDICA_BUDS_FRESH.get())) return false;
+        // Acepta fresco de Indica o de Sativa
+        if (!stack.is(ModItems.INDICA_BUDS_FRESH.get()) && !stack.is(ModItems.SATIVA_BUDS_FRESH.get())) return false;
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             if (this.items[i].isEmpty()) {
@@ -50,7 +51,8 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     public ItemStack takeFinishedItem() {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
-            if (!this.items[i].isEmpty() && this.items[i].is(ModItems.INDICA_BUDS_DRY.get())) {
+            // Permite recoger seco de Indica o Sativa
+            if (!this.items[i].isEmpty() && (this.items[i].is(ModItems.INDICA_BUDS_DRY.get()) || this.items[i].is(ModItems.SATIVA_BUDS_DRY.get()))) {
                 ItemStack taken = this.items[i];
                 this.items[i] = ItemStack.EMPTY;
                 this.dryingTimes[i] = 0;
@@ -64,25 +66,23 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity blockEntity) {
         boolean changed = false;
-
-        // Evaluamos si el entorno actual del secadero destruye el proceso
         boolean envFails = level.isRainingAt(pos.above());
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             ItemStack stack = blockEntity.items[i];
 
-            if (!stack.isEmpty() && stack.is(ModItems.INDICA_BUDS_FRESH.get())) {
+            // Acepta fresco de Indica o de Sativa
+            if (!stack.isEmpty() && (stack.is(ModItems.INDICA_BUDS_FRESH.get()) || stack.is(ModItems.SATIVA_BUDS_FRESH.get()))) {
                 int currentQuality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
-                // 🛑 BLOQUEO DE CALIDAD: Si es Basura (0), queda totalmente congelado
-                if (currentQuality == 0) {
-                    continue;
-                }
+                if (currentQuality == 0) continue;
 
-                // 🌧️ ENTORNO INCORRECTO: Castigo inmediato convirtiéndose en residuo inservible (Calidad 0)
+                // 🛑 Determina cuál es el ítem seco de salida según la entrada
+                net.minecraft.world.item.Item dryItemType = stack.is(ModItems.INDICA_BUDS_FRESH.get()) ? ModItems.INDICA_BUDS_DRY.get() : ModItems.SATIVA_BUDS_DRY.get();
+
                 if (envFails) {
-                    ItemStack ruinedStack = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-                    ruinedStack.set(ModDataComponentTypes.QUALITY.get(), 0); // Bloqueado en Basura
+                    ItemStack ruinedStack = new ItemStack(dryItemType);
+                    ruinedStack.set(ModDataComponentTypes.QUALITY.get(), 0);
                     blockEntity.items[i] = ruinedStack;
                     blockEntity.dryingTimes[i] = 0;
                     changed = true;
@@ -91,11 +91,8 @@ public class DryingRackBlockEntity extends BlockEntity {
 
                 blockEntity.dryingTimes[i]++;
 
-                // Secado exitoso bajo condiciones óptimas
                 if (blockEntity.dryingTimes[i] >= DRYING_TIME) {
-                    ItemStack dryStack = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-
-                    // 🛑 EL FIX: Sube un escalón de calidad hasta el tope de 4 (Premium en Opción B)
+                    ItemStack dryStack = new ItemStack(dryItemType);
                     dryStack.set(ModDataComponentTypes.QUALITY.get(), Math.min(4, currentQuality));
 
                     blockEntity.items[i] = dryStack;

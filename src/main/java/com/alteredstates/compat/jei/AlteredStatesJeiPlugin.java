@@ -119,30 +119,59 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        // Recetas de Secado
+        // 🟢 RECETAS DE SECADO (Drying)
         List<DryingRecipeWrapper> dryingRecipes = new ArrayList<>();
-        ItemStack greenBud = new ItemStack(ModItems.INDICA_BUDS_FRESH.get());
-        ItemStack dryBudRegular = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-        dryBudRegular.set(ModDataComponentTypes.QUALITY.get(), 1);
-        dryingRecipes.add(new DryingRecipeWrapper(greenBud, dryBudRegular));
+
+        // Indica
+        ItemStack indicaGreen = new ItemStack(ModItems.INDICA_BUDS_FRESH.get());
+        ItemStack indicaDry = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
+        indicaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
+        dryingRecipes.add(new DryingRecipeWrapper(indicaGreen, indicaDry));
+
+        // Sativa
+        ItemStack sativaGreen = new ItemStack(ModItems.SATIVA_BUDS_FRESH.get());
+        ItemStack sativaDry = new ItemStack(ModItems.SATIVA_BUDS_DRY.get());
+        sativaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
+        dryingRecipes.add(new DryingRecipeWrapper(sativaGreen, sativaDry));
+
         registration.addRecipes(DRYING_TYPE, dryingRecipes);
 
-        // Recetas de Curado
+
+        // 🟢 RECETAS DE CURADO (Curing)
         List<CuringRecipeWrapper> curingRecipes = new ArrayList<>();
-        ItemStack inputRegular = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-        inputRegular.set(ModDataComponentTypes.QUALITY.get(), 1);
-        ItemStack outputNormal = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-        outputNormal.set(ModDataComponentTypes.QUALITY.get(), 2);
-        curingRecipes.add(new CuringRecipeWrapper(inputRegular, outputNormal));
+
+        // Indica
+        ItemStack indicaInCure = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
+        indicaInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack indicaOutCure = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
+        indicaOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
+        curingRecipes.add(new CuringRecipeWrapper(indicaInCure, indicaOutCure));
+
+        // Sativa
+        ItemStack sativaInCure = new ItemStack(ModItems.SATIVA_BUDS_DRY.get());
+        sativaInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack sativaOutCure = new ItemStack(ModItems.SATIVA_BUDS_DRY.get());
+        sativaOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
+        curingRecipes.add(new CuringRecipeWrapper(sativaInCure, sativaOutCure));
+
         registration.addRecipes(CURING_TYPE, curingRecipes);
 
-        // Recetas de Grinder
+
+        // 🟢 RECETAS DE GRINDER (Grinding)
         List<GrindingRecipeWrapper> grindingRecipes = new ArrayList<>();
-        ItemStack inputGrind = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
-        ItemStack outputGrind = new ItemStack(ModItems.CANNABIS_GROUND.get()); // Polvo
-        // Podemos asignarle una calidad base de ejemplo para que se vea el tooltip en el JEI
-        outputGrind.set(ModDataComponentTypes.QUALITY.get(), 1);
-        grindingRecipes.add(new GrindingRecipeWrapper(inputGrind, outputGrind));
+
+        // Indica
+        ItemStack indicaInGrind = new ItemStack(ModItems.INDICA_BUDS_DRY.get());
+        ItemStack indicaOutGrind = new ItemStack(ModItems.INDICA_GROUND.get());
+        indicaOutGrind.set(ModDataComponentTypes.QUALITY.get(), 1);
+        grindingRecipes.add(new GrindingRecipeWrapper(indicaInGrind, indicaOutGrind));
+
+        // Sativa
+        ItemStack sativaInGrind = new ItemStack(ModItems.SATIVA_BUDS_DRY.get());
+        ItemStack sativaOutGrind = new ItemStack(ModItems.SATIVA_GROUND.get());
+        sativaOutGrind.set(ModDataComponentTypes.QUALITY.get(), 1);
+        grindingRecipes.add(new GrindingRecipeWrapper(sativaInGrind, sativaOutGrind));
+
         registration.addRecipes(GRINDING_TYPE, grindingRecipes);
     }
 

@@ -37,7 +37,13 @@ public class ModItems {
     public static final DeferredItem<Item> INDICA_BUDS_DRY = ITEMS.register("indica_buds_dry",
             () -> new CannabisBudItem(new Item.Properties()));
 
-    public static final DeferredItem<Item> CANNABIS_GROUND = ITEMS.register("cannabis_ground",
+    public static final DeferredItem<Item> SATIVA_BUDS_DRY = ITEMS.register("sativa_buds_dry",
+            () -> new CannabisBudItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> INDICA_GROUND = ITEMS.register("indica_ground",
+            () -> new CannabisBudItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> SATIVA_GROUND = ITEMS.register("sativa_ground",
             () -> new CannabisBudItem(new Item.Properties()));
 
     // ════════════════════════════════════════════════════════════

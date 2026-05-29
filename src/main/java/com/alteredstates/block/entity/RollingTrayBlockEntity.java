@@ -1,39 +1,39 @@
 package com.alteredstates.block.entity;
 
 import com.alteredstates.registry.ModBlockEntities;
+import com.alteredstates.registry.ModDataComponentTypes;
+import com.alteredstates.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items; // 🟢 Importamos los ítems vanilla
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RollingTrayBlockEntity extends BlockEntity {
-    // Los tres slots conceptuales de nuestra bandeja
     private ItemStack paper = ItemStack.EMPTY;
     private ItemStack weed = ItemStack.EMPTY;
     private ItemStack additive = ItemStack.EMPTY;
 
     public RollingTrayBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.ROLLING_TRAY.get(), pos, state); // Necesitarás registrar esto luego
+        super(ModBlockEntities.ROLLING_TRAY.get(), pos, state);
     }
 
-    // Getters para que el Renderer pueda dibujar los ítems
     public ItemStack getPaper() { return paper; }
     public ItemStack getWeed() { return weed; }
     public ItemStack getAdditive() { return additive; }
 
-    // Intenta meter un ítem en el hueco correspondiente
     public boolean addItem(ItemStack stack) {
-        // Si es papel y no hay papel puesto
-        if (paper.isEmpty() /* && stack.is(ModItems.ROLLING_PAPER.get()) */) { // Descomenta cuando exista
+        // 🟢 CAMBIO: Ahora valida usando el papel normal de Minecraft (Items.PAPER)
+        if (paper.isEmpty() && stack.is(Items.PAPER)) {
             paper = stack.copyWithCount(1);
             sync();
             return true;
         }
-        // Si hay papel, pero no hierba
-        else if (!paper.isEmpty() && weed.isEmpty() /* && stack.is(ModItems.CANNABIS_GROUND.get()) */) {
+        // Si hay papel, pero no hierba (Acepta Indica o Sativa triturada)
+        else if (!paper.isEmpty() && weed.isEmpty() && (stack.is(ModItems.INDICA_GROUND.get()) || stack.is(ModItems.SATIVA_GROUND.get()))) {
             weed = stack.copyWithCount(1);
             sync();
             return true;
@@ -47,7 +47,6 @@ public class RollingTrayBlockEntity extends BlockEntity {
         return false;
     }
 
-    // Limpia la bandeja cuando se crea el porro
     public void clearTray() {
         this.paper = ItemStack.EMPTY;
         this.weed = ItemStack.EMPTY;

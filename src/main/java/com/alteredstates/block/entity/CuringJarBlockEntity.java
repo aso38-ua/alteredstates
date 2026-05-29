@@ -29,16 +29,17 @@ public class CuringJarBlockEntity extends BlockEntity {
 
     // Intenta meter cogollos al tarro
     public boolean insertItem(ItemStack stack) {
-        if (!stack.is(ModItems.INDICA_BUDS_DRY.get())) return false;
+        // Acepta cogollos secos de ambos
+        if (!stack.is(ModItems.INDICA_BUDS_DRY.get()) && !stack.is(ModItems.SATIVA_BUDS_DRY.get())) return false;
         int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
-        // 🛑 EL FIX: Permitimos la entrada de cualquier cogollo seco (0 a 4) para Curado Artesanal [cite: 60]
         if (quality > 4) return false;
 
         if (this.storedItem.isEmpty()) {
             this.storedItem = stack.copyWithCount(stack.getCount());
             stack.setCount(0);
         } else if (ItemStack.isSameItemSameComponents(this.storedItem, stack)) {
+            // Esta línea isSameItemSameComponents ya evita que mezcles Indica y Sativa en el mismo tarro
             int room = this.storedItem.getMaxStackSize() - this.storedItem.getCount();
             int toMove = Math.min(room, stack.getCount());
             this.storedItem.grow(toMove);
@@ -69,22 +70,20 @@ public class CuringJarBlockEntity extends BlockEntity {
         if (level.isClientSide) return;
 
         ItemStack stack = blockEntity.storedItem;
-        if (!stack.isEmpty() && stack.is(ModItems.INDICA_BUDS_DRY.get())) {
+        // Acepta curar si es Indica seca O Sativa seca
+        if (!stack.isEmpty() && (stack.is(ModItems.INDICA_BUDS_DRY.get()) || stack.is(ModItems.SATIVA_BUDS_DRY.get()))) {
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
-            // 🛑 EL FIX: El tarro solo progresa si es calidad < 4 (Premium) [cite: 61]
             if (quality < 4) {
                 blockEntity.curingProgress++;
 
                 if (blockEntity.curingProgress >= MAX_CURE_TIME) {
-                    // ¡BUM! Subimos la calidad al máximo (4 = Premium en Opción B)
                     stack.set(ModDataComponentTypes.QUALITY.get(), 4);
                     blockEntity.curingProgress = 0;
                     blockEntity.setChanged();
                     level.sendBlockUpdated(pos, state, state, 3);
                 }
             }
-            // Si ya es 4, las partículas salen por animateTick(...) pero el tiempo no corre
         }
     }
 
