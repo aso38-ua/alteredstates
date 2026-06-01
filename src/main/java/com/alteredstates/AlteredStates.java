@@ -23,7 +23,7 @@ public class AlteredStates {
         ModDataComponentTypes.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModEffects.MOB_EFFECTS.register(modEventBus);
+        ModEffects.register(modEventBus);
         ModCreativeTabs.CREATIVE_TABS.register(modEventBus);
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModBlockEntities.register(modEventBus);

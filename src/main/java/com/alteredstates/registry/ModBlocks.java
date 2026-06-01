@@ -49,6 +49,12 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ROLLING_TRAY = BLOCKS.register("rolling_tray",
             () -> new com.alteredstates.block.RollingTrayBlock(Block.Properties.of().noOcclusion().strength(0.5f)));
 
+    public static final net.neoforged.neoforge.registries.DeferredBlock<net.minecraft.world.level.block.Block> BONG = BLOCKS.register("bong",
+            () -> new com.alteredstates.block.BongBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                    .noOcclusion()
+                    .strength(0.5f)
+                    .sound(net.minecraft.world.level.block.SoundType.GLASS)));
+
     // ════════════════════════════════════════════════════════════
     //  SETAS
     // ════════════════════════════════════════════════════════════

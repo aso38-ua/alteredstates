@@ -36,5 +36,12 @@
   "tooltip.alteredstates.hold_shift": "Hold [SHIFT] for instructions",
   "item.alteredstates.cannabis_ground": "Cannabis Ground",
   "item.alteredstates.grinder": "Grinder",
-  "block.alteredstates.rolling_tray": "Rolling Tray"
+  "block.alteredstates.rolling_tray": "Rolling Tray",
+  "tooltip.alteredstates.quality_format": "Quality: %s",
+  "tooltip.alteredstates.quality.bad": "Trash",
+  "tooltip.alteredstates.quality.normal": "Normal",
+  "tooltip.alteredstates.quality.regular": "Regular",
+  "tooltip.alteredstates.quality.good": "Good",
+  "tooltip.alteredstates.quality.premium": "Premium",
+  "tooltip.alteredstates.remaining_smokes": "Remaining Smokes: %s"
 }
