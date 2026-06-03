@@ -22,28 +22,28 @@ public class BongRenderer implements BlockEntityRenderer<BongBlockEntity> {
     public void render(BongBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
         ItemStack weed = blockEntity.getBowlContent();
 
-        // Si la cazoleta tiene hierba, la dibujamos
+        // 🟢 Si el inventario del bong (la cazoleta) tiene algo de hierba...
         if (!weed.isEmpty()) {
             poseStack.pushPose();
 
-            // 📍 Movemos el ítem exactamente a las coordenadas del tubito metálico
-            poseStack.translate(0.72D, 0.35D, 0.5D);
+            // 📍 Posición exacta en la nueva cazoleta de pizarra
+            poseStack.translate(0.85D, 0.44D, 0.5D);
 
-            // 🔍 Lo hacemos pequeñito para que quepa en la cazoleta
-            poseStack.scale(0.25F, 0.25F, 0.25F);
+            // 🔍 Hacemos la textura de la hierba muy pequeñita (15% de su tamaño real)
+            poseStack.scale(0.15F, 0.15F, 0.15F);
 
-            // 📐 Inclinamos el ítem para que siga el ángulo del tubito y lo tumbamos
+            // 📐 Inclinamos la hierba para que se asiente plana (-22.5 grados por el tubo)
             poseStack.mulPose(Axis.ZP.rotationDegrees(-22.5F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(90F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(90F)); // Tumbamos el ítem 2D como en la bandeja
 
-            // Llamamos a tu método renderItem
+            // Dibujamos el ítem en la pantalla
             renderItem(weed, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
 
             poseStack.popPose();
         }
     }
 
-    // El mismo método auxiliar que usaste en la bandeja
+    // El mismo método auxiliar que usaste para la RollingTray
     private void renderItem(ItemStack stack, BongBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         BakedModel bakedModel = this.itemRenderer.getModel(stack, blockEntity.getLevel(), null, 0);
         this.itemRenderer.render(stack, ItemDisplayContext.FIXED, false, poseStack, bufferSource, light, overlay, bakedModel);

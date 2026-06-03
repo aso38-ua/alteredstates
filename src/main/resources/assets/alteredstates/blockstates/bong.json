@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "alteredstates:block/bong"
-    }
+    "has_water=false,has_weed=false": { "model": "alteredstates:block/bong_empty" },
+    "has_water=false,has_weed=true":  { "model": "alteredstates:block/bong_empty" },
+    "has_water=true,has_weed=false":  { "model": "alteredstates:block/bong_water" },
+    "has_water=true,has_weed=true":   { "model": "alteredstates:block/bong_water" }
   }
 }
