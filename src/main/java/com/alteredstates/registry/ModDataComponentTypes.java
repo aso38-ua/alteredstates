@@ -18,6 +18,11 @@ public class ModDataComponentTypes {
                     .persistent(Codec.INT) // Indica a Minecraft cómo guardar este dato en el archivo de la partida
                     .build());
 
+    // 🌿 Guarda un Verdadero/Falso para saber si el consumible base era Indica (true) o Sativa (false)
+    public static final java.util.function.Supplier<net.minecraft.core.component.DataComponentType<Boolean>> IS_INDICA =
+            DATA_COMPONENT_TYPES.register("is_indica", () ->
+                    net.minecraft.core.component.DataComponentType.<Boolean>builder().persistent(com.mojang.serialization.Codec.BOOL).build());
+
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
     }

@@ -26,13 +26,15 @@ public class ParanoiaEffect extends MobEffect {
             RandomSource random = player.getRandom();
 
             // 🔊 Cada 10 segundos aprox (200 ticks), hay un 15% de probabilidad de escuchar un fantasma
-            if (player.tickCount % 40 == 0 && random.nextFloat() < 0.15f) {
+            if (player.tickCount % 40 == 0 && random.nextFloat() < 0.30f) {
 
                 // Elegimos un sonido aleatorio de "peligro" para asustar al jugador
-                net.minecraft.sounds.SoundEvent fakeSound = switch (random.nextInt(4)) {
+                net.minecraft.sounds.SoundEvent fakeSound = switch (random.nextInt(6)) {
                     case 0 -> SoundEvents.CREEPER_PRIMED; // El "Sssss" de un creeper
                     case 1 -> SoundEvents.ZOMBIE_AMBIENT; // Un gemido al lado
                     case 2 -> SoundEvents.ARROW_HIT;      // El sonido de que te han clavado una flecha
+                    case 3 -> SoundEvents.ZOMBIE_HURT;
+                    case 4 -> SoundEvents.SKELETON_AMBIENT;
                     default -> SoundEvents.CAVE_VINES_STEP;  // El sonido tétrico de las cuevas
                 };
 

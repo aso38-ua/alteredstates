@@ -27,10 +27,10 @@ public class BongRenderer implements BlockEntityRenderer<BongBlockEntity> {
             poseStack.pushPose();
 
             // 📍 Posición exacta en la nueva cazoleta de pizarra
-            poseStack.translate(0.85D, 0.44D, 0.5D);
+            poseStack.translate(0.91D, 0.46D, 0.5D);
 
             // 🔍 Hacemos la textura de la hierba muy pequeñita (15% de su tamaño real)
-            poseStack.scale(0.15F, 0.15F, 0.15F);
+            poseStack.scale(0.20F, 0.20F, 0.20F);
 
             // 📐 Inclinamos la hierba para que se asiente plana (-22.5 grados por el tubo)
             poseStack.mulPose(Axis.ZP.rotationDegrees(-22.5F));

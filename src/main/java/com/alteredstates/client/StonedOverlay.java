@@ -40,8 +40,8 @@ public class StonedOverlay {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
 
-            // Color blanco puro, pero con un Canal Alfa (Transparencia) del 0.25F (25% visible)
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.20F);
+            // Color blanco puro, pero con un Canal Alfa (Transparencia) del 0.15F (20% visible)
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.15F);
 
             // Dibujar la textura ocupando toda la pantalla
             event.getGuiGraphics().blit(FRAMES[currentFrame], 0, 0, 0, 0, screenWidth, screenHeight, screenWidth, screenHeight);

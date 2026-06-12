@@ -1,0 +1,22 @@
+{
+  "type": "alteredstates:cooking_special_cannabutter",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "ingredients": [
+    { "item": "minecraft:milk_bucket" },
+    { "item": "alteredstates:indica_ground" }
+  ],
+  "result": {
+    "id": "alteredstates:cannabutter",
+    "count": 1
+  },
+  "experience": 0.5,
+  "cookingtime": 200,
+  "container": {
+    "id": "minecraft:bowl"
+  }
+}

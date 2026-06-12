@@ -2,6 +2,7 @@ package com.alteredstates;
 
 import com.alteredstates.compat.CompatManager;
 import com.alteredstates.compat.FarmersDelightCompat;
+import com.alteredstates.compat.fd.FDRecipes;
 import com.alteredstates.event.ClientEvents;
 import com.alteredstates.registry.*;
 import net.neoforged.bus.api.IEventBus;
@@ -28,8 +29,13 @@ public class AlteredStates {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModSounds.SOUND_EVENTS.register(modEventBus);
+        ModRecipes.SERIALIZERS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
+
+        if (CompatManager.FARMERS_DELIGHT) {
+            FDRecipes.register(); // Esto registra las recetas custom de FD sin petar si no está
+        }
 
         if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(ClientEvents::registerRenderers);

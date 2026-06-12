@@ -83,29 +83,33 @@ public class BongBlock extends BaseEntityBlock {
                 }
             }
 
-            // 💨 3. FUMAR (Mano vacía + Tiene agua + Tiene hierba)
-            if (handStack.isEmpty() && state.getValue(HAS_WATER) && !bong.getBowlContent().isEmpty()) {
-                if (!level.isClientSide) {
-                    ItemStack weed = bong.getBowlContent();
-                    boolean isIndica = weed.is(ModItems.INDICA_GROUND.get());
-                    int quality = weed.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+            // 💨 3. FUMAR (Mechero en mano + Tiene agua + Tiene hierba)
+            if (handStack.is(Items.FLINT_AND_STEEL) && state.getValue(HAS_WATER) && !bong.getBowlContent().isEmpty()) {
 
+                // 🛠️ Guardamos una copia de los datos de la hierba ANTES de borrarla
+                ItemStack weed = bong.getBowlContent().copy();
+                boolean isIndica = weed.is(ModItems.INDICA_GROUND.get());
+                int quality = weed.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+
+                if (!level.isClientSide) {
                     level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.5F, 1.2F);
-                    level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 0.8F);
+                    level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 
                     SmokingEffectProcessor.applyBongEffects(player, isIndica, quality);
-
-                    // Vaciamos la cazoleta
-                    bong.setBowlContent(ItemStack.EMPTY);
-                    // 🟢 Le decimos al bloque que ya NO tiene hierba
-                    level.setBlock(pos, state.setValue(HAS_WEED, false), 3);
+                    handStack.hurtAndBreak(1, player, net.minecraft.world.entity.LivingEntity.getSlotForHand(player.getUsedItemHand()));
                 } else {
+                    // Partículas en el lado del cliente
                     for (int i = 0; i < 15; i++) {
                         level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,
                                 pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
                                 (level.random.nextDouble() - 0.5) * 0.1, 0.1, (level.random.nextDouble() - 0.5) * 0.1);
                     }
                 }
+
+                // 🛠️ FIX: Vaciamos la cazoleta FUERA del if, para que ocurra en el Cliente y en el Servidor a la vez
+                bong.setBowlContent(ItemStack.EMPTY);
+                level.setBlock(pos, state.setValue(HAS_WEED, false), 3);
+
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }

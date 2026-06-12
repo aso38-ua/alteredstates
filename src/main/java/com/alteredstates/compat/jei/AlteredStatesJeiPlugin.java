@@ -35,6 +35,8 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
     public static final RecipeType<CuringRecipeWrapper> CURING_TYPE = RecipeType.create(AlteredStates.MOD_ID, "curing", CuringRecipeWrapper.class);
     public static final RecipeType<GrindingRecipeWrapper> GRINDING_TYPE = RecipeType.create(AlteredStates.MOD_ID, "grinding", GrindingRecipeWrapper.class);
     public static final RecipeType<RollingRecipeWrapper> ROLLING_TYPE = RecipeType.create(AlteredStates.MOD_ID, "rolling", RollingRecipeWrapper.class);
+    public static final RecipeType<BongRecipeWrapper> BONG_TYPE = RecipeType.create(AlteredStates.MOD_ID, "bong_use", BongRecipeWrapper.class);
+    private IDrawable iconBong;
 
     private IDrawable background;
     private IDrawable iconDrying;
@@ -116,6 +118,25 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
                 g.drawString(Minecraft.getInstance().font, "➔➔➔", 72, 13, 0xFF555555, false);
             }
         });
+
+        this.iconBong = guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.BONG.get()));
+
+        registration.addRecipeCategories(new IRecipeCategory<BongRecipeWrapper>() {
+            @Override public RecipeType<BongRecipeWrapper> getRecipeType() { return BONG_TYPE; }
+            @Override public Component getTitle() { return Component.literal("Uso del Bong"); }
+            @Override public IDrawable getBackground() { return background; }
+            @Override public IDrawable getIcon() { return iconBong; }
+            @Override public void setRecipe(IRecipeLayoutBuilder builder, BongRecipeWrapper recipe, IFocusGroup focuses) {
+                // Ingredientes: Agua (representativo), Hierba, Mechero
+                builder.addSlot(RecipeIngredientRole.INPUT, 5, 8).addItemStack(new ItemStack(Items.WATER_BUCKET));
+                builder.addSlot(RecipeIngredientRole.INPUT, 25, 8).addItemStack(recipe.weed());
+                builder.addSlot(RecipeIngredientRole.INPUT, 45, 8).addItemStack(new ItemStack(Items.FLINT_AND_STEEL));
+            }
+            @Override public void draw(BongRecipeWrapper r, IRecipeSlotsView v, GuiGraphics g, double x, double y) {
+                g.drawString(Minecraft.getInstance().font, "➔➔", 68, 13, 0xFF555555, false);
+                g.drawString(Minecraft.getInstance().font, "¡A volar!", 90, 13, 0xFF44AA44, false); // Texto de resultado
+            }
+        });
     }
 
     @Override
@@ -160,6 +181,18 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
         ItemStack sJoint = new ItemStack(ModItems.SATIVA_JOINT.get()); sJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
         rollingRecipes.add(new RollingRecipeWrapper(vanillaPaper, sGround, ItemStack.EMPTY, sJoint));
 
+        List<BongRecipeWrapper> bongRecipes = new ArrayList<>();
+        bongRecipes.add(new BongRecipeWrapper(new ItemStack(ModItems.INDICA_GROUND.get())));
+        bongRecipes.add(new BongRecipeWrapper(new ItemStack(ModItems.SATIVA_GROUND.get())));
+        registration.addRecipes(BONG_TYPE, bongRecipes);
+
+        // --- INFORMACIÓN DE LA MANTEQUILLA CANÁBICA ---
+        registration.addIngredientInfo(
+                new ItemStack(ModItems.CANNABUTTER.get()),
+                mezz.jei.api.constants.VanillaTypes.ITEM_STACK,
+                net.minecraft.network.chat.Component.translatable("jei.alteredstates.cannabutter_info")
+        );
+
         registration.addRecipes(ROLLING_TYPE, rollingRecipes);
     }
 
@@ -169,10 +202,12 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.CURING_JAR.get()), CURING_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModItems.GRINDER.get()), GRINDING_TYPE);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.ROLLING_TRAY.get()), ROLLING_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.BONG.get()), BONG_TYPE);
     }
 
     public record DryingRecipeWrapper(ItemStack input, ItemStack output) {}
     public record CuringRecipeWrapper(ItemStack input, ItemStack output) {}
     public record GrindingRecipeWrapper(ItemStack input, ItemStack output) {}
     public record RollingRecipeWrapper(ItemStack paper, ItemStack weed, ItemStack additive, ItemStack output) {}
+    public record BongRecipeWrapper(ItemStack weed) {}
 }

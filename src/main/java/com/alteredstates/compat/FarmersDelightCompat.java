@@ -1,5 +1,8 @@
 package com.alteredstates.compat;
 
+import com.alteredstates.compat.fd.FDEvents;
+import net.neoforged.neoforge.common.NeoForge;
+
 /**
  * Recetas y hooks de Farmer's Delight.
  * Este método solo se llama si CompatManager.FARMERS_DELIGHT == true.
@@ -8,9 +11,7 @@ package com.alteredstates.compat;
 public class FarmersDelightCompat {
 
     public static void init() {
-        // Aquí irán:
-        //  - Recetas de CookingPot (chocolate caliente, fondue, risotto...)
-        //  - Registro del CuttingBoard recipe type para cogollos
-        //  - Comfort values para comestibles del mod
+        // Registramos dinámicamente los eventos de Farmer's Delight
+        NeoForge.EVENT_BUS.register(FDEvents.class);
     }
 }

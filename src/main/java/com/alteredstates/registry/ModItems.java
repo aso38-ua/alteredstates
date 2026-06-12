@@ -1,15 +1,13 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
-import com.alteredstates.item.CannabisBudItem;
-import com.alteredstates.item.GrinderItem;
-import com.alteredstates.item.JointItem;
-import com.alteredstates.item.RollingTrayItem;
+import com.alteredstates.item.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.food.FoodProperties;
 
 public class ModItems {
 
@@ -76,6 +74,18 @@ public class ModItems {
 
     public static final net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> BONG = ITEMS.register("bong",
             () -> new net.minecraft.world.item.BlockItem(com.alteredstates.registry.ModBlocks.BONG.get(), new net.minecraft.world.item.Item.Properties()));
+
+    // 🧈 Mantequilla de Cannabis (Ingrediente base para cocinar)
+    public static final DeferredItem<CannabutterItem> CANNABUTTER = ITEMS.register("cannabutter",
+            () -> new CannabutterItem(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()
+            )));
+
+    // 🍫 Space Brownie (La recompensa deliciosa)
+    public static final DeferredItem<Item> BROWNIE =
+            ITEMS.register("brownie", () -> new EdibleWeedItem(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()
+            )));
 
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo

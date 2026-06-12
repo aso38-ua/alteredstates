@@ -10,6 +10,7 @@ import net.neoforged.fml.ModList;
 public final class CompatManager {
 
     public static final boolean FARMERS_DELIGHT  = ModList.get().isLoaded("farmersdelight");
+    public static final boolean FRUITS_DELIGHT = ModList.get().isLoaded("fruitsdelight");
     public static final boolean CREATE            = ModList.get().isLoaded("create");
     public static final boolean SERENE_SEASONS    = ModList.get().isLoaded("sereneseasons");
     public static final boolean JEI               = ModList.get().isLoaded("jei");
