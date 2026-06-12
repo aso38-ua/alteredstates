@@ -49,13 +49,23 @@ public class CannabutterItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        int qualityLevel = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-        CannabisQuality quality = CannabisQuality.byLevel(qualityLevel);
+    public void appendHoverText(ItemStack stack, TooltipContext context, java.util.List<net.minecraft.network.chat.Component> tooltipComponents, net.minecraft.world.item.TooltipFlag tooltipFlag) {
 
-        // Agregamos el texto "⭐ Calidad: " seguido del nombre formateado/traducido de la calidad
-        tooltipComponents.add(Component.literal("⭐ Calidad: ").append(quality.getTranslatedName()));
+        // Leemos los datos
+        boolean isIndica = stack.getOrDefault(com.alteredstates.registry.ModDataComponentTypes.IS_INDICA.get(), true);
+        int qualityLevel = stack.getOrDefault(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), 1);
 
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        // Formateamos la Cepa
+        String strainName = isIndica ? "Índica" : "Sativa";
+        net.minecraft.ChatFormatting strainColor = isIndica ? net.minecraft.ChatFormatting.DARK_PURPLE : net.minecraft.ChatFormatting.GREEN;
+
+        // Extraemos la calidad usando tu ENUM
+        com.alteredstates.item.CannabisQuality qualityEnum = com.alteredstates.item.CannabisQuality.byLevel(qualityLevel);
+
+        // Añadimos el texto al tooltip
+        tooltipComponents.add(net.minecraft.network.chat.Component.literal("Cepa: " + strainName).withStyle(strainColor));
+
+        // Usamos el nombre traducido y su color automático (ej. "PREMIUM" en dorado)
+        tooltipComponents.add(net.minecraft.network.chat.Component.literal("Calidad: ").append(qualityEnum.getTranslatedName()));
     }
 }

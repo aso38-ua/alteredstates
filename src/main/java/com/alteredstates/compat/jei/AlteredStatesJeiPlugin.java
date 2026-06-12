@@ -23,6 +23,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import mezz.jei.api.constants.RecipeTypes;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,6 +198,59 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
                 mezz.jei.api.constants.VanillaTypes.ITEM_STACK,
                 net.minecraft.network.chat.Component.translatable("jei.alteredstates.cannabutter_info")
         );
+
+        // 🧈 1. Receta visual para la Mantequilla Canábica
+        NonNullList<Ingredient> butterIngredients = NonNullList.of(Ingredient.EMPTY,
+                Ingredient.of(Items.MILK_BUCKET),
+                Ingredient.of(Items.BOWL),
+                Ingredient.of(ModItems.INDICA_GROUND.get()),
+                Ingredient.of(ModItems.INDICA_GROUND.get()),
+                Ingredient.of(ModItems.INDICA_GROUND.get())
+        );
+
+        ShapelessRecipe fakeButterRecipe = new ShapelessRecipe(
+                "alteredstates",
+                CraftingBookCategory.MISC,
+                new ItemStack(ModItems.CANNABUTTER.get()),
+                butterIngredients
+        );
+
+        // 🧈 1b. Receta visual para la Mantequilla Canábica (SATIVA)
+        NonNullList<Ingredient> sativaButterIngredients = NonNullList.of(Ingredient.EMPTY,
+                Ingredient.of(Items.MILK_BUCKET),
+                Ingredient.of(Items.BOWL),
+                Ingredient.of(ModItems.SATIVA_GROUND.get()),
+                Ingredient.of(ModItems.SATIVA_GROUND.get()),
+                Ingredient.of(ModItems.SATIVA_GROUND.get())
+        );
+
+        ShapelessRecipe fakeSativaButterRecipe = new ShapelessRecipe(
+                "alteredstates",
+                CraftingBookCategory.MISC,
+                new ItemStack(ModItems.CANNABUTTER.get()),
+                sativaButterIngredients
+        );
+
+        // 🟫 2. Receta visual para el Brownie
+        NonNullList<Ingredient> brownieIngredients = NonNullList.of(Ingredient.EMPTY,
+                Ingredient.of(ModItems.CANNABUTTER.get()),
+                Ingredient.of(Items.WHEAT), // Trigo
+                Ingredient.of(Items.COCOA_BEANS) // Semillas de cacao
+        );
+
+        ShapelessRecipe fakeBrownieRecipe = new ShapelessRecipe(
+                "alteredstates",
+                CraftingBookCategory.MISC,
+                new ItemStack(ModItems.BROWNIE.get()),
+                brownieIngredients
+        );
+
+        // 💉 Inyectar ambas recetas en la categoría de la Mesa de Crafteo de JEI
+        registration.addRecipes(RecipeTypes.CRAFTING, List.of(
+                new RecipeHolder<>(ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, "jei_visual_cannabutter_indica"), fakeButterRecipe),
+                new RecipeHolder<>(ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, "jei_visual_cannabutter_sativa"), fakeSativaButterRecipe),
+                new RecipeHolder<>(ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, "jei_visual_brownie"), fakeBrownieRecipe)
+        ));
 
         registration.addRecipes(ROLLING_TYPE, rollingRecipes);
     }

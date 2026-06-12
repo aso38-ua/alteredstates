@@ -3,6 +3,7 @@ package com.alteredstates.util;
 import com.alteredstates.registry.ModEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class SmokingEffectProcessor {
 
@@ -54,6 +55,18 @@ public class SmokingEffectProcessor {
         if (entity.level().random.nextFloat() < paranoiaChance) {
             int badDuration = 800 + (200 * quality);
             entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(ModEffects.PARANOIA, badDuration, 1)); // Paranoia nivel 2!
+        }
+    }
+
+    public static void applyEdibleEffects(Player player, boolean isIndica, int quality) {
+        int duration = 12000 * quality;
+        int intensity = 1;
+
+        if (isIndica) {
+            player.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, duration, intensity, false, false, true));
+        } else {
+            // ⚠️ REVISA ESTA LÍNEA: Asegúrate de que pone SATIVA_EFFECT
+            player.addEffect(new MobEffectInstance(ModEffects.SATIVA_EFFECT, duration, intensity, false, false, true));
         }
     }
 }

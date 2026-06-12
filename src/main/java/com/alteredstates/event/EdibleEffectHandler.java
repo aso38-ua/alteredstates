@@ -13,18 +13,18 @@ public class EdibleEffectHandler {
 
     @SubscribeEvent
     public static void onEffectExpired(MobEffectEvent.Expired event) {
-        // 🔄 CORREGIDO: Usamos .is(ModEffects.DIGESTING) para comparar los Holders correctamente en 1.21
         if (event.getEffectInstance() != null && event.getEffectInstance().getEffect().is(ModEffects.DIGESTING)) {
             if (event.getEntity() instanceof Player player && !player.level().isClientSide) {
 
+                // Leemos el número secreto
                 int amplifier = event.getEffectInstance().getAmplifier();
 
-                // DECODIFICACIÓN
+                // Decodificamos (Si es menor de 10, es Índica. Si es mayor, es Sativa).
                 boolean isIndica = amplifier < 10;
                 int quality = isIndica ? amplifier : (amplifier - 10);
 
-                // EL SUBIDÓN
-                com.alteredstates.util.SmokingEffectProcessor.applyBongEffects(player, isIndica, quality);
+                // IMPORTANTE: Asegúrate de llamar a 'applyEdibleEffects' y no a 'applyBongEffects'
+                com.alteredstates.util.SmokingEffectProcessor.applyEdibleEffects(player, isIndica, quality);
             }
         }
     }

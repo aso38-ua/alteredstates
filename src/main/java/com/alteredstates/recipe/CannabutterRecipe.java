@@ -18,61 +18,55 @@ public class CannabutterRecipe extends CustomRecipe {
 
     @Override
     public boolean matches(CraftingInput inv, Level level) {
-        int weedCount = 0;
         int milkCount = 0;
         int bowlCount = 0;
-        boolean hasIndica = false;
-        boolean hasSativa = false;
+        int indicaCount = 0;
+        int sativaCount = 0;
 
-        // 🔄 CORREGIDO: Usamos inv.items() para iterar de forma segura en 1.21
-        for (ItemStack stack : inv.items()) {
-            if (!stack.isEmpty()) {
-                if (stack.is(Items.MILK_BUCKET)) {
-                    milkCount++;
-                } else if (stack.is(Items.BOWL)) {
-                    bowlCount++;
-                } else if (stack.is(ModItems.INDICA_GROUND.get())) {
-                    weedCount++;
-                    hasIndica = true;
-                } else if (stack.is(ModItems.SATIVA_GROUND.get())) {
-                    weedCount++;
-                    hasSativa = true;
-                } else {
-                    return false;
-                }
-            }
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (stack.isEmpty()) continue;
+
+            if (stack.is(net.minecraft.world.item.Items.MILK_BUCKET)) milkCount++;
+            else if (stack.is(net.minecraft.world.item.Items.BOWL)) bowlCount++;
+            else if (stack.is(com.alteredstates.registry.ModItems.INDICA_GROUND.get())) indicaCount++;
+            else if (stack.is(com.alteredstates.registry.ModItems.SATIVA_GROUND.get())) sativaCount++;
+            else return false; // Si hay cualquier otro ítem, la receta falla
         }
 
-        return milkCount == 1 && bowlCount == 1 && weedCount == 3 && !(hasIndica && hasSativa);
+        // Acepta la receta SI hay 1 leche, 1 bol, y (3 índicas O 3 sativas)
+        return milkCount == 1 && bowlCount == 1 && ((indicaCount == 3 && sativaCount == 0) || (sativaCount == 3 && indicaCount == 0));
     }
 
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
-        int minQuality = Integer.MAX_VALUE;
-        boolean hasWeed = false;
+        int lowestQuality = 3;
         boolean isIndica = true;
 
-        // 🔄 CORREGIDO: Iteración limpia sobre inv.items()
-        for (ItemStack stack : inv.items()) {
-            if (!stack.isEmpty()) {
-                if (stack.is(ModItems.SATIVA_GROUND.get())) {
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getItem(i);
+
+            if (stack.is(com.alteredstates.registry.ModItems.INDICA_GROUND.get()) || stack.is(com.alteredstates.registry.ModItems.SATIVA_GROUND.get())) {
+
+                // Si detecta Sativa, marcamos el boolean como falso
+                if (stack.is(com.alteredstates.registry.ModItems.SATIVA_GROUND.get())) {
                     isIndica = false;
                 }
-                if (stack.is(ModItems.INDICA_GROUND.get()) || stack.is(ModItems.SATIVA_GROUND.get())) {
-                    int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-                    if (quality < minQuality) {
-                        minQuality = quality;
-                    }
-                    hasWeed = true;
+
+                // Hereda la peor calidad
+                int quality = stack.getOrDefault(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), 1);
+                if (quality < lowestQuality) {
+                    lowestQuality = quality;
                 }
             }
         }
 
-        int finalQuality = hasWeed ? minQuality : 1;
+        ItemStack result = new ItemStack(com.alteredstates.registry.ModItems.CANNABUTTER.get());
+        result.set(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), lowestQuality);
 
-        ItemStack result = new ItemStack(ModItems.CANNABUTTER.get());
-        result.set(ModDataComponentTypes.IS_INDICA.get(), isIndica);
-        result.set(ModDataComponentTypes.QUALITY.get(), finalQuality);
+        // Le guardamos el tipo de cepa a la mantequilla
+        result.set(com.alteredstates.registry.ModDataComponentTypes.IS_INDICA.get(), isIndica);
+
         return result;
     }
 

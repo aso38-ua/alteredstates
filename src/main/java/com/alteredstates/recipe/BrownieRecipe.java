@@ -35,22 +35,38 @@ public class BrownieRecipe extends CustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
-        boolean isIndica = true;
-        int quality = 1;
+        int lowestQuality = 3; // Empezamos en lo más alto
+        boolean isIndica = true; // Valor por defecto
+        boolean foundButter = false;
 
-        // Buscamos la mantequilla usada para clonar sus propiedades
-        for (ItemStack stack : inv.items()) {
-            if (!stack.isEmpty() && stack.is(ModItems.CANNABUTTER.get())) {
-                isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
-                quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-                break;
+        // Buscamos la mantequilla en la mesa
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (stack.is(ModItems.CANNABUTTER.get())) {
+                foundButter = true;
+
+                // 1. Extraemos la calidad
+                int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+                if (quality < lowestQuality) {
+                    lowestQuality = quality;
+                }
+
+                // 2. Extraemos el tipo de marihuana (Asumiendo que tienes un DataComponent para esto)
+                // Si lo guardas de otra forma, ajusta esta línea a tu código
+                if (stack.has(ModDataComponentTypes.IS_INDICA.get())) {
+                    isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
+                }
             }
         }
 
-        // Creamos el brownie resultante con los datos heredados
-        ItemStack result = new ItemStack(ModItems.BROWNIE.get()); // Asegúrate de usar el ID de tu brownie
-        result.set(ModDataComponentTypes.IS_INDICA.get(), isIndica);
-        result.set(ModDataComponentTypes.QUALITY.get(), quality);
+        // Creamos el resultado
+        ItemStack result = new ItemStack(ModItems.BROWNIE.get());
+        if (foundButter) {
+            // Le inyectamos la calidad heredada y la cepa al Brownie final
+            result.set(ModDataComponentTypes.QUALITY.get(), lowestQuality);
+            result.set(ModDataComponentTypes.IS_INDICA.get(), isIndica);
+        }
+
         return result;
     }
 

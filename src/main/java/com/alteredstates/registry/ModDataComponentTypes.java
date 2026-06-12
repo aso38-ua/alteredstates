@@ -4,7 +4,9 @@ import com.alteredstates.AlteredStates;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
@@ -19,10 +21,13 @@ public class ModDataComponentTypes {
                     .build());
 
     // 🌿 Guarda un Verdadero/Falso para saber si el consumible base era Indica (true) o Sativa (false)
-    public static final java.util.function.Supplier<net.minecraft.core.component.DataComponentType<Boolean>> IS_INDICA =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> IS_INDICA =
             DATA_COMPONENT_TYPES.register("is_indica", () ->
-                    net.minecraft.core.component.DataComponentType.<Boolean>builder().persistent(com.mojang.serialization.Codec.BOOL).build());
-
+                    DataComponentType.<Boolean>builder()
+                            .persistent(Codec.BOOL)
+                            .networkSynchronized(ByteBufCodecs.BOOL)
+                            .build()
+            );
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
     }
