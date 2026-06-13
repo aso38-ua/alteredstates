@@ -1,14 +1,13 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
-import com.alteredstates.item.CannabisBudItem;
-import com.alteredstates.item.GrinderItem;
-import com.alteredstates.item.RollingTrayItem;
+import com.alteredstates.item.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.food.FoodProperties;
 
 public class ModItems {
 
@@ -67,9 +66,26 @@ public class ModItems {
     public static final DeferredItem<Item> ROLLING_TRAY = ITEMS.register("rolling_tray",
             () -> new RollingTrayItem(ModBlocks.ROLLING_TRAY.get(), new Item.Properties()));
 
-    // El producto final
-    public static final DeferredItem<Item> JOINT = ITEMS.register("joint",
-            () -> new CannabisBudItem(new Item.Properties()));
+    public static final DeferredItem<Item> INDICA_JOINT = ITEMS.register("indica_joint",
+            () -> new JointItem(new Item.Properties(), true)); // true = es Indica
+
+    public static final DeferredItem<Item> SATIVA_JOINT = ITEMS.register("sativa_joint",
+            () -> new JointItem(new Item.Properties(), false)); // false = es Sativa
+
+    public static final net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> BONG = ITEMS.register("bong",
+            () -> new net.minecraft.world.item.BlockItem(com.alteredstates.registry.ModBlocks.BONG.get(), new net.minecraft.world.item.Item.Properties()));
+
+    // 🧈 Mantequilla de Cannabis (Ingrediente base para cocinar)
+    public static final DeferredItem<CannabutterItem> CANNABUTTER = ITEMS.register("cannabutter",
+            () -> new CannabutterItem(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(1).saturationModifier(0.2f).build()
+            )));
+
+    // 🍫 Brownie (La recompensa deliciosa)
+    public static final DeferredItem<Item> BROWNIE =
+            ITEMS.register("brownie", () -> new EdibleWeedItem(new Item.Properties().food(
+                    new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()
+            )));
 
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo

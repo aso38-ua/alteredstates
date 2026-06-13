@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "half=lower": { "model": "alteredstates:block/wild_sativa_bottom" },
+    "half=upper": { "model": "alteredstates:block/wild_sativa_top" }
+  }
+}
