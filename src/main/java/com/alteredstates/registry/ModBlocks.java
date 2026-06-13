@@ -55,6 +55,28 @@ public class ModBlocks {
                     .strength(0.5f)
                     .sound(net.minecraft.world.level.block.SoundType.GLASS)));
 
+    // Registramos la Indica Salvaje (Arbusto de 1 bloque)
+    public static final DeferredBlock<Block> WILD_INDICA = BLOCKS.register("wild_indica",
+            () -> new com.alteredstates.block.WildIndicaBlock(
+                    net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
+                            .noCollission()
+                            .instabreak()
+                            .sound(net.minecraft.world.level.block.SoundType.GRASS)
+            )
+    );
+
+    // Registramos la Sativa Salvaje (Planta doble de 2 bloques)
+    public static final DeferredBlock<Block> WILD_SATIVA = BLOCKS.register("wild_sativa",
+            () -> new com.alteredstates.block.WildSativaBlock(
+                    net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
+                            .noCollission()
+                            .instabreak()
+                            .sound(net.minecraft.world.level.block.SoundType.GRASS)
+            )
+    );
+
     // ════════════════════════════════════════════════════════════
     //  SETAS
     // ════════════════════════════════════════════════════════════

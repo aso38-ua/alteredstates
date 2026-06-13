@@ -25,23 +25,30 @@ public class CannabutterItem extends Item {
         ItemStack result = super.finishUsingItem(stack, level, entity);
 
         if (!level.isClientSide && entity instanceof Player player) {
-            // Leemos la calidad dinámica (por defecto 1 si no tiene)
+            // 1. Leemos tanto la calidad como la cepa de la mantequilla
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+            boolean isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
 
-            // 🌿 Aplicamos los efectos correspondientes según la calidad
-            // En la versión 1.21, los constructores de MobEffectInstance reciben un Holder<MobEffect>.
-            // Dado que ModEffects.INDICA_EFFECT y ModEffects.PARANOIA son de tipo DeferredHolder (que implementa Holder),
-            // se pueden pasar directamente sin invocar .get().
+            // 2. Asignamos el efecto base de forma dinámica (Índica o Sativa)
+            var mainEffect = isIndica ? ModEffects.INDICA_EFFECT : ModEffects.SATIVA_EFFECT;
+
+            // 3. Aplicamos los efectos correspondientes según la calidad
             if (quality >= 3) {
-                // Calidad Premium: Colocón larguísimo y potente, pero con un toque de paranoia inicial por la potencia
-                player.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, 1200, 1)); // 60s (1200 ticks), Nivel 2 (amplificador 1)
-                player.addEffect(new MobEffectInstance(ModEffects.PARANOIA, 200, 0));      // 10s (200 ticks) de paranoia
+                // Calidad Buena/Premium: Colocón larguísimo y limpio (¡Sin paranoia porque es del bueno!)
+                player.addEffect(new MobEffectInstance(mainEffect, 1200, 1)); // 60s, Nivel 2
+
             } else if (quality == 2) {
-                // Calidad Media: Colocón estándar, muy agradable
-                player.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, 600, 0));  // 30s (600 ticks), Nivel 1 (amplificador 0)
+                // Calidad Media (Normal): Colocón estándar, muy agradable
+                player.addEffect(new MobEffectInstance(mainEffect, 600, 0));  // 30s, Nivel 1
+
             } else {
-                // Calidad Baja (Regular) o menor: Efecto muy corto y suave
-                player.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, 200, 0));  // 10s (200 ticks), Nivel 1 (amplificador 0)
+                // Calidad Baja (Regular/Basura): Efecto muy corto y suave...
+                player.addEffect(new MobEffectInstance(mainEffect, 200, 0));  // 10s, Nivel 1
+
+                // 🎲 ¡PROBABILIDAD DE MAL VIAJE!: Si la calidad es mala, hay un 60% de probabilidad de paranoia
+                if (level.random.nextFloat() < 0.60f) {
+                    player.addEffect(new MobEffectInstance(ModEffects.PARANOIA, 300, 0)); // 15s de paranoia
+                }
             }
         }
 

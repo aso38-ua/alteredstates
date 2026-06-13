@@ -78,10 +78,10 @@ public class ModItems {
     // 🧈 Mantequilla de Cannabis (Ingrediente base para cocinar)
     public static final DeferredItem<CannabutterItem> CANNABUTTER = ITEMS.register("cannabutter",
             () -> new CannabutterItem(new Item.Properties().food(
-                    new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()
+                    new FoodProperties.Builder().nutrition(1).saturationModifier(0.2f).build()
             )));
 
-    // 🍫 Space Brownie (La recompensa deliciosa)
+    // 🍫 Brownie (La recompensa deliciosa)
     public static final DeferredItem<Item> BROWNIE =
             ITEMS.register("brownie", () -> new EdibleWeedItem(new Item.Properties().food(
                     new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()

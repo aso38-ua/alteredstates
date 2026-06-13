@@ -31,7 +31,7 @@ public class EdibleWeedItem extends Item {
             // Codificamos la cepa y la calidad en el "Amplificador" del efecto
             int encodedAmplifier = isIndica ? quality : (quality + 10);
 
-            // EL RETRASO: 3600 ticks = 3 minutos reales hasta que haga efecto
+            // EL RETRASO: 3600 ticks = 3 minutes reales hasta que haga efecto
             int delayTicks = 3600;
 
             // Aplicamos el estado de Digestión al jugador
@@ -48,9 +48,11 @@ public class EdibleWeedItem extends Item {
         String strainName = isIndica ? "Índica" : "Sativa";
         ChatFormatting strainColor = isIndica ? ChatFormatting.DARK_PURPLE : ChatFormatting.GREEN;
 
-        // Añadimos la info visual
+        // Añadimos la cepa
         tooltipComponents.add(Component.literal("Cepa: " + strainName).withStyle(strainColor));
-        tooltipComponents.add(Component.literal("Calidad: " + quality).withStyle(ChatFormatting.GOLD));
-        tooltipComponents.add(Component.literal("Tarda en subir, pero golpea fuerte...").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+
+        // 🟢 CORRECCIÓN AQUÍ: Enlazamos con tu enum de calidades
+        tooltipComponents.add(Component.literal("Calidad: ").withStyle(ChatFormatting.GOLD)
+                .append(CannabisQuality.byLevel(quality).getTranslatedName()));
     }
 }

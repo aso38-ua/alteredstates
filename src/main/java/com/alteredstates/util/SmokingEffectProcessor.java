@@ -58,15 +58,25 @@ public class SmokingEffectProcessor {
         }
     }
 
-    public static void applyEdibleEffects(Player player, boolean isIndica, int quality) {
-        int duration = 12000 * quality;
-        int intensity = 1;
+    public static void applyEdibleEffects(Player player, boolean isIndica, int qualityLevel) {
+        // ⏱️ REAJUSTE: 2400 ticks = 2 minutos reales por cada punto de calidad
+        int duration = 2400 * qualityLevel;
+        int intensity = 1; // Efecto Nivel II
 
-        if (isIndica) {
-            player.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, duration, intensity, false, false, true));
-        } else {
-            // ⚠️ REVISA ESTA LÍNEA: Asegúrate de que pone SATIVA_EFFECT
-            player.addEffect(new MobEffectInstance(ModEffects.SATIVA_EFFECT, duration, intensity, false, false, true));
+        // Si la calidad es 0 (Basura), evitamos duraciones de 0 ticks
+        if (duration <= 0) duration = 400; // 20 segundos tontos
+
+        // 🌿 1. Aplicamos el efecto base según la cepa heredada
+        var mainEffect = isIndica ? ModEffects.INDICA_EFFECT : ModEffects.SATIVA_EFFECT;
+        player.addEffect(new MobEffectInstance(mainEffect, duration, intensity, false, false, true));
+
+        // 🎲 2. LÓGICA DEL MAL VIAJE: Si el alimento era de mala calidad (Regular o Basura)
+        if (qualityLevel <= 2) {
+            // Un 50% de probabilidad de sufrir paranoia por fumar/comer cosas de mala calidad
+            if (player.level().random.nextFloat() < 0.50f) {
+                // 600 ticks = 30 segundos de paranoia/mal viaje
+                player.addEffect(new MobEffectInstance(ModEffects.PARANOIA, 1200, 0, false, false, true));
+            }
         }
     }
 }

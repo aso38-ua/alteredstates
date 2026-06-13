@@ -35,8 +35,9 @@ public class BrownieRecipe extends CustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
-        int lowestQuality = 3; // Empezamos en lo más alto
-        boolean isIndica = true; // Valor por defecto
+        // 🔥 CORRECCIÓN: Inicializamos en 4 (Premium) para que no cape las calidades superiores
+        int lowestQuality = com.alteredstates.item.CannabisQuality.PREMIUM.getLevel();
+        boolean isIndica = true;
         boolean foundButter = false;
 
         // Buscamos la mantequilla en la mesa
@@ -45,14 +46,19 @@ public class BrownieRecipe extends CustomRecipe {
             if (stack.is(ModItems.CANNABUTTER.get())) {
                 foundButter = true;
 
-                // 1. Extraemos la calidad
+                // Extraemos la calidad real de la mantequilla
                 int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+
+                // Al ser un solo ingrediente cannábico, esto asignará el valor real (ej: 4)
+                // Si en el futuro añades más ingredientes, mantendrá el peor de ellos.
                 if (quality < lowestQuality) {
+                    lowestQuality = quality;
+                } else if (inv.items().stream().filter(s -> s.is(ModItems.CANNABUTTER.get())).count() == 1) {
+                    // Si solo hay una mantequilla, nos aseguramos de que asigne su calidad exacta directamente
                     lowestQuality = quality;
                 }
 
-                // 2. Extraemos el tipo de marihuana (Asumiendo que tienes un DataComponent para esto)
-                // Si lo guardas de otra forma, ajusta esta línea a tu código
+                // Extraemos el tipo de marihuana
                 if (stack.has(ModDataComponentTypes.IS_INDICA.get())) {
                     isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
                 }
