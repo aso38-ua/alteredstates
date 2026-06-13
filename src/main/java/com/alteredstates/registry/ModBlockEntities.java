@@ -28,6 +28,9 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("rolling_tray", () ->
                     BlockEntityType.Builder.of(RollingTrayBlockEntity::new, ModBlocks.ROLLING_TRAY.get()).build(null));
 
+    public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.alteredstates.block.entity.BongBlockEntity>> BONG = BLOCK_ENTITIES.register("bong",
+            () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(com.alteredstates.block.entity.BongBlockEntity::new, com.alteredstates.registry.ModBlocks.BONG.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

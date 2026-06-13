@@ -1,0 +1,16 @@
+{
+  "type": "farmersdelight:cutting",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "ingredients": [
+    { "item": "alteredstates:indica_buds_dry" }
+  ],
+  "tool": { "tag": "c:tools/knives" },
+  "results": [
+    { "id": "alteredstates:indica_ground", "count": 1 }
+  ]
+}

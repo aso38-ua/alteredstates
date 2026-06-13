@@ -160,6 +160,9 @@ dependencies {
     compileOnly "curse.maven:farmers-delight-398521:7801529"
     localRuntime "curse.maven:farmers-delight-398521:7801529"
 
+    // Fruits Delight
+    implementation "curse.maven:fruits-delight-943774:8063744"
+
     // --- SERENE SEASONS ---
     compileOnly "curse.maven:serene-seasons-291874:6182596"
     localRuntime "curse.maven:serene-seasons-291874:6182596"

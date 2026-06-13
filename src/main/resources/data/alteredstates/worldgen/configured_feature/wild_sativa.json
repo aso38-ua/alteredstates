@@ -1,0 +1,67 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 6,
+    "xz_spread": 6,
+    "y_spread": 0,
+    "feature": {
+      "feature": {
+        "type": "minecraft:block_column",
+        "config": {
+          "direction": "up",
+          "allowed_placement": {
+            "type": "minecraft:matching_blocks",
+            "blocks": [
+              "minecraft:air",
+              "minecraft:short_grass",
+              "minecraft:tall_grass",
+              "minecraft:fern",
+              "minecraft:large_fern"
+            ]
+          },
+          "prioritize_tip": false,
+          "layers": [
+            {
+              "height": 1,
+              "provider": {
+                "type": "minecraft:simple_state_provider",
+                "state": { "Name": "alteredstates:wild_sativa", "Properties": { "half": "lower" } }
+              }
+            },
+            {
+              "height": 1,
+              "provider": {
+                "type": "minecraft:simple_state_provider",
+                "state": { "Name": "alteredstates:wild_sativa", "Properties": { "half": "upper" } }
+              }
+            }
+          ]
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": ["minecraft:air", "minecraft:short_grass", "minecraft:tall_grass", "minecraft:fern", "minecraft:large_fern"]
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "offset": [0, 1, 0],
+                "blocks": ["minecraft:air"]
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "offset": [0, -1, 0],
+                "blocks": ["minecraft:grass_block", "minecraft:dirt", "minecraft:podzol", "minecraft:coarse_dirt"]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
