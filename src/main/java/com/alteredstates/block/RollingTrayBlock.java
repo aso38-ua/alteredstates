@@ -47,9 +47,11 @@ public class RollingTrayBlock extends BaseEntityBlock {
             if (player.isShiftKeyDown() && handStack.isEmpty()) {
                 if (!tray.getPaper().isEmpty() && !tray.getWeed().isEmpty()) {
 
-                    // 🟢 CAMBIO: Detecta qué tipo de marihuana picada hay en la bandeja
+                    // Detectamos qué tipo de marihuana picada hay en la bandeja
                     boolean isIndica = tray.getWeed().is(ModItems.INDICA_GROUND.get());
-                    net.minecraft.world.item.Item jointResult = isIndica ? ModItems.JOINT.get() : ModItems.JOINT.get();
+
+                    // 🟢 CORRECCIÓN: Usamos los dos porros específicos registrados en ModItems
+                    net.minecraft.world.item.Item jointResult = isIndica ? ModItems.INDICA_JOINT.get() : ModItems.SATIVA_JOINT.get();
 
                     ItemStack joint = new ItemStack(jointResult);
 
