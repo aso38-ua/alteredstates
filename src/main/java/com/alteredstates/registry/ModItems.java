@@ -15,16 +15,25 @@ public class ModItems {
             DeferredRegister.createItems(AlteredStates.MOD_ID);
 
     // ════════════════════════════════════════════════════════════
-    //  CANNABIS — Cultivo
+    //  CULTIVO
     // ════════════════════════════════════════════════════════════
+
+    //  CANNABIS
     public static final DeferredItem<Item> INDICA_SEEDS = ITEMS.register("indica_seeds",
             () -> new ItemNameBlockItem(ModBlocks.INDICA_CROP.get(), new Item.Properties()));
 
     public static final DeferredItem<Item> SATIVA_SEEDS = ITEMS.register("sativa_seeds",
             () -> new ItemNameBlockItem(ModBlocks.SATIVA_CROP.get(), new Item.Properties()));
+
+    //  TOBACCO
+    public static final DeferredItem<Item> TOBACCO_SEEDS = ITEMS.register("tobacco_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.TOBACCO_CROP.get(), new Item.Properties()));
+
     // ════════════════════════════════════════════════════════════
-    //  CANNABIS — Cogollos
+    //  PRODUCTOS FRESCOS
     // ════════════════════════════════════════════════════════════
+
+    //  CANNABIS
     public static final DeferredItem<Item> INDICA_BUDS_FRESH = ITEMS.register("indica_buds_fresh",
             () -> new CannabisBudItem(new Item.Properties()));
     public static final DeferredItem<Item> SATIVA_BUDS_FRESH = ITEMS.register("sativa_buds_fresh",
@@ -43,6 +52,16 @@ public class ModItems {
             () -> new CannabisBudItem(new Item.Properties()));
 
     public static final DeferredItem<Item> SATIVA_GROUND = ITEMS.register("sativa_ground",
+            () -> new CannabisBudItem(new Item.Properties()));
+
+    //  TOBACCO
+    public static final DeferredItem<Item> CAPOTE_FRESH = ITEMS.register("capote_fresh",
+            () -> new CannabisBudItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> CAPA_FRESH = ITEMS.register("capa_fresh",
+            () -> new CannabisBudItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> TRIPA_FRESH = ITEMS.register("tripa_fresh",
             () -> new CannabisBudItem(new Item.Properties()));
 
     // ════════════════════════════════════════════════════════════

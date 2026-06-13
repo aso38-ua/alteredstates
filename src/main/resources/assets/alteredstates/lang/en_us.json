@@ -56,5 +56,10 @@
   "block.alteredstates.bong": "Bong",
   "item.alteredstates.bong": "Bong",
   "item.alteredstates.cannabutter": "Cannabutter",
-  "item.alteredstates.space_brownie": "Brownie"
+  "item.alteredstates.space_brownie": "Brownie",
+
+  "block.alteredstates.tobacco_crop": "Tobacco Crop",
+  "item.alteredstates.capa_fresh": "Fresh Capa",
+  "item.alteredstates.capote_fresh": "Fresh Capote",
+  "item.alteredstates.tripa_fresh": "Fresh Tripa"
 }
