@@ -15,8 +15,10 @@ public class ModItems {
             DeferredRegister.createItems(AlteredStates.MOD_ID);
 
     // ════════════════════════════════════════════════════════════
-    //  CANNABIS — Cultivo
+    //  Cultivo
     // ════════════════════════════════════════════════════════════
+
+    //  CANNABIS
     public static final DeferredItem<Item> INDICA_SEEDS = ITEMS.register("indica_seeds",
             () -> new ItemNameBlockItem(ModBlocks.INDICA_CROP.get(), new Item.Properties()));
 
@@ -28,8 +30,10 @@ public class ModItems {
             () -> new ItemNameBlockItem(ModBlocks.TOBACCO_CROP.get(), new Item.Properties()));
 
     // ════════════════════════════════════════════════════════════
-    //  CANNABIS — Cogollos
+    //  PRODUCTOS
     // ════════════════════════════════════════════════════════════
+
+    //  CANNABIS
     public static final DeferredItem<Item> INDICA_BUDS_FRESH = ITEMS.register("indica_buds_fresh",
             () -> new FreshBudItem(new Item.Properties(), true));
 
@@ -54,14 +58,22 @@ public class ModItems {
 
     //  TOBACCO
     public static final DeferredItem<Item> CAPOTE_FRESH = ITEMS.register("capote_fresh",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.CAPOTE));
 
     public static final DeferredItem<Item> CAPA_FRESH = ITEMS.register("capa_fresh",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.CAPA));
 
     public static final DeferredItem<Item> TRIPA_FRESH = ITEMS.register("tripa_fresh",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.TRIPA));
 
+    public static final DeferredItem<Item> CAPOTE_DRY = ITEMS.register("capote_dry",
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.CAPOTE));
+
+    public static final DeferredItem<Item> CAPA_DRY = ITEMS.register("capa_dry",
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.CAPA));
+
+    public static final DeferredItem<Item> TRIPA_DRY = ITEMS.register("tripa_dry",
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.TRIPA));
     // ════════════════════════════════════════════════════════════
     //  CANNABIS — Productos finales
     // ════════════════════════════════════════════════════════════
