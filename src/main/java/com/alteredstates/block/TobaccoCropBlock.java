@@ -15,10 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
@@ -29,21 +26,19 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.level.LevelAccessor;
-
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import sereneseasons.api.season.SeasonHelper;
 import sereneseasons.api.season.Season;
+import sereneseasons.api.season.SeasonHelper;
 
-public class SativaCropBlock extends CropBlock {
+public class TobaccoCropBlock extends CropBlock {
     // 9 Fases (0 a 8)
     public static final int MAX_AGE = 8;
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 8);
+    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, MAX_AGE);
     // Propiedad que define si es la mitad de abajo o la de arriba
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
-    public SativaCropBlock(Properties properties) {
+    public TobaccoCropBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(HALF, DoubleBlockHalf.LOWER));
     }
@@ -55,7 +50,7 @@ public class SativaCropBlock extends CropBlock {
     public int getMaxAge() { return MAX_AGE; }
 
     @Override
-    protected ItemLike getBaseSeedId() { return ModItems.SATIVA_SEEDS.get(); }
+    protected ItemLike getBaseSeedId() { return ModItems.TOBACCO_SEEDS.get(); }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -108,13 +103,22 @@ public class SativaCropBlock extends CropBlock {
 
                 // 1. Lógica de drops (Calidad + Cogollos)
                 int calculatedQuality = calculateQuality(serverLevel, pos);
-                int budCount = serverLevel.random.nextInt(3) + 2;
+                int capoteCount = serverLevel.random.nextInt(2);
+                int capaCount = serverLevel.random.nextInt(2);
+                int tripaCount = serverLevel.random.nextInt(2);
 
-                ItemStack buds = new ItemStack(ModItems.SATIVA_BUDS_FRESH.get(), budCount);
-                buds.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                ItemStack capote = new ItemStack(ModItems.CAPOTE_FRESH.get(), capoteCount);
+                capote.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
 
-                Block.popResource(level, pos, buds);
-                Block.popResource(level, pos, new ItemStack(ModItems.CANNABIS_TRIMMING.get(), serverLevel.random.nextInt(2) + 1));
+                ItemStack capa = new ItemStack(ModItems.CAPA_FRESH.get(), capaCount);
+                capa.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+
+                ItemStack tripa = new ItemStack(ModItems.TRIPA_FRESH.get(), tripaCount);
+                tripa.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+
+                Block.popResource(level, pos, capote);
+                Block.popResource(level, pos, capa);
+                Block.popResource(level, pos, tripa);
 
                 // 2. Efectos visuales y de sonido
                 level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -126,8 +130,14 @@ public class SativaCropBlock extends CropBlock {
                 BlockPos upperPos = lowerPos.above();
 
                 // Actualizamos la parte de abajo a Edad 7
-                level.setBlock(pos, state.setValue(AGE, 7), 3);
-                level.setBlock(pos.above(), level.getBlockState(pos.above()).setValue(AGE, 7), 3);
+                level.setBlock(lowerPos, this.defaultBlockState()
+                        .setValue(AGE, 7)
+                        .setValue(HALF, DoubleBlockHalf.LOWER), 3);
+
+                // Actualizamos la parte de arriba a Edad 7
+                level.setBlock(upperPos, this.defaultBlockState()
+                        .setValue(AGE, 7)
+                        .setValue(HALF, DoubleBlockHalf.UPPER), 3);
             }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -165,7 +175,7 @@ public class SativaCropBlock extends CropBlock {
         // Ralentizamos muchísimo el crecimiento de la fase 7 a la 8 (Floración final)
         float growthPenalty = 1.0F;
         if (currentAge == 7) {
-            growthPenalty = 0.05F; // Un 95% más lento en la última fase
+            growthPenalty = 0.9F; // Un 10% más lento en la última fase
         } else if (currentAge >= 5) {
             growthPenalty = 0.5F;  // Un 50% más lento para crecer de la 5 a la 7
         }

@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 public class BongBlock extends BaseEntityBlock {
     // 🟢 Las propiedades van DENTRO de la clase
     public static final BooleanProperty HAS_WATER = BooleanProperty.create("has_water");
-    public static final BooleanProperty HAS_WEED = BooleanProperty.create("has_weed");
+    public static final BooleanProperty HAS_WEED = BooleanProperty.create("has_weed"); //SE PUEDE CAMBIAR EL NOMBRE POR SI JAVI SE PONE PESAO
 
     private static final VoxelShape BASE = Block.box(5, 0, 5, 11, 6, 11);
     private static final VoxelShape NECK = Block.box(6.5, 6, 6.5, 9.5, 14, 9.5);
@@ -63,7 +63,7 @@ public class BongBlock extends BaseEntityBlock {
         if (level.getBlockEntity(pos) instanceof BongBlockEntity bong) {
             ItemStack handStack = player.getMainHandItem();
 
-            // 💧 1. Llenar con Cubo de Agua
+            // 💧 1. Llenar con agua
             if (handStack.is(Items.WATER_BUCKET) && !state.getValue(HAS_WATER)) {
                 level.setBlock(pos, state.setValue(HAS_WATER, true), 3);
                 if (!player.isCreative()) player.setItemInHand(player.getUsedItemHand(), new ItemStack(Items.BUCKET));
@@ -71,11 +71,10 @@ public class BongBlock extends BaseEntityBlock {
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
 
-            // 🌿 2. Cargar la cazoleta con hierba picada
-            if (handStack.is(ModItems.INDICA_GROUND.get()) || handStack.is(ModItems.SATIVA_GROUND.get())) {
+            // 🌿 2. Cargar la cazoleta (Acepta CUALQUIER cosa que implemente IBongable)
+            if (handStack.getItem() instanceof com.alteredstates.item.IBongable) {
                 if (bong.getBowlContent().isEmpty()) {
                     bong.setBowlContent(handStack.copyWithCount(1));
-                    // 🟢 Le decimos al bloque que ahora tiene hierba
                     level.setBlock(pos, state.setValue(HAS_WEED, true), 3);
                     if (!player.isCreative()) handStack.shrink(1);
                     level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.2F);
@@ -83,22 +82,23 @@ public class BongBlock extends BaseEntityBlock {
                 }
             }
 
-            // 💨 3. FUMAR (Mechero en mano + Tiene agua + Tiene hierba)
+            // 💨 3. FUMAR EN BONG
             if (handStack.is(Items.FLINT_AND_STEEL) && state.getValue(HAS_WATER) && !bong.getBowlContent().isEmpty()) {
 
-                // 🛠️ Guardamos una copia de los datos de la hierba ANTES de borrarla
-                ItemStack weed = bong.getBowlContent().copy();
-                boolean isIndica = weed.is(ModItems.INDICA_GROUND.get());
-                int quality = weed.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+                ItemStack substance = bong.getBowlContent().copy();
 
                 if (!level.isClientSide) {
                     level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.5F, 1.2F);
                     level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 
-                    SmokingEffectProcessor.applyBongEffects(player, isIndica, quality);
+                    // 🚀 MAGIA FINAL: El propio producto ejecuta sus efectos
+                    if (substance.getItem() instanceof com.alteredstates.item.IBongable bongableProduct) {
+                        bongableProduct.applyProductEffects(player, substance);
+                    }
+
                     handStack.hurtAndBreak(1, player, net.minecraft.world.entity.LivingEntity.getSlotForHand(player.getUsedItemHand()));
                 } else {
-                    // Partículas en el lado del cliente
+                    // Partículas en el lado del cliente (Se quedan igual)
                     for (int i = 0; i < 15; i++) {
                         level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,
                                 pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
@@ -106,7 +106,7 @@ public class BongBlock extends BaseEntityBlock {
                     }
                 }
 
-                // 🛠️ FIX: Vaciamos la cazoleta FUERA del if, para que ocurra en el Cliente y en el Servidor a la vez
+                // Vaciamos la cazoleta
                 bong.setBowlContent(ItemStack.EMPTY);
                 level.setBlock(pos, state.setValue(HAS_WEED, false), 3);
 

@@ -2,16 +2,12 @@ package com.alteredstates.item;
 
 import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModEffects;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-
-import java.util.List;
 
 public class CannabutterItem extends Item {
 
@@ -67,7 +63,7 @@ public class CannabutterItem extends Item {
         net.minecraft.ChatFormatting strainColor = isIndica ? net.minecraft.ChatFormatting.DARK_PURPLE : net.minecraft.ChatFormatting.GREEN;
 
         // Extraemos la calidad usando tu ENUM
-        com.alteredstates.item.CannabisQuality qualityEnum = com.alteredstates.item.CannabisQuality.byLevel(qualityLevel);
+        Quality qualityEnum = Quality.byLevel(qualityLevel);
 
         // Añadimos el texto al tooltip
         tooltipComponents.add(net.minecraft.network.chat.Component.literal("Cepa: " + strainName).withStyle(strainColor));

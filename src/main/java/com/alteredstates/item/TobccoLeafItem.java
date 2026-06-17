@@ -8,14 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
-public class CannabisBudItem extends Item implements ICannabisProduct {
+public class TobccoLeafItem extends Item implements ITobaccoProduct {
 
-    private final boolean isIndica;
+    private final TobaccoLeafType type;
 
-    public CannabisBudItem(Properties properties, boolean isIndica) {
-        super(properties.component(ModDataComponentTypes.QUALITY.get(), 1)
-                .component(ModDataComponentTypes.IS_INDICA.get(), isIndica));
-        this.isIndica = isIndica;
+    public TobccoLeafItem(Properties properties, TobaccoLeafType type) {
+        super(properties.component(ModDataComponentTypes.QUALITY.get(), 1).component(ModDataComponentTypes.TOBACCO_LEAF_TYPE.get(), type));
+        this.type = type;
     }
 
     // Implementación de la interfaz IProduct
@@ -29,24 +28,20 @@ public class CannabisBudItem extends Item implements ICannabisProduct {
 
     }
 
-    // Implementación de la interfaz ICannabisProduct
-    @Override
-    public CannabisStrain getStrain(ItemStack stack) {
+    public TobaccoLeafType getType(ItemStack stack) {
         // Leemos el componente, si no existe, usamos el valor del constructor
-        boolean indica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), this.isIndica);
-        return CannabisStrain.fromBoolean(indica);
+        return stack.getOrDefault(ModDataComponentTypes.TOBACCO_LEAF_TYPE.get(), this.type);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         // Usamos los métodos de la interfaz en lugar de acceder directamente al componente
         int qualityLevel = getQuality(stack);
-        CannabisStrain strain = getStrain(stack);
 
         Quality quality = Quality.byLevel(qualityLevel);
 
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.strain")
-                .append(Component.literal(": " + strain.name()))); // Ajusta esto a tu estilo
+                .append(Component.literal(": " + type.getSerializedName()))); // Ajusta esto a tu estilo
 
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.quality")
                 .append(quality.getTranslatedName()));

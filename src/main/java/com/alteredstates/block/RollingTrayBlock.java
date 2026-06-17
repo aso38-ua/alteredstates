@@ -43,29 +43,29 @@ public class RollingTrayBlock extends BaseEntityBlock {
         if (level.getBlockEntity(pos) instanceof RollingTrayBlockEntity tray) {
             ItemStack handStack = player.getMainHandItem();
 
-            // 🛠️ Shift + Clic vacío = Liar el porro
+            // 🛠️ Shift + Clic vacío = Liar el producto (Porro de hierba, cigarro de tabaco, etc.)
             if (player.isShiftKeyDown() && handStack.isEmpty()) {
                 if (!tray.getPaper().isEmpty() && !tray.getWeed().isEmpty()) {
 
-                    // Detectamos qué tipo de marihuana picada hay en la bandeja
-                    boolean isIndica = tray.getWeed().is(ModItems.INDICA_GROUND.get());
+                    // 🟢 MAGIA: Verificamos si lo que hay en la bandeja es lialble
+                    if (tray.getWeed().getItem() instanceof com.alteredstates.item.IRollable rollable) {
 
-                    // 🟢 CORRECCIÓN: Usamos los dos porros específicos registrados en ModItems
-                    net.minecraft.world.item.Item jointResult = isIndica ? ModItems.INDICA_JOINT.get() : ModItems.SATIVA_JOINT.get();
+                        // El propio ítem nos dice en qué se convierte al liarlo
+                        net.minecraft.world.item.Item resultItem = rollable.getRollResult(tray.getWeed());
+                        ItemStack finalProduct = new ItemStack(resultItem);
 
-                    ItemStack joint = new ItemStack(jointResult);
+                        // Heredamos la calidad directamente usando el método de la interfaz
+                        int quality = rollable.getQuality(tray.getWeed());
+                        finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), quality);
 
-                    // Heredamos la calidad del cogollo molido
-                    int weedQuality = tray.getWeed().getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-                    joint.set(ModDataComponentTypes.QUALITY.get(), weedQuality);
+                        if (!player.getInventory().add(finalProduct)) {
+                            player.drop(finalProduct, false);
+                        }
 
-                    if (!player.getInventory().add(joint)) {
-                        player.drop(joint, false);
+                        tray.clearTray();
+                        level.playSound(player, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.2F);
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
-
-                    tray.clearTray();
-                    level.playSound(player, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.2F);
-                    return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
             // 📥 Clic normal con ítem = Añadir a la bandeja (Papel, triturados o aditivos)
@@ -78,9 +78,9 @@ public class RollingTrayBlock extends BaseEntityBlock {
             }
             // 📤 Clic normal vacío = Retirar todo de la bandeja
             else if (handStack.isEmpty() && !player.isShiftKeyDown()) {
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getAdditive());
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getWeed());
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getPaper());
+                net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getAdditive());
+                net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getWeed());
+                net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getPaper());
                 tray.clearTray();
                 level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
                 return InteractionResult.sidedSuccess(level.isClientSide);
