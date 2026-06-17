@@ -1,5 +1,6 @@
 package com.alteredstates.recipe;
 
+import com.alteredstates.item.Quality;
 import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModItems;
 import net.minecraft.core.HolderLookup;
@@ -36,7 +37,7 @@ public class BrownieRecipe extends CustomRecipe {
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
         // 🔥 CORRECCIÓN: Inicializamos en 4 (Premium) para que no cape las calidades superiores
-        int lowestQuality = com.alteredstates.item.CannabisQuality.PREMIUM.getLevel();
+        int lowestQuality = Quality.PREMIUM.getLevel();
         boolean isIndica = true;
         boolean foundButter = false;
 
