@@ -15,10 +15,8 @@ public class ModItems {
             DeferredRegister.createItems(AlteredStates.MOD_ID);
 
     // ════════════════════════════════════════════════════════════
-    //  CULTIVO
+    //  CANNABIS — Cultivo
     // ════════════════════════════════════════════════════════════
-
-    //  CANNABIS
     public static final DeferredItem<Item> INDICA_SEEDS = ITEMS.register("indica_seeds",
             () -> new ItemNameBlockItem(ModBlocks.INDICA_CROP.get(), new Item.Properties()));
 
@@ -30,29 +28,29 @@ public class ModItems {
             () -> new ItemNameBlockItem(ModBlocks.TOBACCO_CROP.get(), new Item.Properties()));
 
     // ════════════════════════════════════════════════════════════
-    //  PRODUCTOS FRESCOS
+    //  CANNABIS — Cogollos
     // ════════════════════════════════════════════════════════════
-
-    //  CANNABIS
     public static final DeferredItem<Item> INDICA_BUDS_FRESH = ITEMS.register("indica_buds_fresh",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new FreshBudItem(new Item.Properties(), true));
+
     public static final DeferredItem<Item> SATIVA_BUDS_FRESH = ITEMS.register("sativa_buds_fresh",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new FreshBudItem(new Item.Properties(), false));
 
     public static final DeferredItem<Item> CANNABIS_TRIMMING = ITEMS.register("cannabis_trimming",
             () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> INDICA_BUDS_DRY = ITEMS.register("indica_buds_dry",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new DryBudItem(new Item.Properties(), true));
 
     public static final DeferredItem<Item> SATIVA_BUDS_DRY = ITEMS.register("sativa_buds_dry",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new DryBudItem(new Item.Properties(), false));
 
+    // La hierba picada usa la nueva clase (puede liarse y fumarse en bong)
     public static final DeferredItem<Item> INDICA_GROUND = ITEMS.register("indica_ground",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new GroundWeedItem(new Item.Properties(), true));
 
     public static final DeferredItem<Item> SATIVA_GROUND = ITEMS.register("sativa_ground",
-            () -> new CannabisBudItem(new Item.Properties()));
+            () -> new GroundWeedItem(new Item.Properties(), false));
 
     //  TOBACCO
     public static final DeferredItem<Item> CAPOTE_FRESH = ITEMS.register("capote_fresh",

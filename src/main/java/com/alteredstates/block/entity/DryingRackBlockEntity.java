@@ -2,7 +2,6 @@ package com.alteredstates.block.entity;
 
 import com.alteredstates.registry.ModBlockEntities;
 import com.alteredstates.registry.ModDataComponentTypes;
-import com.alteredstates.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -19,8 +18,6 @@ public class DryingRackBlockEntity extends BlockEntity {
     private final ItemStack[] items = new ItemStack[INVENTORY_SIZE];
     private final int[] dryingTimes = new int[INVENTORY_SIZE];
 
-    public static final int DRYING_TIME = 6000; // Ajusta según tus necesidades
-
     public DryingRackBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRYING_RACK.get(), pos, state);
         for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -32,8 +29,7 @@ public class DryingRackBlockEntity extends BlockEntity {
     public ItemStack[] getItems() { return this.items; }
 
     public boolean addItem(ItemStack stack) {
-        // Acepta fresco de Indica o de Sativa
-        if (!stack.is(ModItems.INDICA_BUDS_FRESH.get()) && !stack.is(ModItems.SATIVA_BUDS_FRESH.get())) return false;
+        if (!(stack.getItem() instanceof com.alteredstates.item.IDryable)) return false;
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             if (this.items[i].isEmpty()) {
@@ -51,13 +47,14 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     public ItemStack takeFinishedItem() {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
-            // Permite recoger seco de Indica o Sativa
-            if (!this.items[i].isEmpty() && (this.items[i].is(ModItems.INDICA_BUDS_DRY.get()) || this.items[i].is(ModItems.SATIVA_BUDS_DRY.get()))) {
+            if (!this.items[i].isEmpty() && !(this.items[i].getItem() instanceof com.alteredstates.item.IDryable)) {
                 ItemStack taken = this.items[i];
                 this.items[i] = ItemStack.EMPTY;
                 this.dryingTimes[i] = 0;
                 setChanged();
-                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+                if (level != null) {
+                    level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+                }
                 return taken;
             }
         }
@@ -71,14 +68,13 @@ public class DryingRackBlockEntity extends BlockEntity {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             ItemStack stack = blockEntity.items[i];
 
-            // Acepta fresco de Indica o de Sativa
-            if (!stack.isEmpty() && (stack.is(ModItems.INDICA_BUDS_FRESH.get()) || stack.is(ModItems.SATIVA_BUDS_FRESH.get()))) {
+            if (!stack.isEmpty() && stack.getItem() instanceof com.alteredstates.item.IDryable dryable) {
                 int currentQuality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
                 if (currentQuality == 0) continue;
 
-                // 🛑 Determina cuál es el ítem seco de salida según la entrada
-                net.minecraft.world.item.Item dryItemType = stack.is(ModItems.INDICA_BUDS_FRESH.get()) ? ModItems.INDICA_BUDS_DRY.get() : ModItems.SATIVA_BUDS_DRY.get();
+                net.minecraft.world.item.Item dryItemType = dryable.getDriedResult(stack);
+                int targetDryingTime = dryable.getDryingTime(stack);
 
                 if (envFails) {
                     ItemStack ruinedStack = new ItemStack(dryItemType);
@@ -91,7 +87,7 @@ public class DryingRackBlockEntity extends BlockEntity {
 
                 blockEntity.dryingTimes[i]++;
 
-                if (blockEntity.dryingTimes[i] >= DRYING_TIME) {
+                if (blockEntity.dryingTimes[i] >= targetDryingTime) {
                     ItemStack dryStack = new ItemStack(dryItemType);
                     dryStack.set(ModDataComponentTypes.QUALITY.get(), Math.min(4, currentQuality));
 
