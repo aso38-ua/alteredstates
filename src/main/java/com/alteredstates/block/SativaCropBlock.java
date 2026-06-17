@@ -126,14 +126,8 @@ public class SativaCropBlock extends CropBlock {
                 BlockPos upperPos = lowerPos.above();
 
                 // Actualizamos la parte de abajo a Edad 7
-                level.setBlock(lowerPos, this.defaultBlockState()
-                        .setValue(AGE, 7)
-                        .setValue(HALF, DoubleBlockHalf.LOWER), 3);
-
-                // Actualizamos la parte de arriba a Edad 7
-                level.setBlock(upperPos, this.defaultBlockState()
-                        .setValue(AGE, 7)
-                        .setValue(HALF, DoubleBlockHalf.UPPER), 3);
+                level.setBlock(pos, state.setValue(AGE, 7), 3);
+                level.setBlock(pos.above(), level.getBlockState(pos.above()).setValue(AGE, 7), 3);
             }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }

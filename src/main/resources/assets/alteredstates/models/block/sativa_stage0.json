@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cross",
   "render_type": "minecraft:cutout",
   "textures": {
-    "cross": "alteredstates:block/sativa_stage0_bottom"
+    "cross": "alteredstates:block/tobacco_stage0_bottom"
   }
 }

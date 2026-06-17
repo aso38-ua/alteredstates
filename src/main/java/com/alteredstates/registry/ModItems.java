@@ -15,17 +15,25 @@ public class ModItems {
             DeferredRegister.createItems(AlteredStates.MOD_ID);
 
     // ════════════════════════════════════════════════════════════
-    //  CANNABIS — Cultivo
+    //  Cultivo
     // ════════════════════════════════════════════════════════════
+
+    //  CANNABIS
     public static final DeferredItem<Item> INDICA_SEEDS = ITEMS.register("indica_seeds",
             () -> new ItemNameBlockItem(ModBlocks.INDICA_CROP.get(), new Item.Properties()));
 
     public static final DeferredItem<Item> SATIVA_SEEDS = ITEMS.register("sativa_seeds",
             () -> new ItemNameBlockItem(ModBlocks.SATIVA_CROP.get(), new Item.Properties()));
+
+    //  TOBACCO
+    public static final DeferredItem<Item> TOBACCO_SEEDS = ITEMS.register("tobacco_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.TOBACCO_CROP.get(), new Item.Properties()));
+
     // ════════════════════════════════════════════════════════════
-    //  CANNABIS — Cogollos
+    //  PRODUCTOS
     // ════════════════════════════════════════════════════════════
-// Los frescos usan la nueva clase (pueden secarse)
+
+    //  CANNABIS
     public static final DeferredItem<Item> INDICA_BUDS_FRESH = ITEMS.register("indica_buds_fresh",
             () -> new FreshBudItem(new Item.Properties(), true));
 
@@ -47,6 +55,28 @@ public class ModItems {
 
     public static final DeferredItem<Item> SATIVA_GROUND = ITEMS.register("sativa_ground",
             () -> new GroundWeedItem(new Item.Properties(), false));
+
+    //  TOBACCO
+    public static final DeferredItem<Item> CAPOTE_FRESH = ITEMS.register("capote_fresh",
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.CAPOTE));
+
+    public static final DeferredItem<Item> CAPA_FRESH = ITEMS.register("capa_fresh",
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.CAPA));
+
+    public static final DeferredItem<Item> TRIPA_FRESH = ITEMS.register("tripa_fresh",
+            () -> new TobaccoFreshLeafItem(new Item.Properties(), TobaccoLeafType.TRIPA));
+
+    public static final DeferredItem<Item> CAPOTE_DRY = ITEMS.register("capote_dry",
+            () -> new TobaccoDryLeafItem(new Item.Properties(), TobaccoLeafType.CAPOTE));
+
+    public static final DeferredItem<Item> CAPA_DRY = ITEMS.register("capa_dry",
+            () -> new TobaccoDryLeafItem(new Item.Properties(), TobaccoLeafType.CAPA));
+
+    public static final DeferredItem<Item> TRIPA_DRY = ITEMS.register("tripa_dry",
+            () -> new TobaccoDryLeafItem(new Item.Properties(), TobaccoLeafType.TRIPA));
+
+    public static final DeferredItem<Item> ROLLING_TOBACCO = ITEMS.register("rolling_tobacco",
+            () -> new Item(new Item.Properties()));
     // ════════════════════════════════════════════════════════════
     //  CANNABIS — Productos finales
     // ════════════════════════════════════════════════════════════

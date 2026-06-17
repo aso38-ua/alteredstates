@@ -1,7 +1,5 @@
 package com.alteredstates.item;
 
-import com.alteredstates.item.CannabisStrain;
-import com.alteredstates.item.ICannabisProduct;
 import com.alteredstates.registry.ModDataComponentTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,7 +43,7 @@ public class CannabisBudItem extends Item implements ICannabisProduct {
         int qualityLevel = getQuality(stack);
         CannabisStrain strain = getStrain(stack);
 
-        CannabisQuality quality = CannabisQuality.byLevel(qualityLevel);
+        Quality quality = Quality.byLevel(qualityLevel);
 
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.strain")
                 .append(Component.literal(": " + strain.name()))); // Ajusta esto a tu estilo

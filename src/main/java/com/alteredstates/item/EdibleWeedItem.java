@@ -53,6 +53,6 @@ public class EdibleWeedItem extends Item {
 
         // 🟢 CORRECCIÓN AQUÍ: Enlazamos con tu enum de calidades
         tooltipComponents.add(Component.literal("Calidad: ").withStyle(ChatFormatting.GOLD)
-                .append(CannabisQuality.byLevel(quality).getTranslatedName()));
+                .append(Quality.byLevel(quality).getTranslatedName()));
     }
 }

@@ -28,6 +28,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SATIVA_CROP = BLOCKS.register("sativa_crop",
             () -> new com.alteredstates.block.SativaCropBlock(Block.Properties.of().noCollission().noOcclusion().instabreak()));
 
+    public static final DeferredBlock<Block> TOBACCO_CROP = BLOCKS.register("tobacco_crop",
+            () -> new com.alteredstates.block.TobaccoCropBlock(Block.Properties.of().noCollission().noOcclusion().instabreak()));
+
     // ════════════════════════════════════════════════════════════
     //  CANNABIS
     // ════════════════════════════════════════════════════════════
