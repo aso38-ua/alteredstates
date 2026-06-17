@@ -2,7 +2,6 @@ package com.alteredstates.block.entity;
 
 import com.alteredstates.registry.ModBlockEntities;
 import com.alteredstates.registry.ModDataComponentTypes;
-import com.alteredstates.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -16,9 +15,6 @@ public class CuringJarBlockEntity extends BlockEntity {
     private ItemStack storedItem = ItemStack.EMPTY;
     private int curingProgress = 0;
 
-    // Tiempo para curar
-    public static final int MAX_CURE_TIME = 6000;
-
     public CuringJarBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CURING_JAR.get(), pos, state);
     }
@@ -27,19 +23,20 @@ public class CuringJarBlockEntity extends BlockEntity {
         return this.storedItem;
     }
 
-    // Intenta meter cogollos al tarro
+    // 📥 Intenta meter productos al tarro
     public boolean insertItem(ItemStack stack) {
-        // Acepta cogollos secos de ambos
-        if (!stack.is(ModItems.INDICA_BUDS_DRY.get()) && !stack.is(ModItems.SATIVA_BUDS_DRY.get())) return false;
+        // Magia: Acepta cualquier cosa que implemente ICurable
+        if (!(stack.getItem() instanceof com.alteredstates.item.ICurable)) return false;
+
         int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
-        if (quality > 4) return false;
+        // Si ya es calidad 4 (Premium) o superior, no tiene sentido curarlo
+        if (quality >= 4) return false;
 
         if (this.storedItem.isEmpty()) {
             this.storedItem = stack.copyWithCount(stack.getCount());
             stack.setCount(0);
         } else if (ItemStack.isSameItemSameComponents(this.storedItem, stack)) {
-            // Esta línea isSameItemSameComponents ya evita que mezcles Indica y Sativa en el mismo tarro
             int room = this.storedItem.getMaxStackSize() - this.storedItem.getCount();
             int toMove = Math.min(room, stack.getCount());
             this.storedItem.grow(toMove);
@@ -54,7 +51,7 @@ public class CuringJarBlockEntity extends BlockEntity {
         return true;
     }
 
-    // Saca el producto del tarro
+    // 📤 Saca el producto del tarro
     public ItemStack extractItem() {
         if (this.storedItem.isEmpty()) return ItemStack.EMPTY;
         ItemStack taken = this.storedItem;
@@ -65,19 +62,23 @@ public class CuringJarBlockEntity extends BlockEntity {
         return taken;
     }
 
-    // El reloj que mejora la calidad a PREMIUM (3)
+    // ⏳ El reloj que mejora la calidad a PREMIUM (4)
     public static void tick(Level level, BlockPos pos, BlockState state, CuringJarBlockEntity blockEntity) {
         if (level.isClientSide) return;
 
         ItemStack stack = blockEntity.storedItem;
-        // Acepta curar si es Indica seca O Sativa seca
-        if (!stack.isEmpty() && (stack.is(ModItems.INDICA_BUDS_DRY.get()) || stack.is(ModItems.SATIVA_BUDS_DRY.get()))) {
+
+        // Verificamos si el ítem es curable
+        if (!stack.isEmpty() && stack.getItem() instanceof com.alteredstates.item.ICurable curable) {
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
             if (quality < 4) {
                 blockEntity.curingProgress++;
 
-                if (blockEntity.curingProgress >= MAX_CURE_TIME) {
+                // Le preguntamos al ítem cuánto tarda en curarse
+                int targetCuringTime = curable.getCuringTime(stack);
+
+                if (blockEntity.curingProgress >= targetCuringTime) {
                     stack.set(ModDataComponentTypes.QUALITY.get(), 4);
                     blockEntity.curingProgress = 0;
                     blockEntity.setChanged();
@@ -87,7 +88,7 @@ public class CuringJarBlockEntity extends BlockEntity {
         }
     }
 
-    // --- GUARDADO NBT DE SEGURIDAD (Fijado para 1.21.1) ---
+    // --- GUARDADO NBT DE SEGURIDAD ---
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
@@ -110,6 +111,7 @@ public class CuringJarBlockEntity extends BlockEntity {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
+
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = super.getUpdateTag(registries);
@@ -121,10 +123,7 @@ public class CuringJarBlockEntity extends BlockEntity {
     public void onDataPacket(net.minecraft.network.Connection net, net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
         net.minecraft.nbt.CompoundTag tag = pkt.getTag();
         if (tag != null) {
-            // 📩 El cliente recibe el paquete del servidor y lee los ítems guardados
             this.loadAdditional(tag, registries);
-
-            // Forzamos al renderizador del cliente a redibujar el bloque ahora que tiene los datos
             if (this.level != null && this.level.isClientSide) {
                 this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
             }

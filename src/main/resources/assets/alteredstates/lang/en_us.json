@@ -56,5 +56,6 @@
   "block.alteredstates.bong": "Bong",
   "item.alteredstates.bong": "Bong",
   "item.alteredstates.cannabutter": "Cannabutter",
-  "item.alteredstates.space_brownie": "Brownie"
+  "item.alteredstates.space_brownie": "Brownie",
+  "tooltip.alteredstates.strain": "Strain"
 }

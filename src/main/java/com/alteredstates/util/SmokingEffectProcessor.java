@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class SmokingEffectProcessor {
 
-    public static void applySmokingEffects(LivingEntity entity, boolean isIndica, int quality) {
+    /*public static void applySmokingEffects(LivingEntity entity, boolean isIndica, int quality) {
         if (entity.level().isClientSide) return;
 
         // ⏱️ Efectos buenos: 45 segundos base por nivel de calidad (Ej: Calidad 3 = 2 minutos y pico)
@@ -30,7 +30,7 @@ public class SmokingEffectProcessor {
             int badDuration = 600 + (100 * quality); // 30 a 45 segundos
             entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA, badDuration, 0));
         }
-    }
+    }*/
 
     // Nuevo método exclusivo para el BONG
     public static void applyBongEffects(LivingEntity entity, boolean isIndica, int quality) {

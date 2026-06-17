@@ -59,11 +59,11 @@ public class DryingRackBlock extends BaseEntityBlock {
         if (level.getBlockEntity(pos) instanceof DryingRackBlockEntity blockEntity) {
             ItemStack itemInHand = player.getMainHandItem();
 
-            // CASO A: El jugador tiene un cogollo fresco en la mano -> Intentamos colgarlo
-            if (itemInHand.is(ModItems.INDICA_BUDS_FRESH.get()) || itemInHand.is(ModItems.SATIVA_BUDS_FRESH.get())) {
+            // CASO A: El jugador tiene un producto secable (Cogollos, Hojas de tabaco, Setas...)
+            if (itemInHand.getItem() instanceof com.alteredstates.item.IDryable) {
                 if (blockEntity.addItem(itemInHand)) {
                     if (!player.getAbilities().instabuild) {
-                        itemInHand.shrink(1); // Consumimos uno si no está en creativo
+                        itemInHand.shrink(1);
                     }
                     level.playSound(player, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return InteractionResult.sidedSuccess(level.isClientSide);
