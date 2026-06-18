@@ -61,5 +61,7 @@
   "block.alteredstates.tobacco_crop": "Tobacco Crop",
   "item.alteredstates.capa_fresh": "Fresh Capa",
   "item.alteredstates.capote_fresh": "Fresh Capote",
-  "item.alteredstates.tripa_fresh": "Fresh Tripa"
+  "item.alteredstates.tripa_fresh": "Fresh Tripa",
+  "effect.alteredstates.digesting": "Digesting",
+  "effect.alteredstates.paranoia": "Paranoia"
 }

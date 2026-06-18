@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class EdibleWeedItem extends Item {
+public class EdibleWeedItem extends Item implements IEdibleWeed {
 
     public EdibleWeedItem(Properties properties) {
         super(properties);
@@ -23,19 +23,11 @@ public class EdibleWeedItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entityLiving) {
         if (!level.isClientSide() && entityLiving instanceof Player player) {
-
-            // Leemos los datos del brownie
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
             boolean isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
 
-            // Codificamos la cepa y la calidad en el "Amplificador" del efecto
-            int encodedAmplifier = isIndica ? quality : (quality + 10);
-
-            // EL RETRASO: 3600 ticks = 3 minutes reales hasta que haga efecto
-            int delayTicks = 3600;
-
-            // Aplicamos el estado de Digestión al jugador
-            player.addEffect(new MobEffectInstance(ModEffects.DIGESTING, 3600, encodedAmplifier, false, false, true));
+            // Usamos la interfaz
+            applyHighEffect(player, quality, isIndica);
         }
         return super.finishUsingItem(stack, level, entityLiving);
     }
