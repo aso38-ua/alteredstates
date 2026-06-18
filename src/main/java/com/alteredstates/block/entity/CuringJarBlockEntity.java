@@ -62,7 +62,7 @@ public class CuringJarBlockEntity extends BlockEntity {
         return taken;
     }
 
-    // ⏳ El reloj que mejora la calidad a PREMIUM (4)
+    // ⏳ El reloj que mejora la calidad PASO A PASO (De 1 en 1)
     public static void tick(Level level, BlockPos pos, BlockState state, CuringJarBlockEntity blockEntity) {
         if (level.isClientSide) return;
 
@@ -79,8 +79,12 @@ public class CuringJarBlockEntity extends BlockEntity {
                 int targetCuringTime = curable.getCuringTime(stack);
 
                 if (blockEntity.curingProgress >= targetCuringTime) {
-                    stack.set(ModDataComponentTypes.QUALITY.get(), 4);
+                    // 🚀 CAMBIO CLAVE: Sube de nivel de 1 en 1 (ej: de Normal a Buena)
+                    stack.set(ModDataComponentTypes.QUALITY.get(), quality + 1);
+
+                    // Reseteamos el progreso para que empiece el ciclo del siguiente nivel
                     blockEntity.curingProgress = 0;
+
                     blockEntity.setChanged();
                     level.sendBlockUpdated(pos, state, state, 3);
                 }

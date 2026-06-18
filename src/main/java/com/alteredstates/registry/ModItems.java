@@ -134,4 +134,11 @@ public class ModItems {
     //   MUSHROOM_POWDER, MUSHROOM_TEA, MUSHROOM_CAPSULE
     //   MUSHROOM_MICRODOSE, MUSHROOM_CHOCOLATE
     //   COMPOSTED_SUBSTRATE_ITEM, ENRICHED_SUBSTRATE_ITEM
+
+    // --- SUSTRATOS DE HONGOS ---
+    public static final DeferredItem<Item> COMPOSTED_SUBSTRATE_ITEM = ITEMS.register("composted_substrate",
+            () -> new BlockItem(ModBlocks.COMPOSTED_SUBSTRATE.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> ENRICHED_SUBSTRATE_ITEM = ITEMS.register("enriched_substrate",
+            () -> new BlockItem(ModBlocks.ENRICHED_SUBSTRATE.get(), new Item.Properties()));
 }
