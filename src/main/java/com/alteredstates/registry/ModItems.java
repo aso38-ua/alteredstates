@@ -119,6 +119,10 @@ public class ModItems {
                     new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()
             )));
 
+    //============ TABACO ====================
+    public static final DeferredItem<Item> CIGARETTE = ITEMS.register("cigarette",
+            () -> new CigaretteItem(new Item.Properties()));
+
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo
     // ════════════════════════════════════════════════════════════
