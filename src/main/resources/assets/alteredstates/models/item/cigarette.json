@@ -1,0 +1,19 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alteredstates:item/cigarette"
+  },
+  "overrides": [
+  { "predicate": { "alteredstates:visual_state": 0 }, "model": "alteredstates:item/cigarette_unlit" },
+
+  { "predicate": { "alteredstates:visual_state": 1 }, "model": "alteredstates:item/cigarette_lit_0" },
+  { "predicate": { "alteredstates:visual_state": 2 }, "model": "alteredstates:item/cigarette_lit_1" },
+  { "predicate": { "alteredstates:visual_state": 3 }, "model": "alteredstates:item/cigarette_lit_2" },
+  { "predicate": { "alteredstates:visual_state": 4 }, "model": "alteredstates:item/cigarette_lit_3" },
+
+  { "predicate": { "alteredstates:visual_state": 5 }, "model": "alteredstates:item/cigarette_extinguished_1" },
+  { "predicate": { "alteredstates:visual_state": 6 }, "model": "alteredstates:item/cigarette_extinguished_2" },
+  { "predicate": { "alteredstates:visual_state": 7 }, "model": "alteredstates:item/cigarette_extinguished_3" }
+  ]
+
+}
