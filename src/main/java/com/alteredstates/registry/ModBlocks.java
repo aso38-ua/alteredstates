@@ -1,12 +1,11 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
-import com.alteredstates.block.CuringJarBlock;
-import com.alteredstates.block.DryingRackBlock;
-import com.alteredstates.block.IndicaCropBlock;
+import com.alteredstates.block.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -80,9 +79,26 @@ public class ModBlocks {
             )
     );
 
+
+
     // ════════════════════════════════════════════════════════════
     //  SETAS
     // ════════════════════════════════════════════════════════════
     //   MYSTICA_CROP, ONIRICA_CROP, CHAOS_CROP
     //   COMPOSTED_SUBSTRATE, ENRICHED_SUBSTRATE
+
+    public static final DeferredBlock<Block> COMPOSTED_SUBSTRATE = BLOCKS.register("composted_substrate",
+            () -> new MushroomSubstrateBlock(MushroomSubstrateBlock.getCompostedProperties(), false));
+
+    public static final DeferredBlock<Block> ENRICHED_SUBSTRATE = BLOCKS.register("enriched_substrate",
+            () -> new MushroomSubstrateBlock(MushroomSubstrateBlock.getEnrichedProperties(), true));
+
+    public static final DeferredBlock<Block> MYSTIC_MUSHROOM_CROP = BLOCKS.register("mystic_mushroom_crop",
+            () -> new MysticMushroomCropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
 }

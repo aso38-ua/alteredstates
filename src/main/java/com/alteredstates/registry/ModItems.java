@@ -138,4 +138,27 @@ public class ModItems {
     //   MUSHROOM_POWDER, MUSHROOM_TEA, MUSHROOM_CAPSULE
     //   MUSHROOM_MICRODOSE, MUSHROOM_CHOCOLATE
     //   COMPOSTED_SUBSTRATE_ITEM, ENRICHED_SUBSTRATE_ITEM
+
+    // --- SUSTRATOS DE HONGOS ---
+    public static final DeferredItem<Item> COMPOSTED_SUBSTRATE_ITEM = ITEMS.register("composted_substrate",
+            () -> new BlockItem(ModBlocks.COMPOSTED_SUBSTRATE.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> ENRICHED_SUBSTRATE_ITEM = ITEMS.register("enriched_substrate",
+            () -> new BlockItem(ModBlocks.ENRICHED_SUBSTRATE.get(), new Item.Properties()));
+
+    // Esporas (La semilla que planta el bloque)
+    public static final DeferredItem<Item> MYSTIC_MUSHROOM_SPORES = ITEMS.register("mystic_mushroom_spores",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(ModBlocks.MYSTIC_MUSHROOM_CROP.get(), new Item.Properties()));
+
+    // Seta Fresca (El drop al cosechar. Más adelante implementará IDryable)
+    public static final DeferredItem<Item> MYSTIC_MUSHROOM_FRESH = ITEMS.register("mystic_mushroom_fresh",
+            () -> new MysticMushroomItem(new Item.Properties()));
+
+    // Seta Seca (Curable y Molible)
+    public static final DeferredItem<Item> MYSTIC_MUSHROOM_DRIED = ITEMS.register("mystic_mushroom_dried",
+            () -> new MysticMushroomDriedItem(new Item.Properties()));
+
+    // Seta Triturada (El resultado del Grinder, más adelante implementará IProduct para tés/comida)
+    public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("mystic_mushroom_ground",
+            () -> new Item(new Item.Properties()));
 }
