@@ -35,6 +35,11 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         return this.getSmokeAnimation(stack);
     }
 
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return this.getSmokeDuration(stack);
+    }
+
     private CigarData getData(ItemStack stack) {
         CigarData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
         return data != null ? data : new CigarData(false, 0, 0L);
@@ -123,6 +128,11 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
     }
 
     @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        return this.onSmokeFinished(stack, level, entity);
+    }
+
+    @Override
     public ItemStack onSmokeFinished(ItemStack stack, Level level, LivingEntity entity) {
         CigarData data = getData(stack);
         int newPuffs = data.puffsTaken() + 1;
@@ -146,6 +156,13 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
     @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {
         // Pendiente: efectos de nicotina/relajación según mecánicas del mod
+        if (entity.level().isClientSide) return;
+
+        // Obtenemos los datos de forma limpia a través de la interfaz
+        int quality = getQuality(stack);
+
+        int badDuration = 600 + (100 * quality); // 30 a 45 segundos
+        entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(com.alteredstates.registry.ModEffects.PARANOIA, badDuration, 0));
     }
 
     public int getVisualStateIndex(ItemStack stack) {
