@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -48,6 +49,8 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
     private void setData(ItemStack stack, CigarData data) {
         stack.set(ModDataComponentTypes.CIGAR_DATA.get(), data);
         stack.setDamageValue(data.puffsTaken());
+        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA,
+                new net.minecraft.world.item.component.CustomModelData(getVisualStateIndex(stack)));
     }
 
     private boolean isLighterInOtherHand(Player player, InteractionHand hand) {
@@ -161,8 +164,15 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         // Obtenemos los datos de forma limpia a través de la interfaz
         int quality = getQuality(stack);
 
-        int badDuration = 600 + (100 * quality); // 30 a 45 segundos
-        entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(com.alteredstates.registry.ModEffects.PARANOIA, badDuration, 0));
+        if (entity instanceof Player player) {
+            player.hurt(player.damageSources().starve(), 1.0F); // 1.0F = medio corazón
+        }
+
+        int duration = 100 * quality;
+        int amplifier = 1;
+        if(quality == 4){ amplifier = 2; }
+
+        entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, amplifier));
     }
 
     public int getVisualStateIndex(ItemStack stack) {
@@ -199,10 +209,5 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         int remainingSmokes = stack.getMaxDamage() - stack.getDamageValue();
         tooltipComponents.add(net.minecraft.network.chat.Component.translatable("tooltip.alteredstates.remaining_smokes", remainingSmokes)
                 .withStyle(net.minecraft.ChatFormatting.DARK_GREEN));
-    }
-
-    @SubscribeEvent
-    public void onClientSetup(FMLClientSetupEvent event) {
-        ModItemProperties.register(event);
     }
 }
