@@ -7,8 +7,8 @@ public interface ICurable extends IProduct {
     default int getCuringTime(ItemStack stack) {
         // para darle más realismo, o dejarlo simple devolviendo un número fijo.
         int quality = getQuality(stack);
-        int dryingTime = 3000 + (quality * 600);
-        if(quality<2){ dryingTime =+ 1000; } //La ultima calidad o las ultimas duran mas
+        int dryingTime = 4000 + (quality * 600);
+        if(quality<3){ dryingTime =+ 1200; } //La ultima calidad
         return dryingTime;
     }
 }
