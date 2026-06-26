@@ -41,6 +41,11 @@ public class AlteredStates {
             modEventBus.addListener(ClientEvents::registerRenderers);
         }
 
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+                net.neoforged.neoforge.client.event.ClientTickEvent.Post.class,
+                com.alteredstates.event.ClientEffectHandler::onClientTick
+        );
+
         LOGGER.info("[AlteredStates] Initializing — stay chill.");
     }
 
