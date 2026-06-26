@@ -89,7 +89,19 @@ public class DryingRackBlockEntity extends BlockEntity {
 
                 if (blockEntity.dryingTimes[i] >= targetDryingTime) {
                     ItemStack dryStack = new ItemStack(dryItemType);
+
+                    // 1. Transferimos la calidad
                     dryStack.set(ModDataComponentTypes.QUALITY.get(), Math.min(4, currentQuality));
+
+                    // 2. 🌿 Transferimos la genética (Cannabis) si el ítem la tiene
+                    if (stack.has(ModDataComponentTypes.IS_INDICA.get())) {
+                        dryStack.set(ModDataComponentTypes.IS_INDICA.get(), stack.get(ModDataComponentTypes.IS_INDICA.get()));
+                    }
+
+                    // 3. 🍂 Transferimos el tipo de hoja (Tabaco) si el ítem lo tiene
+                    if (stack.has(ModDataComponentTypes.TOBACCO_LEAF_TYPE.get())) {
+                        dryStack.set(ModDataComponentTypes.TOBACCO_LEAF_TYPE.get(), stack.get(ModDataComponentTypes.TOBACCO_LEAF_TYPE.get()));
+                    }
 
                     blockEntity.items[i] = dryStack;
                     blockEntity.dryingTimes[i] = 0;

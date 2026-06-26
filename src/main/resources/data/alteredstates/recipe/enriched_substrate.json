@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "alteredstates:composted_substrate" },
+    { "item": "minecraft:nether_wart" },
+    { "item": "minecraft:blaze_powder" },
+    { "item": "minecraft:phantom_membrane" }
+  ],
+  "result": {
+    "id": "alteredstates:enriched_substrate",
+    "count": 1
+  }
+}

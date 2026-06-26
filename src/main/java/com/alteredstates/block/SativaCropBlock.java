@@ -102,36 +102,30 @@ public class SativaCropBlock extends CropBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         int age = state.getValue(AGE);
 
-        // Solo actuamos si es la fase máxima (8) y tenemos tijeras
         if (age == MAX_AGE && stack.getItem() instanceof ShearsItem) {
             if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-
-                // 1. Lógica de drops (Calidad + Cogollos)
+                // 1. Drops
                 int calculatedQuality = calculateQuality(serverLevel, pos);
                 int budCount = serverLevel.random.nextInt(3) + 2;
-
                 ItemStack buds = new ItemStack(ModItems.SATIVA_BUDS_FRESH.get(), budCount);
                 buds.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
 
                 Block.popResource(level, pos, buds);
                 Block.popResource(level, pos, new ItemStack(ModItems.CANNABIS_TRIMMING.get(), serverLevel.random.nextInt(2) + 1));
 
-                // 2. Efectos visuales y de sonido
                 level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
                 stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
-                // 3. REGRESIÓN A FASE 7 (Doble bloque sincronizado)
-                // Buscamos cuál es la posición de abajo (LOWER)
-                BlockPos lowerPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
+                // 2. REGRESIÓN SEGURA A FASE 7 (Sincronización total)
+                BlockPos lowerPos = (state.getValue(HALF) == DoubleBlockHalf.UPPER) ? pos.below() : pos;
                 BlockPos upperPos = lowerPos.above();
 
-                // Actualizamos la parte de abajo a Edad 7
-                level.setBlock(pos, state.setValue(AGE, 7), 3);
-                level.setBlock(pos.above(), level.getBlockState(pos.above()).setValue(AGE, 7), 3);
+                // Bajamos edad a 7 en ambos bloques simultáneamente
+                level.setBlock(lowerPos, state.setValue(AGE, 7).setValue(HALF, DoubleBlockHalf.LOWER), 3);
+                level.setBlock(upperPos, state.setValue(AGE, 7).setValue(HALF, DoubleBlockHalf.UPPER), 3);
             }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
@@ -156,46 +150,86 @@ public class SativaCropBlock extends CropBlock {
     // 🌿 CRECIMIENTO LÓGICO
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // Solo la parte de abajo ejecuta el crecimiento para evitar que crezca el doble de rápido
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) return;
 
         int currentAge = state.getValue(AGE);
+        // Eliminamos el 'return' si currentAge >= MAX_AGE, porque queremos permitir
+        // que el código llegue a la lógica de actualización si es necesario
         if (currentAge >= MAX_AGE) return;
 
-        // Ralentizamos muchísimo el crecimiento de la fase 7 a la 8 (Floración final)
-        float growthPenalty = 1.0F;
-        if (currentAge == 7) {
-            growthPenalty = 0.05F; // Un 95% más lento en la última fase
-        } else if (currentAge >= 5) {
-            growthPenalty = 0.5F;  // Un 50% más lento para crecer de la 5 a la 7
-        }
-
-        // Misma lógica de luz que la Indica
+        float growthPenalty = (currentAge == 7) ? 0.1F : ((currentAge >= 5) ? 0.5F : 1.0F);
         int lightLevel = level.getMaxLocalRawBrightness(pos.above());
         float lightModifier = (lightLevel < 8) ? 0.2F : ((lightLevel <= 11) ? 0.5F : 1.2F);
-
-        float baseChance = getGrowthSpeed(this.defaultBlockState(), level, pos);
-        float finalChance = baseChance * lightModifier * growthPenalty;
+        float finalChance = getGrowthSpeed(this.defaultBlockState(), level, pos) * lightModifier * growthPenalty;
 
         if (random.nextInt((int)(25.0F / finalChance) + 1) == 0) {
             int nextAge = currentAge + 1;
+            BlockPos topPos = pos.above();
 
-            // 🚀 EL ESTIRÓN (Al pasar a la Fase 5, necesita que haya aire encima)
-            if (nextAge == 5) {
-                if (level.isEmptyBlock(pos.above())) {
+            if (nextAge >= 5) {
+                // Si la parte de arriba no existe, la creamos
+                if (level.isEmptyBlock(topPos)) {
                     level.setBlock(pos, state.setValue(AGE, nextAge), 2);
-                    level.setBlock(pos.above(), state.setValue(AGE, nextAge).setValue(HALF, DoubleBlockHalf.UPPER), 2);
+                    level.setBlock(topPos, state.setValue(AGE, nextAge).setValue(HALF, DoubleBlockHalf.UPPER), 2);
+                } else {
+                    // Si ya existe (cosechada), actualizamos ambas partes
+                    level.setBlock(pos, state.setValue(AGE, nextAge), 2);
+                    if (level.getBlockState(topPos).is(this)) {
+                        level.setBlock(topPos, level.getBlockState(topPos).setValue(AGE, nextAge), 2);
+                    }
                 }
-            }
-            // Si ya es alta, actualizamos ambas partes simultáneamente
-            else if (nextAge > 5) {
-                level.setBlock(pos, state.setValue(AGE, nextAge), 2);
-                level.setBlock(pos.above(), state.setValue(AGE, nextAge).setValue(HALF, DoubleBlockHalf.UPPER), 2);
-            }
-            // Crecimiento normal en 1 bloque
-            else {
+            } else {
                 level.setBlock(pos, state.setValue(AGE, nextAge), 2);
             }
         }
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        // 1. Delegación si clicamos arriba
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            BlockPos basePos = pos.below();
+            BlockState baseState = level.getBlockState(basePos);
+            if (baseState.is(this)) {
+                performBonemeal(level, random, basePos, baseState);
+            }
+            return;
+        }
+
+        // 2. Lógica de crecimiento (Base)
+        int currentAge = state.getValue(AGE);
+        if (currentAge < MAX_AGE) {
+            int nextAge = currentAge + 1;
+
+            // Si es fase 5 o más, necesitamos actualizar ambos bloques
+            if (nextAge >= 5) {
+                BlockPos topPos = pos.above();
+
+                // Actualizamos la base
+                level.setBlock(pos, state.setValue(AGE, nextAge), 2);
+
+                // SI EL BLOQUE DE ARRIBA YA EXISTE, actualizamos su edad también
+                if (level.getBlockState(topPos).is(this)) {
+                    level.setBlock(topPos, level.getBlockState(topPos).setValue(AGE, nextAge), 2);
+                }
+                // SI NO EXISTE (acaba de llegar a fase 5), lo creamos
+                else if (level.isEmptyBlock(topPos)) {
+                    level.setBlock(topPos, state.setValue(AGE, nextAge).setValue(HALF, DoubleBlockHalf.UPPER), 2);
+                }
+            } else {
+                // Crecimiento normal (fase < 5)
+                level.setBlock(pos, state.setValue(AGE, nextAge), 2);
+            }
+        }
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        // Si la planta es UPPER, miramos la base para ver si tiene edad máxima
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            return level.getBlockState(pos.below()).getValue(AGE) < 8;
+        }
+        // Si es BASE, miramos su propia edad
+        return state.getValue(AGE) < 8;
     }
 }

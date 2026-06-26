@@ -40,7 +40,7 @@ public class CannabutterRecipe extends CustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
-        int lowestQuality = 3;
+        int lowestQuality = 4;
         boolean isIndica = true;
 
         for (int i = 0; i < inv.size(); i++) {

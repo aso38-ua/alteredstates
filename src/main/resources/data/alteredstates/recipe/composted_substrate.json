@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:mycelium" },
+    { "item": "minecraft:rotten_flesh" },
+    { "item": "minecraft:potion" },
+    { "item": "minecraft:brown_mushroom" }
+  ],
+  "result": {
+    "id": "alteredstates:composted_substrate",
+    "count": 2
+  }
+}
