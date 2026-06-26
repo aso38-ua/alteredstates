@@ -123,6 +123,18 @@ public class ModItems {
     public static final DeferredItem<Item> CIGARETTE = ITEMS.register("cigarette",
             () -> new CigaretteItem(new Item.Properties()));
 
+    public static final DeferredItem<Item> TORITO_CIGAR = ITEMS.register("torito_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.TORITO));
+
+    public static final DeferredItem<Item> LANCERO_CIGAR = ITEMS.register("lancero_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.LANCERO));
+
+    public static final DeferredItem<Item> ESPLENDIDO_CIGAR = ITEMS.register("esplendido_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.ESPLENDIDO));
+
+    public static final DeferredItem<Item> DON_JAVIER_CIGAR = ITEMS.register("don_javier_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER));
+
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo
     // ════════════════════════════════════════════════════════════

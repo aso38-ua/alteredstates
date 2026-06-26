@@ -34,12 +34,12 @@ public class TobaccoFreshLeafItem extends TobccoLeafItem implements IDryable{
 
     }
 
-    @Override
+    /*@Override
     public int getDryingTime(ItemStack stack) {
         // para darle más realismo, o dejarlo simple devolviendo un número fijo.
         int quality = getQuality(stack);
         int dryingTime = 3000 + (quality * 600);
         if(quality<2){ dryingTime =+ 1000; } //La ultima calidad o las ultimas duran mas
         return dryingTime;
-    }
+    }*/
 }

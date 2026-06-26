@@ -2,6 +2,7 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.component.CigarData;
+import com.alteredstates.item.CigarType;
 import com.alteredstates.item.TobaccoLeafType;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
@@ -38,6 +39,14 @@ public class ModDataComponentTypes {
                     DataComponentType.<TobaccoLeafType>builder()
                             .persistent(TobaccoLeafType.CODEC)
                             .networkSynchronized(TobaccoLeafType.STREAM_CODEC)
+                            .build()
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CigarType>> CIGAR_TYPE =
+            DATA_COMPONENT_TYPES.register("cigar_type", () ->
+                    DataComponentType.<CigarType>builder()
+                            .persistent(CigarType.CODEC)
+                            .networkSynchronized(CigarType.STREAM_CODEC)
                             .build()
             );
 

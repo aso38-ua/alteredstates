@@ -168,7 +168,7 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
             player.hurt(player.damageSources().starve(), 1.0F); // 1.0F = medio corazón
         }
 
-        int duration = 100 * quality;
+        int duration = 300 * quality;
         int amplifier = 1;
         if(quality == 4){ amplifier = 2; }
 

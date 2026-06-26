@@ -63,5 +63,10 @@
   "item.alteredstates.capote_fresh": "Fresh Capote",
   "item.alteredstates.tripa_fresh": "Fresh Tripa",
   "effect.alteredstates.digesting": "Digesting",
-  "effect.alteredstates.paranoia": "Paranoia"
+  "effect.alteredstates.paranoia": "Paranoia",
+  "item.alteredstates.cigarette": "Cigarette",
+  "item.alteredstates.torito_cigar": "Torito cigar",
+  "item.alteredstates.lancero_cigar": "Lancero cigar",
+  "item.alteredstates.esplendido_cigar": "Espléndido cigar",
+  "item.alteredstates.don_javier_cigar": "Don Javier cigar"
 }
