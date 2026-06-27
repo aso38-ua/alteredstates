@@ -52,13 +52,13 @@ public class RolledJointItem extends Item implements ISmokableItem {
         switch (content) {
             case "indica":
                 entity.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, 800 * quality, amplifier));
-                if (quality >= 3) entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 300, 1));
+                if (quality >= 4) entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 300, 1));
                 applyParanoia(entity, quality);
                 break;
 
             case "sativa":
                 entity.addEffect(new MobEffectInstance(ModEffects.SATIVA_EFFECT, 800 * quality, amplifier));
-                if (quality >= 3) entity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 400, 1));
+                if (quality >= 4) entity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 400, 1));
                 applyParanoia(entity, quality);
                 break;
 

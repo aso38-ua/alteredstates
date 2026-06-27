@@ -48,7 +48,7 @@ public class PsychodeliaEffect extends MobEffect {
             player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 15, amplifier, false, false, false));
 
             // ⭐ EFECTO EXTRA PREMIUM: Si el amplificador es 2 (Calidad Premium de la seta seca)
-            if (amplifier >= 2) {
+            if (amplifier >= 4) {
                 // Regeneración de vida mística constante mientras dura el viaje limpio
                 if (player.getHealth() < player.getMaxHealth() && player.tickCount % 30 == 0) {
                     player.heal(1.0F);
