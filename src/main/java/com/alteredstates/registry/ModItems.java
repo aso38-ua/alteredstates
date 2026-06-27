@@ -98,11 +98,11 @@ public class ModItems {
     public static final DeferredItem<Item> ROLLING_TRAY = ITEMS.register("rolling_tray",
             () -> new RollingTrayItem(ModBlocks.ROLLING_TRAY.get(), new Item.Properties()));
 
-    public static final DeferredItem<Item> INDICA_JOINT = ITEMS.register("indica_joint",
+    /*public static final DeferredItem<Item> INDICA_JOINT = ITEMS.register("indica_joint",
             () -> new JointItem(new Item.Properties(), true)); // true = es Indica
 
     public static final DeferredItem<Item> SATIVA_JOINT = ITEMS.register("sativa_joint",
-            () -> new JointItem(new Item.Properties(), false)); // false = es Sativa
+            () -> new JointItem(new Item.Properties(), false)); // false = es Sativa*/
 
     public static final net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> BONG = ITEMS.register("bong",
             () -> new net.minecraft.world.item.BlockItem(com.alteredstates.registry.ModBlocks.BONG.get(), new net.minecraft.world.item.Item.Properties()));
@@ -155,6 +155,11 @@ public class ModItems {
             () -> new MysticMushroomDriedItem(new Item.Properties()));
 
     // Seta Triturada (El resultado del Grinder, más adelante implementará IProduct para tés/comida)
-    public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("mystic_mushroom_ground",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("ground_mystic_mushroom",
+            () -> new GroundMysticMushroomItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> ROLLED_JOINT = ITEMS.register("rolled_joint",
+            () -> new RolledJointItem(new Item.Properties()));
+
+
 }

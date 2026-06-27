@@ -179,12 +179,16 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
 
         // Indica
         ItemStack iGround = new ItemStack(ModItems.INDICA_GROUND.get()); iGround.set(ModDataComponentTypes.QUALITY.get(), 1);
-        ItemStack iJoint = new ItemStack(ModItems.INDICA_JOINT.get()); iJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack iJoint = new ItemStack(ModItems.ROLLED_JOINT.get());
+        iJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
+        iJoint.set(ModDataComponentTypes.CONTENT_TYPE.get(), "indica");
         rollingRecipes.add(new RollingRecipeWrapper(vanillaPaper, iGround, ItemStack.EMPTY, iJoint));
 
         // Sativa
         ItemStack sGround = new ItemStack(ModItems.SATIVA_GROUND.get()); sGround.set(ModDataComponentTypes.QUALITY.get(), 1);
-        ItemStack sJoint = new ItemStack(ModItems.SATIVA_JOINT.get()); sJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack sJoint = new ItemStack(ModItems.ROLLED_JOINT.get());
+        sJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
+        sJoint.set(ModDataComponentTypes.CONTENT_TYPE.get(), "sativa");
         rollingRecipes.add(new RollingRecipeWrapper(vanillaPaper, sGround, ItemStack.EMPTY, sJoint));
 
         List<BongRecipeWrapper> bongRecipes = new ArrayList<>();

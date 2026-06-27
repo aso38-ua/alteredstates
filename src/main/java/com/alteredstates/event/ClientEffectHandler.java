@@ -17,7 +17,7 @@ public class ClientEffectHandler {
         boolean hasPsychodelia = mc.player.hasEffect(ModEffects.PSYCHODELIA);
 
         if (hasPsychodelia && !isTripShaderActive) {
-            ResourceLocation shaderPath = ResourceLocation.fromNamespaceAndPath("minecraft", "shaders/post/invert.json");
+            ResourceLocation shaderPath = ResourceLocation.fromNamespaceAndPath("alteredstates", "shaders/post/viaje.json");
             try {
                 mc.gameRenderer.loadEffect(shaderPath);
                 isTripShaderActive = true;

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alteredstates:item/indica_joint"
+    "layer0": "alteredstates:item/rolled_joint"
   }
 }

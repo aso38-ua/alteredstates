@@ -37,6 +37,16 @@ public class ModDataComponentTypes {
                             .networkSynchronized(TobaccoLeafType.STREAM_CODEC)
                             .build()
             );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> CONTENT_TYPE =
+            DATA_COMPONENT_TYPES.register("content_type", () ->
+                    DataComponentType.<String>builder()
+                            .persistent(Codec.STRING)
+                            .networkSynchronized(ByteBufCodecs.STRING_UTF8) // Necesario para los tooltips
+                            .build()
+            );
+
+
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
     }
