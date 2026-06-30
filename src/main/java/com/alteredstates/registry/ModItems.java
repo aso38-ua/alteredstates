@@ -171,10 +171,6 @@ public class ModItems {
             () -> new MysticMushroomDriedItem(new Item.Properties()));
 
     // Seta Triturada (El resultado del Grinder, más adelante implementará IProduct para tés/comida)
-    public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("mystic_mushroom_ground",
-            () -> new Item(new Item.Properties()));
-
-    // Seta Triturada (El resultado del Grinder, más adelante implementará IProduct para tés/comida)
     public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("ground_mystic_mushroom",
             () -> new GroundMysticMushroomItem(new Item.Properties()));
 
