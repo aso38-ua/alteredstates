@@ -23,6 +23,8 @@ public class RollingTrayRenderer implements BlockEntityRenderer<RollingTrayBlock
         ItemStack paper = blockEntity.getPaper();
         ItemStack weed = blockEntity.getWeed();
         ItemStack additive = blockEntity.getAdditive();
+        var leaves = blockEntity.getLeaves();
+
 
         if (!paper.isEmpty()) {
             poseStack.pushPose();
@@ -51,6 +53,24 @@ public class RollingTrayRenderer implements BlockEntityRenderer<RollingTrayBlock
             poseStack.mulPose(Axis.ZP.rotationDegrees(-30F));
             renderItem(additive, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
             poseStack.popPose();
+        }
+
+        // 🍂 Hojas de tabaco (hasta 3, en abanico)
+        if (!leaves.isEmpty()) {
+            for (int i = 0; i < leaves.size(); i++) {
+                ItemStack leaf = leaves.get(i);
+                if (leaf.isEmpty()) continue;
+
+                poseStack.pushPose();
+                // separa cada hoja en X para que no se pisen entre ellas
+                double offsetX = (i - 1) * 0.18D; // -0.18, 0, +0.18
+                poseStack.translate(0.5D + offsetX, 0.13D, 0.5D);
+                poseStack.scale(0.45F, 0.45F, 0.45F);
+                poseStack.mulPose(Axis.XP.rotationDegrees(90F));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(15F * i)); // las gira un poco distinto entre sí
+                renderItem(leaf, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
+                poseStack.popPose();
+            }
         }
     }
 

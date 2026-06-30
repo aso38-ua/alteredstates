@@ -76,7 +76,7 @@ public class ModItems {
             () -> new TobaccoDryLeafItem(new Item.Properties(), TobaccoLeafType.TRIPA));
 
     public static final DeferredItem<Item> ROLLING_TOBACCO = ITEMS.register("rolling_tobacco",
-            () -> new Item(new Item.Properties()));
+            () -> new RollingTobaccoItem(new Item.Properties()));
     // ════════════════════════════════════════════════════════════
     //  CANNABIS — Productos finales
     // ════════════════════════════════════════════════════════════

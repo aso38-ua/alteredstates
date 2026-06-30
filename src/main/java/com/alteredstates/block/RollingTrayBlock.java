@@ -1,6 +1,7 @@
 package com.alteredstates.block;
 
 import com.alteredstates.block.entity.RollingTrayBlockEntity;
+import com.alteredstates.item.*;
 import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModItems;
 import com.mojang.serialization.MapCodec;
@@ -9,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,6 +24,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.Containers;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 
 public class RollingTrayBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
@@ -50,7 +54,7 @@ public class RollingTrayBlock extends BaseEntityBlock {
                     // 🟢 MAGIA: Verificamos si lo que hay en la bandeja es lialble
                     if (tray.getWeed().getItem() instanceof com.alteredstates.item.IRollable rollable) {
 
-                        // Creamos el porro base
+                        // Creamos el porro/cigarro base
                         net.minecraft.world.item.Item resultItem = rollable.getRollResult(tray.getWeed());
                         ItemStack finalProduct = new ItemStack(resultItem);
 
@@ -71,6 +75,30 @@ public class RollingTrayBlock extends BaseEntityBlock {
                         return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
+                // Si es un puro
+                else if(!tray.getLeaves().isEmpty()){
+                    //CigarType type = matchCigarRecipe(tray.getLeaves());
+                    //if (type != null) {
+                        // Creamos el porro/cigarro base
+                    Item cigar = matchCigarRecipe(tray.getLeaves());
+                    if(cigar != null) {
+                        net.minecraft.world.item.Item resultItem = cigar;
+                        ItemStack finalProduct = new ItemStack(resultItem);
+
+                        // Le pasamos la calidad
+                        int quality = getLeavesQuality(tray.getLeaves());
+                        finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), quality);
+
+                        if (!player.getInventory().add(finalProduct)) {
+                            player.drop(finalProduct, false);
+                        }
+
+                        tray.clearTray();
+                        level.playSound(player, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.2F);
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                        // rolar el puro correspondiente
+                    }
+                }
             }
             // 📥 Clic normal con ítem = Añadir a la bandeja (Papel, triturados o aditivos)
             else if (!handStack.isEmpty()) {
@@ -85,6 +113,7 @@ public class RollingTrayBlock extends BaseEntityBlock {
                 net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getAdditive());
                 net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getWeed());
                 net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getPaper());
+                for (ItemStack leave : tray.getLeaves()) net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), leave);
                 tray.clearTray();
                 level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.5F, 1.0F);
                 return InteractionResult.sidedSuccess(level.isClientSide);
@@ -100,8 +129,55 @@ public class RollingTrayBlock extends BaseEntityBlock {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getPaper());
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getWeed());
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), tray.getAdditive());
+                for (ItemStack leave : tray.getLeaves()) Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), leave);
+
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    private Item matchCigarRecipe(ArrayList<ItemStack> leaves) {
+        int tripa = 0, capa = 0, capote = 0;
+
+        for (ItemStack stack : leaves) {
+            if (!(stack.getItem() instanceof TobaccoDryLeafItem leafItem)) continue;
+
+            TobaccoLeafType type = leafItem.getType(stack);
+            if(type != null) {
+                switch (type) {
+                    case TRIPA -> tripa += stack.getCount();
+                    case CAPA -> capa += stack.getCount();
+                    case CAPOTE -> capote += stack.getCount();
+                }
+            }
+        }
+
+        // Comprobamos primero las recetas más restrictivas (Lancero exige premium)
+        if (capote >= 2 && capa >= 1 && tripa == 0) {
+            return ModItems.LANCERO_CIGAR.get();
+        }
+        if (tripa >= 1 && capa >= 2 && capote == 0) {
+            return ModItems.TORITO_CIGAR.get();
+        }
+        if (tripa >= 2 && capote >= 1 && capa == 0) {
+            return ModItems.ESPLENDIDO_CIGAR.get();
+        }
+        if (tripa >= 1 && capa >= 1 && capote >= 1) {
+            return ModItems.DON_JAVIER_CIGAR.get();
+        }
+
+        return null; // combinación no válida
+    }
+
+    private int getLeavesQuality(ArrayList<ItemStack> leaves){
+        int minQuality = Integer.MAX_VALUE;
+
+        for (ItemStack stack : leaves) {
+            if (!(stack.getItem() instanceof TobaccoDryLeafItem leafItem)) continue;
+
+            int quality = leafItem.getQuality(stack);
+            if (quality < minQuality) minQuality = quality;
+        }
+        return minQuality;
     }
 }
