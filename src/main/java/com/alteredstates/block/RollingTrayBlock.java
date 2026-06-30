@@ -50,13 +50,17 @@ public class RollingTrayBlock extends BaseEntityBlock {
                     // 🟢 MAGIA: Verificamos si lo que hay en la bandeja es lialble
                     if (tray.getWeed().getItem() instanceof com.alteredstates.item.IRollable rollable) {
 
-                        // El propio ítem nos dice en qué se convierte al liarlo
+                        // Creamos el porro base
                         net.minecraft.world.item.Item resultItem = rollable.getRollResult(tray.getWeed());
                         ItemStack finalProduct = new ItemStack(resultItem);
 
-                        // Heredamos la calidad directamente usando el método de la interfaz
+                        // Le pasamos la calidad
                         int quality = rollable.getQuality(tray.getWeed());
                         finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), quality);
+
+                        // 💉 LE INYECTAMOS QUÉ LLEVA DENTRO
+                        String contentType = rollable.getContentType(tray.getWeed());
+                        finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.CONTENT_TYPE.get(), contentType);
 
                         if (!player.getInventory().add(finalProduct)) {
                             player.drop(finalProduct, false);

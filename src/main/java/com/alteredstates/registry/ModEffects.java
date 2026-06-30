@@ -2,6 +2,7 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.effect.ParanoiaEffect;
+import com.alteredstates.effect.PsychodeliaEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -47,6 +48,11 @@ public class ModEffects {
     // Nuestro efecto para los comestibles
     public static final DeferredHolder<MobEffect, MobEffect> DIGESTING =
             MOB_EFFECTS.register("digesting", DigestingEffect::new);
+
+    // Registramos el efecto con tu nuevo nombre: "psychodelia"
+    public static final DeferredHolder<MobEffect, MobEffect> PSYCHODELIA =
+            MOB_EFFECTS.register("psychodelia",
+                    () -> new PsychodeliaEffect(MobEffectCategory.NEUTRAL, 0x8A2BE2));
 
     // Clase estática interna para el efecto de digestión
     public static class DigestingEffect extends MobEffect {

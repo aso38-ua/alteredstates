@@ -17,8 +17,6 @@ public class ModDataComponentTypes {
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES =
             DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, AlteredStates.MOD_ID);
 
-
-
     // Registramos la calidad como un número entero persistente (se guarda en el disco del mundo)
     public static final Supplier<DataComponentType<Integer>> QUALITY =
             DATA_COMPONENT_TYPES.register("quality", () -> DataComponentType.<Integer>builder()
@@ -42,6 +40,14 @@ public class ModDataComponentTypes {
                             .build()
             );
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> CONTENT_TYPE =
+            DATA_COMPONENT_TYPES.register("content_type", () ->
+                    DataComponentType.<String>builder()
+                            .persistent(Codec.STRING)
+                            .networkSynchronized(ByteBufCodecs.STRING_UTF8) // Necesario para los tooltips
+                            .build()
+            );
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<CigarType>> CIGAR_TYPE =
             DATA_COMPONENT_TYPES.register("cigar_type", () ->
                     DataComponentType.<CigarType>builder()
@@ -55,7 +61,6 @@ public class ModDataComponentTypes {
                     .persistent(CigarData.CODEC)
                     .networkSynchronized(CigarData.STREAM_CODEC)
                     .build());
-
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
     }
