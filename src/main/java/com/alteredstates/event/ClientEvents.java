@@ -3,9 +3,14 @@ package com.alteredstates.event;
 import com.alteredstates.client.render.DryingRackRenderer;
 import com.alteredstates.client.render.CuringJarRenderer;
 import com.alteredstates.client.render.BongRenderer;
+import com.alteredstates.item.CigaretteItem;
 import com.alteredstates.registry.ModBlockEntities;
+import com.alteredstates.registry.ModItems;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import com.alteredstates.registry.ModDataComponentTypes;
 import net.minecraft.ChatFormatting;
@@ -39,4 +44,26 @@ public class ClientEvents {
 
         event.registerBlockEntityRenderer(ModBlockEntities.BONG.get(), BongRenderer::new);
     }
+
+    /*@SubscribeEvent // on the mod event bus only on the physical client
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> { // ItemProperties#register is not threadsafe, so we need to call it on the main thread
+            ItemProperties.register(
+                    // The item to apply the property to.
+                    ModItems.CIGARETTE.get(),
+                    // The id of the property.
+                    ResourceLocation.fromNamespaceAndPath("alteredstates", "visual_state"),
+                    // A reference to a method that calculates the override value.
+                    // Parameters are the used item stack, the level context, the player using the item,
+                    // and a random seed you can use.
+                    (stack, level, player, seed) -> {
+                        if (stack.getItem() instanceof CigaretteItem cigarette) {
+                            System.out.println("NUUUUUUUUUUUUUMERO ======= " + cigarette.getVisualStateIndex(stack));
+                            return cigarette.getVisualStateIndex(stack);
+                        }
+                        return 0f;
+                    }
+            );
+        });
+    }*/
 }

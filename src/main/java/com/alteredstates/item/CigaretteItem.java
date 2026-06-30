@@ -3,8 +3,11 @@ package com.alteredstates.item;
 import com.alteredstates.client.ModItemProperties;
 import com.alteredstates.component.CigarData;
 import com.alteredstates.registry.ModDataComponentTypes;
+import com.alteredstates.registry.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -49,8 +52,6 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
     private void setData(ItemStack stack, CigarData data) {
         stack.set(ModDataComponentTypes.CIGAR_DATA.get(), data);
         stack.setDamageValue(data.puffsTaken());
-        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA,
-                new net.minecraft.world.item.component.CustomModelData(getVisualStateIndex(stack)));
     }
 
     private boolean isLighterInOtherHand(Player player, InteractionHand hand) {
