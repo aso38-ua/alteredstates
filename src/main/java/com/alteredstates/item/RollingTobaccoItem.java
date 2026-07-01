@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class RollingTobaccoItem extends Item implements IRollable, IBongable{
+public class RollingTobaccoItem extends Item implements IRollable, IBongable, IPipable{
     public RollingTobaccoItem(Properties properties) {
         super(properties);
     }

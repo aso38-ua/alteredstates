@@ -135,6 +135,16 @@ public class ModItems {
     public static final DeferredItem<Item> DON_JAVIER_CIGAR = ITEMS.register("don_javier_cigar",
             () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER));
 
+    public static final DeferredItem<Item> WOOD_PIPE = ITEMS.register("wood_pipe",
+            () -> new PipeItem(new Item.Properties(), PipeType.WOOD_PIPE));
+
+    public static final DeferredItem<Item> GOLD_PIPE = ITEMS.register("gold_pipe",
+            () -> new PipeItem(new Item.Properties(), PipeType.GOLD_PIPE));
+
+    public static final DeferredItem<Item> WISDOM_PIPE = ITEMS.register("wisdom_pipe",
+            () -> new PipeItem(new Item.Properties(), PipeType.WISDOM_PIPE));
+
+
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo
     // ════════════════════════════════════════════════════════════

@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tu_mod:item/wood_pipe_empty"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "tu_mod:loaded": 1.0
+      },
+      "model": "tu_mod:item/wood_pipe_loaded"
+    }
+  ]
+}
