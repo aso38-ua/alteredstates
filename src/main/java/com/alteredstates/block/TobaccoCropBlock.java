@@ -92,57 +92,63 @@ public class TobaccoCropBlock extends CropBlock {
         return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
-    // ✂️ COSECHA CON TIJERAS (Mecánica Perenne)
+    // 🌾 COSECHA AL ROMPER (Mecánica estilo Trigo + Soporte de Tijeras)
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        int age = state.getValue(AGE);
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, net.minecraft.world.level.block.entity.BlockEntity blockEntity, ItemStack tool) {
+        // Ejecutamos la lógica base primero (para estadísticas del jugador y compatibilidades)
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
 
-        // Solo actuamos si es la fase máxima (8) y tenemos tijeras
-        if (age == MAX_AGE && stack.getItem() instanceof ShearsItem) {
-            if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+            int age = state.getValue(AGE);
 
-                // 1. Lógica de drops (Calidad + Cogollos)
-                int calculatedQuality = calculateQuality(serverLevel, pos);
-                int capoteCount = serverLevel.random.nextInt(2);
-                int capaCount = serverLevel.random.nextInt(2);
-                int tripaCount = serverLevel.random.nextInt(2);
+            // Solo procesamos los drops personalizados si la planta está madura (Fase 8)
+            if (age == MAX_AGE) {
+                // Aseguramos la posición de la parte superior para calcular la calidad de forma uniforme
+                BlockPos upperPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos;
+                int calculatedQuality = calculateQuality(serverLevel, upperPos);
 
-                ItemStack capote = new ItemStack(ModItems.CAPOTE_FRESH.get(), capoteCount);
-                capote.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                // Comprobamos si el jugador usó tijeras (cizallas)
+                boolean isShears = tool.getItem() instanceof ShearsItem;
 
-                ItemStack capa = new ItemStack(ModItems.CAPA_FRESH.get(), capaCount);
-                capa.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                // Si usa tijeras, le damos un bono (+1 hoja garantizada de cada tipo, por ejemplo)
+                int bonus = isShears ? 1 : 0;
 
-                ItemStack tripa = new ItemStack(ModItems.TRIPA_FRESH.get(), tripaCount);
-                tripa.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                int capoteCount = serverLevel.random.nextInt(2) + bonus;
+                int capaCount = serverLevel.random.nextInt(2) + bonus;
+                int tripaCount = serverLevel.random.nextInt(2) + bonus;
 
-                Block.popResource(level, pos, capote);
-                Block.popResource(level, pos, capa);
-                Block.popResource(level, pos, tripa);
+                // Determinamos el punto de spawn de los items (siempre abajo para que no floten)
+                BlockPos dropPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
 
-                // 2. Efectos visuales y de sonido
-                level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-                stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                // Soltamos las hojas con su respectiva calidad
+                if (capoteCount > 0) {
+                    ItemStack capote = new ItemStack(ModItems.CAPOTE_FRESH.get(), capoteCount);
+                    capote.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                    Block.popResource(level, dropPos, capote);
+                }
 
-                // 3. REGRESIÓN A FASE 7 (Doble bloque sincronizado)
-                // Buscamos cuál es la posición de abajo (LOWER)
-                BlockPos lowerPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
-                BlockPos upperPos = lowerPos.above();
+                if (capaCount > 0) {
+                    ItemStack capa = new ItemStack(ModItems.CAPA_FRESH.get(), capaCount);
+                    capa.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                    Block.popResource(level, dropPos, capa);
+                }
 
-                // Actualizamos la parte de abajo a Edad 7
-                level.setBlock(lowerPos, this.defaultBlockState()
-                        .setValue(AGE, 7)
-                        .setValue(HALF, DoubleBlockHalf.LOWER), 3);
+                if (tripaCount > 0) {
+                    ItemStack tripa = new ItemStack(ModItems.TRIPA_FRESH.get(), tripaCount);
+                    tripa.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
+                    Block.popResource(level, dropPos, tripa);
+                }
 
-                // Actualizamos la parte de arriba a Edad 7
-                level.setBlock(upperPos, this.defaultBlockState()
-                        .setValue(AGE, 7)
-                        .setValue(HALF, DoubleBlockHalf.UPPER), 3);
+                // Soltamos las semillas de tabaco (entre 1 y 3, simulando al trigo vanilla)
+                int seedCount = 1 + serverLevel.random.nextInt(3);
+                Block.popResource(level, dropPos, new ItemStack(this.getBaseSeedId(), seedCount));
+
+                // Si se usaron tijeras, les aplicamos daño por desgaste (1 de durabilidad)
+                if (isShears) {
+                    tool.hurtAndBreak(1, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+                }
             }
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     private int calculateQuality(ServerLevel level, BlockPos pos) {
