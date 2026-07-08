@@ -10,71 +10,83 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class PipeItem extends Item implements ITobaccoProduct, ISmokableItem {
+import java.util.List;
 
-    private IPipable charge;
+/**
+ * Pipa de fumar. Máquina de estados: VACÍA -> CARGADA -> FUMANDO -> VACÍA.
+ *
+ * - VACÍA + click derecho, con un IPipable en la OTRA mano -> se carga (consume 1 del stack de esa mano).
+ * - CARGADA + click derecho -> empieza a fumar (startUsingItem). Al terminar la calada, onSmokeFinished
+ *   aplica los efectos del IPipable cargado, vacía la pipa y le mete 1 punto de daño.
+ */
+public class PipeItem extends Item implements ISmokableItem, IProduct {
+
     private final PipeType type;
 
     public PipeItem(Properties properties, PipeType type) {
-        super(properties.component(ModDataComponentTypes.QUALITY.get(), 1).component(ModDataComponentTypes.PIPE_TYPE.get(), type));
+        super(properties.component(ModDataComponentTypes.PIPE_TYPE.get(), type));
         this.type = type;
     }
 
-    // 🛠️ GESTIÓN DE ACCIONES (Fumar o Cargar)
+    public PipeType getPipeType() {
+        return this.type;
+    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack pipeStack = player.getItemInHand(hand);
+        ItemStack content = getContent(pipeStack);
 
-        // 1. Si la pipa YA está cargada, el jugador fuma
-        if (this.isLoaded(pipeStack)) {
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(pipeStack);
-        }
+        // 🌿 CASO 1: pipa vacía -> intentamos cargarla con lo que haya en la otra mano
+        if (content.isEmpty()) {
+            InteractionHand otherHand = (hand == InteractionHand.MAIN_HAND) ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+            ItemStack otherStack = player.getItemInHand(otherHand);
 
-        // 2. Si está vacía, intentamos cargarla con la otra mano
-        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
-        ItemStack otherStack = player.getItemInHand(otherHand);
-
-        if (otherStack.getItem() instanceof IPipable) {
-            // 🚨 SOLUCCIÓN: Modificamos los stacks en AMBOS lados (Cliente y Servidor)
-            // Esto permite que la predicción del cliente sepa al instante que la pipa se cargó
-            this.loadPipe(pipeStack, otherStack);
-
-            // Consumimos 1 unidad del tabaco (a menos que esté en creativo)
-            if (!player.getAbilities().instabuild) {
-                otherStack.shrink(1);
+            if (otherStack.getItem() instanceof IPipable) {
+                if (!level.isClientSide) {
+                    pipeStack.set(ModDataComponentTypes.PIPE_CONTENT.get(),
+                            ItemContainerContents.fromItems(List.of(otherStack.copyWithCount(1))));
+                    if (!player.isCreative()) {
+                        otherStack.shrink(1);
+                    }
+                    level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.GRASS_PLACE, SoundSource.PLAYERS, 1.0F, 1.2F);
+                }
+                return InteractionResultHolder.sidedSuccess(pipeStack, level.isClientSide);
             }
 
-            // Pasamos el 'player' en el primer parámetro.
-            // El servidor lo reproducirá para todos MENOS para el jugador, y el cliente lo reproducirá localmente.
-            level.playSound(player, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.BUNDLE_INSERT, SoundSource.PLAYERS, 0.8F, 1.2F);
-
-            return InteractionResultHolder.sidedSuccess(pipeStack, level.isClientSide());
+            // Nada compatible en la otra mano, no hacemos nada
+            return InteractionResultHolder.pass(pipeStack);
         }
 
-        // Si está vacía y no tienes tabaco en la otra mano, pasamos el turno
-        return InteractionResultHolder.pass(pipeStack);
+        // 💨 CASO 2: pipa cargada -> empezamos a fumar
+        if (!level.isClientSide) {
+            playSmokingSound(level, player, pipeStack);
+        }
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(pipeStack);
     }
 
-    // Comprobar si la pipa tiene algo dentro
-    public boolean isLoaded(ItemStack pipeStack) {
-        return pipeStack.has(ModDataComponentTypes.PIPE_CONTENT.get());
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack) {
+        // TOOT_HORN acerca el item a la boca del jugador, visualmente es lo más parecido a fumar en pipa.
+        // Si CigarItem/CigaretteItem usan otra animación, cámbiala aquí para mantener consistencia.
+        return UseAnim.TOOT_HORN;
     }
 
-    // Obtener lo que hay dentro
-    public ItemStack getContent(ItemStack pipeStack) {
-        return pipeStack.getOrDefault(ModDataComponentTypes.PIPE_CONTENT.get(), ItemStack.EMPTY);
+    @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
+        spawnSmokeParticles(level, livingEntity, stack, remainingUseDuration);
     }
 
-    // Cargar la pipa
-    public void loadPipe(ItemStack pipeStack, ItemStack tobaccoStack) {
-        // Guardamos una copia de 1 sola unidad del tabaco
-        ItemStack toInsert = tobaccoStack.copyWithCount(1);
-        pipeStack.set(ModDataComponentTypes.PIPE_CONTENT.get(), toInsert);
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        return onSmokeFinished(stack, level, livingEntity);
     }
 
     @Override
@@ -85,7 +97,8 @@ public class PipeItem extends Item implements ITobaccoProduct, ISmokableItem {
         if (contentStack.getItem() instanceof IPipable pipableItem) {
             // Pasamos el contentStack para que el IPipable pueda leer su propia calidad, id, etc.
             pipableItem.applyProductEffects(entity, contentStack);
-        }    }
+        }
+    }
 
     @Override
     public void playSmokingSound(Level level, LivingEntity entity, ItemStack stack) {
@@ -132,5 +145,21 @@ public class PipeItem extends Item implements ITobaccoProduct, ISmokableItem {
             }
         }
         return stack;
+    }
+
+    // 🔍 ASUNCIÓN: IPipable expone "int getQuality(ItemStack stack)". Si en tu IPipable
+    // se llama distinto (o si ISmokableItem no declara este método), ajusta la firma/@Override.
+    @Override
+    public int getQuality(ItemStack stack) {
+        ItemStack content = getContent(stack);
+        if (content.getItem() instanceof IPipable pipable) {
+            return pipable.getQuality(content);
+        }
+        return 0;
+    }
+
+    private ItemStack getContent(ItemStack stack){
+        ItemContainerContents contents = stack.getOrDefault(ModDataComponentTypes.PIPE_CONTENT.get(), ItemContainerContents.EMPTY);
+        return contents.copyOne();
     }
 }

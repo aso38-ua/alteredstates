@@ -10,6 +10,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -72,11 +73,11 @@ public class ModDataComponentTypes {
                             .build()
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemStack>> PIPE_CONTENT =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> PIPE_CONTENT =
             DATA_COMPONENT_TYPES.register("pipe_content", () ->
-                    DataComponentType.<ItemStack>builder()
-                            .persistent(ItemStack.CODEC)
-                            .networkSynchronized(ItemStack.STREAM_CODEC)
+                    DataComponentType.<ItemContainerContents>builder()
+                            .persistent(ItemContainerContents.CODEC)
+                            .networkSynchronized(ItemContainerContents.STREAM_CODEC)
                             .build()
             );
 

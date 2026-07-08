@@ -136,10 +136,10 @@ public class ModItems {
             () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER));
 
     public static final DeferredItem<Item> WOOD_PIPE = ITEMS.register("wood_pipe",
-            () -> new PipeItem(new Item.Properties(), PipeType.WOOD_PIPE));
+            () -> new PipeItem(new Item.Properties().durability(32), PipeType.WOOD_PIPE));
 
     public static final DeferredItem<Item> GOLD_PIPE = ITEMS.register("gold_pipe",
-            () -> new PipeItem(new Item.Properties(), PipeType.GOLD_PIPE));
+            () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE));
 
     public static final DeferredItem<Item> WISDOM_PIPE = ITEMS.register("wisdom_pipe",
             () -> new PipeItem(new Item.Properties(), PipeType.WISDOM_PIPE));
