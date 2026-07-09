@@ -33,10 +33,13 @@ public class RollingTobaccoItem extends Item implements IRollable, IBongable, IP
 
         int quality = getQuality(stack);
 
-        // ⏱️ Duración: 600 ticks (30s) por nivel de calidad
-        int duration = 600 / quality;
+        int duration = 500 * quality;
+        int amplifier = 0;
+        if(quality==3){ amplifier = 1; }
 
-        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.CONFUSION, duration, 0));
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, 0));
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.SLOW_FALLING, duration, 0));
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.DIG_SPEED, duration, amplifier));
 
     }
 }

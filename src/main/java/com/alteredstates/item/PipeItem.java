@@ -149,14 +149,14 @@ public class PipeItem extends Item implements ISmokableItem, IProduct {
 
     // 🔍 ASUNCIÓN: IPipable expone "int getQuality(ItemStack stack)". Si en tu IPipable
     // se llama distinto (o si ISmokableItem no declara este método), ajusta la firma/@Override.
-    @Override
+    /*@Override
     public int getQuality(ItemStack stack) {
         ItemStack content = getContent(stack);
         if (content.getItem() instanceof IPipable pipable) {
             return pipable.getQuality(content);
         }
         return 0;
-    }
+    }*/
 
     private ItemStack getContent(ItemStack stack){
         ItemContainerContents contents = stack.getOrDefault(ModDataComponentTypes.PIPE_CONTENT.get(), ItemContainerContents.EMPTY);
