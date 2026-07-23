@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alteredstates:item/wisdom_pipe"
+    "layer0": "alteredstates:item/cigarette_lit_2"
   }
 }

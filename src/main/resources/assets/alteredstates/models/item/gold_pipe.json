@@ -1,14 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tu_mod:item/gold_pipe_empty"
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "tu_mod:loaded": 1.0
-      },
-      "model": "tu_mod:item/gold_pipe_loaded"
-    }
-  ]
+    "layer0": "alteredstates:item/gold_pipe"
+  }
 }

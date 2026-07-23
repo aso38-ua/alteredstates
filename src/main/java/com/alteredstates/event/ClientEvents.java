@@ -9,7 +9,9 @@ import com.alteredstates.registry.ModItems;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import com.alteredstates.registry.ModDataComponentTypes;
@@ -17,7 +19,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
-public class ClientEvents {
+@EventBusSubscriber(modid = "alteredstates", value = Dist.CLIENT)public class ClientEvents {
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
@@ -45,7 +47,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.BONG.get(), BongRenderer::new);
     }
 
-    /*@SubscribeEvent // on the mod event bus only on the physical client
+    @SubscribeEvent // on the mod event bus only on the physical client
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> { // ItemProperties#register is not threadsafe, so we need to call it on the main thread
             ItemProperties.register(
@@ -58,12 +60,12 @@ public class ClientEvents {
                     // and a random seed you can use.
                     (stack, level, player, seed) -> {
                         if (stack.getItem() instanceof CigaretteItem cigarette) {
-                            System.out.println("NUUUUUUUUUUUUUMERO ======= " + cigarette.getVisualStateIndex(stack));
-                            return cigarette.getVisualStateIndex(stack);
+                            //System.out.println("NUUUUUUUUUUUUUMERO ======= " + cigarette.getVisualStateIndex(stack));
+                            return (float) cigarette.getVisualStateIndex(stack, level);
                         }
-                        return 0f;
+                        return 0.0f;
                     }
             );
         });
-    }*/
+    }
 }

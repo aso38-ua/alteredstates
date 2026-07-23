@@ -23,6 +23,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
+import javax.annotation.Nullable;
+
 public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduct{
 
     private static final int MAX_PUFFS = 4;
@@ -82,6 +84,25 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
 
     private boolean shouldAutoExtinguish(CigarData data, Level level) {
         return data.lit() && (level.getGameTime() - data.lastLitTick()) >= AUTO_EXTINGUISH_TICKS;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
+        // Solo queremos que la lógica del tiempo y guardado pase en el servidor
+        if (!level.isClientSide()) {
+            CigarData data = getData(stack);
+
+            // Si está encendido y ya pasó su tiempo máximo
+            if (data.lit() && shouldAutoExtinguish(data, level)) {
+                // Lo apagamos y guardamos la información
+                setData(stack, data.withLit(false, data.lastLitTick()));
+
+                // Opcional: Sonido de apagarse (un pequeño siseo)
+                level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                        net.minecraft.sounds.SoundEvents.GENERIC_EXTINGUISH_FIRE,
+                        net.minecraft.sounds.SoundSource.PLAYERS, 0.2F, 2.0F);
+            }
+        }
     }
 
     @Override
@@ -176,11 +197,42 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, amplifier));
     }
 
-    public int getVisualStateIndex(ItemStack stack) {
+    /*public int getVisualStateIndex(ItemStack stack) {
         CigarData data = getData(stack);
-        if (!data.lit() && data.puffsTaken() == 0) return 0;       // apagado, nuevo
+        if (!data.lit() && data.puffsTaken() == 0 && data.lastLitTick() == 0L) return 0;       // apagado, nuevo
         if (data.lit()) return 1 + data.puffsTaken();               // encendido: 1,2,3,4
         return 4 + data.puffsTaken();                                // apagado, consumido: 5,6,7
+    }*/
+
+    // Añadimos el Level como parámetro (puede ser nulo en algunos menús de carga)
+    public int getVisualStateIndex(ItemStack stack, @Nullable Level level) {
+        CigarData data = getData(stack);
+
+        // 1. ¿Está teóricamente encendido?
+        boolean isLitVisually = data.lit();
+
+        // 2. Si está encendido pero tenemos acceso al mundo, comprobamos el reloj
+        if (isLitVisually && level != null) {
+            long timePassed = level.getGameTime() - data.lastLitTick();
+            if (timePassed >= AUTO_EXTINGUISH_TICKS) {
+                // El tiempo ya pasó. Aunque el NBT siga diciendo "true" porque está en un cofre,
+                // forzamos a que visualmente se vea apagado.
+                isLitVisually = false;
+            }
+        }
+
+        // 3. Aplicamos la lógica de los estados con nuestra nueva variable 'isLitVisually'
+        if (!isLitVisually && data.puffsTaken() == 0 && data.lastLitTick() == 0L) {
+            return 0; // Nuevo
+        }
+
+        if (isLitVisually) {
+            return 1 + data.puffsTaken(); // Encendido (1, 2, 3, 4)
+        }
+
+        // Apagado y consumido
+        int index = 4 + data.puffsTaken();
+        return index == 4 ? 5 : index; // (5, 6, 7)
     }
 
     @Override

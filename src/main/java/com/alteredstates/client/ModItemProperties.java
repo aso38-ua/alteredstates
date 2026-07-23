@@ -15,7 +15,7 @@ public class ModItemProperties {
                     ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, "visual_state"),
                     (stack, level, entity, seed) -> {
                         if (stack.getItem() instanceof CigaretteItem cigarette) {
-                            return cigarette.getVisualStateIndex(stack);
+                            return cigarette.getVisualStateIndex(stack, level);
                         }
                         return 0.0F;
                     }
