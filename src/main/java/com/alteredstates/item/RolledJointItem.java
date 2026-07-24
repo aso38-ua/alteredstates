@@ -66,6 +66,13 @@ public class RolledJointItem extends Item implements ISmokableItem {
                 entity.addEffect(new MobEffectInstance(ModEffects.PSYCHODELIA, 200 * quality, amplifier));
                 break;
 
+            case "oniric_mushroom":
+                // El viaje fumado te deja anclado y súper relajado
+                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400 * quality, amplifier));
+                entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 400 * quality, amplifier));
+                if (quality >= 3) entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+                break;
+
             default:
                 entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
                 break;
@@ -164,6 +171,7 @@ public class RolledJointItem extends Item implements ISmokableItem {
             case "indica" -> Component.literal("Indica").withStyle(ChatFormatting.DARK_GREEN);
             case "sativa" -> Component.literal("Sativa").withStyle(ChatFormatting.GREEN);
             case "mystic_mushroom" -> Component.literal("Mystic Shroom").withStyle(ChatFormatting.DARK_PURPLE);
+            case "oniric_mushroom" -> Component.literal("Oniric Shroom").withStyle(ChatFormatting.RED);
             default -> Component.literal("Unknown").withStyle(ChatFormatting.GRAY);
         };
 

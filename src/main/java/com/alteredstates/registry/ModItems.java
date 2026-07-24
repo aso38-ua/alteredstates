@@ -158,6 +158,22 @@ public class ModItems {
     public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("ground_mystic_mushroom",
             () -> new GroundMysticMushroomItem(new Item.Properties()));
 
+    // Esporas (La semilla que planta el bloque)
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_SPORES = ITEMS.register("mystic_mushroom_spores",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(ModBlocks.ONIRIC_MUSHROOM_CROP.get(), new Item.Properties()));
+
+    // Seta Fresca (El drop al cosechar. Más adelante implementará IDryable)
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_FRESH = ITEMS.register("mystic_mushroom_fresh",
+            () -> new OniricMushroomItem(new Item.Properties()));
+
+    // Seta Seca (Curable y Molible)
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_DRIED = ITEMS.register("mystic_mushroom_dried",
+            () -> new OniricMushroomDriedItem(new Item.Properties()));
+
+    // Seta Triturada (El resultado del Grinder, más adelante implementará IProduct para tés/comida)
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_GROUND = ITEMS.register("ground_mystic_mushroom",
+            () -> new OniricMushroomItem(new Item.Properties()));
+
     public static final DeferredItem<Item> ROLLED_JOINT = ITEMS.register("rolled_joint",
             () -> new RolledJointItem(new Item.Properties()));
 

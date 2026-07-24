@@ -101,4 +101,13 @@ public class ModBlocks {
                     .instabreak()
                     .sound(SoundType.CROP)
                     .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+
+    public static final DeferredBlock<Block> ONIRIC_MUSHROOM_CROP = BLOCKS.register("oniric_mushroom_crop",
+            () -> new MysticMushroomCropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
 }
