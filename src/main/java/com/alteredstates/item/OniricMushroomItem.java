@@ -45,7 +45,7 @@ public class OniricMushroomItem extends Item implements IDryable {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         Quality qualityEnum = Quality.byLevel(stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1));
-        tooltipComponents.add(qualityEnum.getTranslatedName());
+        //tooltipComponents.add(qualityEnum.getTranslatedName());
         // Color rojo oscuro para reflejar su aspecto
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.oniric_mushroom_fresh").withStyle(net.minecraft.ChatFormatting.DARK_RED));
     }

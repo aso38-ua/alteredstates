@@ -62,7 +62,7 @@ public class MysticMushroomDriedItem extends Item implements ICurable, IGrindabl
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         Quality qualityEnum = Quality.byLevel(this.getQuality(stack));
-        tooltipComponents.add(qualityEnum.getTranslatedName());
+        //tooltipComponents.add(qualityEnum.getTranslatedName());
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.mystic_mushroom_dried").withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

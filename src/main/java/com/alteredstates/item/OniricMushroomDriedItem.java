@@ -53,7 +53,7 @@ public class OniricMushroomDriedItem extends Item implements ICurable, IGrindabl
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         Quality qualityEnum = Quality.byLevel(stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1));
-        tooltipComponents.add(qualityEnum.getTranslatedName());
+        //tooltipComponents.add(qualityEnum.getTranslatedName());
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.oniric_mushroom_dried").withStyle(net.minecraft.ChatFormatting.RED));
     }
 }

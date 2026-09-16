@@ -20,16 +20,26 @@ public class EdibleWeedItem extends Item implements IEdibleWeed {
         super(properties);
     }
 
+    // Dentro de CannabutterItem.java
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entityLiving) {
-        if (!level.isClientSide() && entityLiving instanceof Player player) {
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        ItemStack result = super.finishUsingItem(stack, level, entity);
+
+        if (!level.isClientSide && entity instanceof Player player) {
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
             boolean isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
 
-            // Usamos la interfaz
-            applyHighEffect(player, quality, isIndica);
+            // ¡Usamos tu sistema de digestión!
+            // Codificamos la cepa y la calidad en el Amplifier:
+            // Índica: 0 a 9 (ej. Calidad 3 = Amp 3)
+            // Sativa: 10 a 19 (ej. Calidad 3 = Amp 13)
+            int hiddenCode = isIndica ? quality : (10 + quality);
+
+            // Le damos el efecto de "Digestión" (Dura 30 segundos = 600 ticks)
+            // Quitamos el .get() de ModEffects.DIGESTING
+            player.addEffect(new MobEffectInstance(ModEffects.DIGESTING, 600, hiddenCode, false, false, true));
         }
-        return super.finishUsingItem(stack, level, entityLiving);
+        return result;
     }
 
     @Override

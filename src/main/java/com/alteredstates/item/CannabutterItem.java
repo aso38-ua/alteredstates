@@ -16,38 +16,25 @@ public class CannabutterItem extends Item implements IEdibleWeed {
         super(properties.component(ModDataComponentTypes.QUALITY.get(), 1));
     }
 
+    // Dentro de CannabutterItem.java
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         ItemStack result = super.finishUsingItem(stack, level, entity);
 
         if (!level.isClientSide && entity instanceof Player player) {
-            // 1. Leemos tanto la calidad como la cepa de la mantequilla
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
             boolean isIndica = stack.getOrDefault(ModDataComponentTypes.IS_INDICA.get(), true);
 
-            // 2. Asignamos el efecto base de forma dinámica (Índica o Sativa)
-            var mainEffect = isIndica ? ModEffects.INDICA_EFFECT : ModEffects.SATIVA_EFFECT;
+            // ¡Usamos tu sistema de digestión!
+            // Codificamos la cepa y la calidad en el Amplifier:
+            // Índica: 0 a 9 (ej. Calidad 3 = Amp 3)
+            // Sativa: 10 a 19 (ej. Calidad 3 = Amp 13)
+            int hiddenCode = isIndica ? quality : (10 + quality);
 
-            // 3. Aplicamos los efectos correspondientes según la calidad
-            if (quality >= 3) {
-                // Calidad Buena/Premium: Colocón larguísimo y limpio (¡Sin paranoia porque es del bueno!)
-                player.addEffect(new MobEffectInstance(mainEffect, 1200, 1)); // 60s, Nivel 2
-
-            } else if (quality == 2) {
-                // Calidad Media (Normal): Colocón estándar, muy agradable
-                player.addEffect(new MobEffectInstance(mainEffect, 600, 0));  // 30s, Nivel 1
-
-            } else {
-                // Calidad Baja (Regular/Basura): Efecto muy corto y suave...
-                player.addEffect(new MobEffectInstance(mainEffect, 200, 0));  // 10s, Nivel 1
-
-                // 🎲 ¡PROBABILIDAD DE MAL VIAJE!: Si la calidad es mala, hay un 60% de probabilidad de paranoia
-                if (level.random.nextFloat() < 0.60f) {
-                    player.addEffect(new MobEffectInstance(ModEffects.PARANOIA, 300, 0)); // 15s de paranoia
-                }
-            }
+            // Le damos el efecto de "Digestión" (Dura 30 segundos = 600 ticks)
+            // Quitamos el .get() de ModEffects.DIGESTING
+            player.addEffect(new MobEffectInstance(ModEffects.DIGESTING, 600, hiddenCode, false, false, true));
         }
-
         return result;
     }
 
