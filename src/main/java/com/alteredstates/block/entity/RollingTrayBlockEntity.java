@@ -1,21 +1,19 @@
 package com.alteredstates.block.entity;
 
 import com.alteredstates.registry.ModBlockEntities;
-import com.alteredstates.registry.ModDataComponentTypes;
-import com.alteredstates.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items; // 🟢 Importamos los ítems vanilla
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RollingTrayBlockEntity extends BlockEntity {
     private ItemStack paper = ItemStack.EMPTY;
-    private ItemStack weed = ItemStack.EMPTY;
-    private ItemStack additive = ItemStack.EMPTY;
+    private ItemStack weed = ItemStack.EMPTY; //CAMBIAR NOMBRE SI JAVI SE QUEJA PORQUE PONE WEED
+    private ItemStack additive = ItemStack.EMPTY; // Para el futuro (filtros, tabaco para mezclar...)
 
     public RollingTrayBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ROLLING_TRAY.get(), pos, state);
@@ -26,31 +24,28 @@ public class RollingTrayBlockEntity extends BlockEntity {
     public ItemStack getAdditive() { return additive; }
 
     public boolean addItem(ItemStack stack) {
-        // 🟢 CAMBIO: Ahora valida usando el papel normal de Minecraft (Items.PAPER)
+        // 1. Añadir papel
         if (paper.isEmpty() && stack.is(Items.PAPER)) {
             paper = stack.copyWithCount(1);
+            stack.shrink(1);
             sync();
             return true;
         }
-        // Si hay papel, pero no hierba (Acepta Indica o Sativa triturada)
-        else if (!paper.isEmpty() && weed.isEmpty() && (stack.is(ModItems.INDICA_GROUND.get()) || stack.is(ModItems.SATIVA_GROUND.get()))) {
+        // 2. Añadir contenido principal (CUALQUIER cosa lialble: Marihuana, Tabaco...)
+        if (weed.isEmpty() && stack.getItem() instanceof com.alteredstates.item.IRollable) {
             weed = stack.copyWithCount(1);
+            stack.shrink(1);
             sync();
             return true;
         }
-        // Si hay papel e hierba, pero no aditivo
-        else if (!paper.isEmpty() && !weed.isEmpty() && additive.isEmpty() /* && stack.is(ModTags.Items.ADDITIVES) */) {
-            additive = stack.copyWithCount(1);
-            sync();
-            return true;
-        }
+        // 3. (Futuro) Añadir aditivos si hace falta...
         return false;
     }
 
     public void clearTray() {
-        this.paper = ItemStack.EMPTY;
-        this.weed = ItemStack.EMPTY;
-        this.additive = ItemStack.EMPTY;
+        paper = ItemStack.EMPTY;
+        weed = ItemStack.EMPTY;
+        additive = ItemStack.EMPTY;
         sync();
     }
 
@@ -77,9 +72,11 @@ public class RollingTrayBlockEntity extends BlockEntity {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() { return ClientboundBlockEntityDataPacket.create(this); }
+
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = super.getUpdateTag(registries);
-        saveAdditional(tag, registries); return tag;
+        saveAdditional(tag, registries);
+        return tag;
     }
 }

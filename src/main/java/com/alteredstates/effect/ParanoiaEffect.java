@@ -43,8 +43,17 @@ public class ParanoiaEffect extends MobEffect {
                 double x = player.getX() + Math.sin(angle) * 2;
                 double z = player.getZ() - Math.cos(angle) * 2;
 
-                player.level().playSound(null, x, player.getY(), z,
-                        fakeSound, SoundSource.AMBIENT, 0.6F, 0.9F + random.nextFloat() * 0.2F);
+                // Como estamos en el servidor, enviamos el sonido SOLO a la conexión de ese jugador
+                if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    serverPlayer.connection.send(new net.minecraft.network.protocol.game.ClientboundSoundPacket(
+                            net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.wrapAsHolder(fakeSound),
+                            SoundSource.AMBIENT,
+                            x, player.getY(), z,
+                            0.6F, // Volumen
+                            0.9F + random.nextFloat() * 0.2F, // Pitch
+                            player.getRandom().nextLong() // Semilla de aleatoriedad
+                    ));
+                }
             }
         }
         return true;

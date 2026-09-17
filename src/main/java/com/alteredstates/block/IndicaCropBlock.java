@@ -110,13 +110,13 @@ public class IndicaCropBlock extends CropBlock {
                 else if (lightLevel >= 12 && !isRaining && (seasonOptimal || !CompatManager.SERENE_SEASONS)) calculatedQuality = 3; // Buena
             }
 
-            // 1. Cogollos Frescos [cite: 44]
+            // 1. Cogollos Frescos
             int budCount = serverLevel.random.nextInt(2) + 2;
             ItemStack buds = new ItemStack(ModItems.INDICA_BUDS_FRESH.get(), budCount);
             buds.set(ModDataComponentTypes.QUALITY.get(), calculatedQuality);
             drops.add(buds);
 
-            // 2. Semillas [cite: 44]
+            // 2. Semillas
             int seedCount = serverLevel.random.nextInt(2) + 1;
             drops.add(new ItemStack(this.getBaseSeedId(), seedCount));
 

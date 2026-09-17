@@ -1,6 +1,7 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
+import com.alteredstates.item.TobaccoLeafType;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -28,6 +29,24 @@ public class ModDataComponentTypes {
                             .networkSynchronized(ByteBufCodecs.BOOL)
                             .build()
             );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<TobaccoLeafType>> TOBACCO_LEAF_TYPE =
+            DATA_COMPONENT_TYPES.register("tobacco_leaf_type", () ->
+                    DataComponentType.<TobaccoLeafType>builder()
+                            .persistent(TobaccoLeafType.CODEC)
+                            .networkSynchronized(TobaccoLeafType.STREAM_CODEC)
+                            .build()
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> CONTENT_TYPE =
+            DATA_COMPONENT_TYPES.register("content_type", () ->
+                    DataComponentType.<String>builder()
+                            .persistent(Codec.STRING)
+                            .networkSynchronized(ByteBufCodecs.STRING_UTF8) // Necesario para los tooltips
+                            .build()
+            );
+
+
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
     }

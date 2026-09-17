@@ -4,7 +4,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
-public enum CannabisQuality implements StringRepresentable {
+public enum Quality implements StringRepresentable {
     BASURA(0, "basura", "quality.alteredstates.basura", ChatFormatting.GRAY),
     REGULAR(1, "regular", "quality.alteredstates.regular", ChatFormatting.WHITE),
     NORMAL(2, "normal", "quality.alteredstates.normal", ChatFormatting.AQUA),
@@ -16,7 +16,7 @@ public enum CannabisQuality implements StringRepresentable {
     private final String translationKey;
     private final ChatFormatting format;
 
-    CannabisQuality(int level, String name, String translationKey, ChatFormatting format) {
+    Quality(int level, String name, String translationKey, ChatFormatting format) {
         this.level = level;
         this.name = name;
         this.translationKey = translationKey;
@@ -33,7 +33,7 @@ public enum CannabisQuality implements StringRepresentable {
     @Override
     public String getSerializedName() { return this.name; }
 
-    public static CannabisQuality byLevel(int level) {
+    public static Quality byLevel(int level) {
         if (level <= 0) return BASURA;
         if (level == 1) return REGULAR;
         if (level == 2) return NORMAL;

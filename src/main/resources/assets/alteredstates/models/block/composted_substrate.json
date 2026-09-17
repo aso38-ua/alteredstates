@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/dirt",
+    "top": "alteredstates:block/composted_substrate_top",
+    "side": "alteredstates:block/composted_substrate_side"
+  }
+}

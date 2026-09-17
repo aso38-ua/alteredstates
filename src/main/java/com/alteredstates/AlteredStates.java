@@ -30,6 +30,7 @@ public class AlteredStates {
         ModBlockEntities.register(modEventBus);
         ModSounds.SOUND_EVENTS.register(modEventBus);
         ModRecipes.SERIALIZERS.register(modEventBus);
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, Config.SPEC);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -40,6 +41,11 @@ public class AlteredStates {
         if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(ClientEvents::registerRenderers);
         }
+
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+                net.neoforged.neoforge.client.event.ClientTickEvent.Post.class,
+                com.alteredstates.event.ClientEffectHandler::onClientTick
+        );
 
         LOGGER.info("[AlteredStates] Initializing — stay chill.");
     }

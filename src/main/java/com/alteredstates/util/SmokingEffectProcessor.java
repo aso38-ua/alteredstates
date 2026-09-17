@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class SmokingEffectProcessor {
 
-    public static void applySmokingEffects(LivingEntity entity, boolean isIndica, int quality) {
+    /*public static void applySmokingEffects(LivingEntity entity, boolean isIndica, int quality) {
         if (entity.level().isClientSide) return;
 
         // ⏱️ Efectos buenos: 45 segundos base por nivel de calidad (Ej: Calidad 3 = 2 minutos y pico)
@@ -30,7 +30,7 @@ public class SmokingEffectProcessor {
             int badDuration = 600 + (100 * quality); // 30 a 45 segundos
             entity.addEffect(new MobEffectInstance(ModEffects.PARANOIA, badDuration, 0));
         }
-    }
+    }*/
 
     // Nuevo método exclusivo para el BONG
     public static void applyBongEffects(LivingEntity entity, boolean isIndica, int quality) {
@@ -50,9 +50,11 @@ public class SmokingEffectProcessor {
             if (quality >= 2) entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.DIG_SPEED, 600, 1));
         }
 
-        // 💀 Paranoia del Bong: ¡Más peligrosa! Pega de golpe al cerebro
-        float paranoiaChance = quality <= 1 ? 0.50f : (quality == 2 ? 0.30f : 0.15f);
-        if (entity.level().random.nextFloat() < paranoiaChance) {
+        // 💀 Paranoia del Bong con el multiplicador de la Configuración
+        float baseParanoiaChance = quality <= 1 ? 0.50f : (quality == 2 ? 0.30f : 0.15f);
+        float finalParanoiaChance = baseParanoiaChance * com.alteredstates.Config.BONG_PARANOIA_MULTIPLIER.get().floatValue();
+
+        if (entity.level().random.nextFloat() < finalParanoiaChance) {
             int badDuration = 800 + (200 * quality);
             entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(ModEffects.PARANOIA, badDuration, 1)); // Paranoia nivel 2!
         }

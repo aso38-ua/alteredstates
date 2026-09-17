@@ -1,7 +1,6 @@
 package com.alteredstates.item;
 
 import com.alteredstates.registry.ModDataComponentTypes;
-import com.alteredstates.registry.ModItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -35,8 +34,8 @@ public class GrinderItem extends Item {
         ItemStack grinder = player.getItemInHand(hand);
         ItemStack offhandItem = player.getOffhandItem();
 
-        // 🟢 MODIFICACIÓN: Acepta tanto cogollo seco de Indica como de Sativa
-        if (hand == InteractionHand.MAIN_HAND && (offhandItem.is(ModItems.INDICA_BUDS_DRY.get()) || offhandItem.is(ModItems.SATIVA_BUDS_DRY.get()))) {
+        // 🟢 Magia: Acepta cualquier cosa que implemente IGrindable
+        if (hand == InteractionHand.MAIN_HAND && offhandItem.getItem() instanceof com.alteredstates.item.IGrindable) {
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(grinder);
         }
@@ -69,11 +68,10 @@ public class GrinderItem extends Item {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof Player player) {
             ItemStack offhandItem = player.getOffhandItem();
-            boolean isIndica = offhandItem.is(ModItems.INDICA_BUDS_DRY.get());
-            boolean isSativa = offhandItem.is(ModItems.SATIVA_BUDS_DRY.get());
 
-            // 🟢 MODIFICACIÓN: Lógica de salida dinámica según la cepa moliéndose
-            if (isIndica || isSativa) {
+            // 🟢 Magia: Verificamos si es "triturable" y ejecutamos la lógica
+            if (offhandItem.getItem() instanceof com.alteredstates.item.IGrindable grindableProduct) {
+
                 int currentQuality = offhandItem.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
 
                 if (!player.getAbilities().instabuild) {
@@ -81,8 +79,8 @@ public class GrinderItem extends Item {
                     stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
                 }
 
-                // Si es Indica saca indica_ground, si no, saca sativa_ground
-                net.minecraft.world.item.Item groundItemResult = isIndica ? ModItems.INDICA_GROUND.get() : ModItems.SATIVA_GROUND.get();
+                // Le preguntamos al ítem en qué se convierte
+                Item groundItemResult = grindableProduct.getGrindResult(offhandItem);
 
                 ItemStack groundCannabis = new ItemStack(groundItemResult);
                 groundCannabis.set(ModDataComponentTypes.QUALITY.get(), currentQuality);
