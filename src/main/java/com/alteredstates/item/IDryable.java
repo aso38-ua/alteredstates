@@ -13,6 +13,6 @@ public interface IDryable extends IProduct {
     // Usamos 'default' para que, si no quieres complicarte,
     // tarde 24000 ticks (1 día de Minecraft) por defecto.
     default int getDryingTime(ItemStack stack) {
-        return 24000;
+        return com.alteredstates.Config.DRYING_TIME.get();
     }
 }

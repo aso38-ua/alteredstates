@@ -30,6 +30,7 @@ public class AlteredStates {
         ModBlockEntities.register(modEventBus);
         ModSounds.SOUND_EVENTS.register(modEventBus);
         ModRecipes.SERIALIZERS.register(modEventBus);
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, Config.SPEC);
 
         modEventBus.addListener(this::commonSetup);
 

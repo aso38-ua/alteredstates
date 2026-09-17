@@ -172,6 +172,4 @@ public class ModItems {
 
     public static final DeferredItem<Item> ROLLED_JOINT = ITEMS.register("rolled_joint",
             () -> new RolledJointItem(new Item.Properties()));
-
-
 }

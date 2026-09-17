@@ -54,7 +54,7 @@ public class MysticMushroomDriedItem extends Item implements ICurable, IGrindabl
     }
 
     @Override
-    public int getCuringTime(ItemStack stack) { return 6000; }
+    public int getCuringTime(ItemStack stack) { return com.alteredstates.Config.CURING_TIME.get(); }
 
     @Override
     public Item getGrindResult(ItemStack stack) { return com.alteredstates.registry.ModItems.MYSTIC_MUSHROOM_GROUND.get(); }
