@@ -6,8 +6,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
@@ -24,7 +26,7 @@ import java.util.List;
  * - CARGADA + click derecho -> empieza a fumar (startUsingItem). Al terminar la calada, onSmokeFinished
  *   aplica los efectos del IPipable cargado, vacía la pipa y le mete 1 punto de daño.
  */
-public class PipeItem extends Item implements ISmokableItem, IProduct {
+public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable {
 
     private final PipeType type;
 
@@ -76,7 +78,13 @@ public class PipeItem extends Item implements ISmokableItem, IProduct {
     public UseAnim getUseAnimation(ItemStack stack) {
         // TOOT_HORN acerca el item a la boca del jugador, visualmente es lo más parecido a fumar en pipa.
         // Si CigarItem/CigaretteItem usan otra animación, cámbiala aquí para mantener consistencia.
-        return UseAnim.TOOT_HORN;
+        //return UseAnim.TOOT_HORN;
+        return this.getSmokeAnimation(stack);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return this.getSmokeDuration(stack);
     }
 
     @Override
@@ -161,5 +169,11 @@ public class PipeItem extends Item implements ISmokableItem, IProduct {
     private ItemStack getContent(ItemStack stack){
         ItemContainerContents contents = stack.getOrDefault(ModDataComponentTypes.PIPE_CONTENT.get(), ItemContainerContents.EMPTY);
         return contents.copyOne();
+    }
+
+    // --- Equipable ---
+    @Override
+    public EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.HEAD; // Slot de la cabeza
     }
 }

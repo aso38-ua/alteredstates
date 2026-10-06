@@ -3,10 +3,13 @@ package com.alteredstates.registry;
 import com.alteredstates.AlteredStates;
 import com.alteredstates.block.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlocks {
@@ -101,4 +104,10 @@ public class ModBlocks {
                     .instabreak()
                     .sound(SoundType.CROP)
                     .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+
+    /*public static final DeferredHolder<Block, LiquidBlock> HORSE_SEMEN_BLOCK = BLOCKS.register("horse_semen_block",
+            () -> new LiquidBlock(ModFluids.HORSE_SEMEN_SOURCE.get(),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
+                            .noLootTable()
+                            .liquid()));*/
 }

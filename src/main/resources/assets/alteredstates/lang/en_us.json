@@ -47,6 +47,7 @@
   "jei.alteredstates.cannabutter_info": "Can be crafted in a Cooking Pot (efficient) or in a Crafting Table (expensive).\n\nCrafting Table Recipe:\n- 1x Milk Bucket\n- 1x Bowl\n- 3x Ground Weed\n\nThe butter will inherit the lowest quality of the weed used.",
   "block.alteredstates.sativa_crop": "Sativa Crop",
   "item.alteredstates.sativa_seeds": "Sativa Seeds",
+  "item.alteredstates.tobacco_seeds": "Tobacco Seeds",
   "item.alteredstates.sativa_buds_fresh": "Fresh Sativa Buds",
   "item.alteredstates.sativa_buds_dry": "Dry Sativa Buds",
   "item.alteredstates.indica_ground": "Ground Indica",
@@ -69,5 +70,9 @@
   "item.alteredstates.lancero_cigar": "Lancero cigar",
   "item.alteredstates.esplendido_cigar": "Espléndido cigar",
   "item.alteredstates.don_javier_cigar": "Don Javier cigar",
-  "item.alteredstates.horse_semen": "Horse semen"
+  "item.alteredstates.horse_semen": "Horse semen",
+  "item.alteredstates.wood_pipe": "Wood pipe",
+  "item.alteredstates.gold_pipe": "Gold pipe",
+  "item.alteredstates.wisdom_pipe": "Wisdom pipe",
+  "item.alteredstates.rolling_tobacco": "Rolling tobacco"
 }

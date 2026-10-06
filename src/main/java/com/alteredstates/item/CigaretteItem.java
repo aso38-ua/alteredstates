@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -25,7 +26,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import javax.annotation.Nullable;
 
-public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduct{
+public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduct, Equipable{
 
     private static final int MAX_PUFFS = 4;
     private static final long AUTO_EXTINGUISH_TICKS = 6000L; // 5 minutos
@@ -262,5 +263,11 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         int remainingSmokes = stack.getMaxDamage() - stack.getDamageValue();
         tooltipComponents.add(net.minecraft.network.chat.Component.translatable("tooltip.alteredstates.remaining_smokes", remainingSmokes)
                 .withStyle(net.minecraft.ChatFormatting.DARK_GREEN));
+    }
+
+    // --- Equipable ---
+    @Override
+    public EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.HEAD; // Slot de la cabeza
     }
 }
