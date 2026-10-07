@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "alteredstates:indica_crop",
-    "alteredstates:sativa_crop"
+    "alteredstates:sativa_crop",
+    "alteredstates:tobacco_crop"
   ]
 }

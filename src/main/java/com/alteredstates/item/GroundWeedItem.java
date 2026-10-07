@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class GroundWeedItem extends CannabisBudItem implements IRollable, IBongable {
+public class GroundWeedItem extends CannabisBudItem implements IRollable, IBongable, IPipable {
 
     public GroundWeedItem(Properties properties, boolean isIndica) {
         super(properties, isIndica);

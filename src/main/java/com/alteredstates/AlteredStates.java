@@ -22,6 +22,8 @@ public class AlteredStates {
     public AlteredStates(IEventBus modEventBus, ModContainer modContainer) {
 
         ModDataComponentTypes.register(modEventBus);
+        ModFluids.FLUID_TYPES.register(modEventBus);
+        ModFluids.FLUIDS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModEffects.register(modEventBus);

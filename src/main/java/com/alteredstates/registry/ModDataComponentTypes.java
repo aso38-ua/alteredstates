@@ -1,11 +1,16 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
+import com.alteredstates.component.CigarData;
+import com.alteredstates.item.CigarType;
+import com.alteredstates.item.PipeType;
 import com.alteredstates.item.TobaccoLeafType;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -46,6 +51,35 @@ public class ModDataComponentTypes {
                             .build()
             );
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<CigarType>> CIGAR_TYPE =
+            DATA_COMPONENT_TYPES.register("cigar_type", () ->
+                    DataComponentType.<CigarType>builder()
+                            .persistent(CigarType.CODEC)
+                            .networkSynchronized(CigarType.STREAM_CODEC)
+                            .build()
+            );
+
+    public static final Supplier<DataComponentType<CigarData>> CIGAR_DATA =
+            DATA_COMPONENT_TYPES.register("cigar_data", () -> DataComponentType.<CigarData>builder()
+                    .persistent(CigarData.CODEC)
+                    .networkSynchronized(CigarData.STREAM_CODEC)
+                    .build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<PipeType>> PIPE_TYPE =
+            DATA_COMPONENT_TYPES.register("pipe_type", () ->
+                    DataComponentType.<PipeType>builder()
+                            .persistent(PipeType.CODEC)
+                            .networkSynchronized(PipeType.STREAM_CODEC)
+                            .build()
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemContainerContents>> PIPE_CONTENT =
+            DATA_COMPONENT_TYPES.register("pipe_content", () ->
+                    DataComponentType.<ItemContainerContents>builder()
+                            .persistent(ItemContainerContents.CODEC)
+                            .networkSynchronized(ItemContainerContents.STREAM_CODEC)
+                            .build()
+            );
 
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);

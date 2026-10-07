@@ -5,6 +5,7 @@ import com.alteredstates.item.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.world.food.FoodProperties;
@@ -76,7 +77,7 @@ public class ModItems {
             () -> new TobaccoDryLeafItem(new Item.Properties(), TobaccoLeafType.TRIPA));
 
     public static final DeferredItem<Item> ROLLING_TOBACCO = ITEMS.register("rolling_tobacco",
-            () -> new Item(new Item.Properties()));
+            () -> new RollingTobaccoItem(new Item.Properties()));
     // ════════════════════════════════════════════════════════════
     //  CANNABIS — Productos finales
     // ════════════════════════════════════════════════════════════
@@ -118,6 +119,32 @@ public class ModItems {
             ITEMS.register("brownie", () -> new EdibleWeedItem(new Item.Properties().food(
                     new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build()
             )));
+
+    //============ TABACO ====================
+    public static final DeferredItem<Item> CIGARETTE = ITEMS.register("cigarette",
+            () -> new CigaretteItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> TORITO_CIGAR = ITEMS.register("torito_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.TORITO));
+
+    public static final DeferredItem<Item> LANCERO_CIGAR = ITEMS.register("lancero_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.LANCERO));
+
+    public static final DeferredItem<Item> ESPLENDIDO_CIGAR = ITEMS.register("esplendido_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.ESPLENDIDO));
+
+    public static final DeferredItem<Item> DON_JAVIER_CIGAR = ITEMS.register("don_javier_cigar",
+            () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER));
+
+    public static final DeferredItem<Item> WOOD_PIPE = ITEMS.register("wood_pipe",
+            () -> new PipeItem(new Item.Properties().durability(32), PipeType.WOOD_PIPE));
+
+    public static final DeferredItem<Item> GOLD_PIPE = ITEMS.register("gold_pipe",
+            () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE));
+
+    public static final DeferredItem<Item> WISDOM_PIPE = ITEMS.register("wisdom_pipe",
+            () -> new PipeItem(new Item.Properties(), PipeType.WISDOM_PIPE));
+
 
     // ════════════════════════════════════════════════════════════
     //  SETAS — Cultivo
@@ -164,6 +191,10 @@ public class ModItems {
     public static final DeferredItem<Item> ONIRIC_MUSHROOM_FRESH = ITEMS.register("oniric_mushroom_fresh",
             () -> new OniricMushroomItem(new Item.Properties()));
 
+    // ===================== EXTRAS ====================
+    public static final DeferredItem<Item> HORSE_SEMEN = ITEMS.register("horse_semen",
+            () -> new HorseSemenItem(new Item.Properties()));
+  
     public static final DeferredItem<Item> ONIRIC_MUSHROOM_DRIED = ITEMS.register("oniric_mushroom_dried",
             () -> new OniricMushroomDriedItem(new Item.Properties()));
 

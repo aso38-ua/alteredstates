@@ -6,14 +6,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class TobaccoDryLeafItem extends TobccoLeafItem implements ICurable, IGrindable {
+public class TobaccoDryLeafItem extends TobccoLeafItem implements ICurable, IGrindable, IRollable {
 
     TobaccoLeafType type;
 
     public TobaccoDryLeafItem(Properties properties, TobaccoLeafType type) {
         super(properties, type);
     }
-
 
     @Override
     public Item getGrindResult(ItemStack stack) {
@@ -26,4 +25,13 @@ public class TobaccoDryLeafItem extends TobccoLeafItem implements ICurable, IGri
         return 6000; // Tiempo que tarda en el tarro en subir calidad (5m)
     }
 
+    @Override
+    public Item getRollResult(ItemStack stack) {
+        return null;
+    }
+
+    @Override
+    public String getContentType(ItemStack stack) {
+        return "";
+    }
 }
