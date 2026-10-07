@@ -26,7 +26,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 import javax.annotation.Nullable;
 
-public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduct, Equipable{
+public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduct{
 
     private static final int MAX_PUFFS = 4;
     private static final long AUTO_EXTINGUISH_TICKS = 6000L; // 5 minutos
@@ -232,8 +232,9 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         }
 
         // Apagado y consumido
-        int index = 4 + data.puffsTaken();
-        return index == 4 ? 5 : index; // (5, 6, 7)
+        int index = 5 + data.puffsTaken();  //El 4 ya es el cigarro con 3 caladas
+
+        return index;                       // (5, 6, 7, 8)
     }
 
     @Override
@@ -265,9 +266,9 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
                 .withStyle(net.minecraft.ChatFormatting.DARK_GREEN));
     }
 
-    // --- Equipable ---
-    @Override
+    // --- Equipable --- En un futuro será equipable
+    /*@Override
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.HEAD; // Slot de la cabeza
-    }
+    }*/
 }

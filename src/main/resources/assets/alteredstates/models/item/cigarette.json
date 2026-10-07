@@ -11,9 +11,9 @@
   { "predicate": { "alteredstates:visual_state": 3 }, "model": "alteredstates:item/cigarette_lit_2" },
   { "predicate": { "alteredstates:visual_state": 4 }, "model": "alteredstates:item/cigarette_lit_3" },
 
-  { "predicate": { "alteredstates:visual_state": 5 }, "model": "alteredstates:item/cigarette_extinguished_1" },
-  { "predicate": { "alteredstates:visual_state": 6 }, "model": "alteredstates:item/cigarette_extinguished_2" },
-  { "predicate": { "alteredstates:visual_state": 7 }, "model": "alteredstates:item/cigarette_extinguished_3" }
+  { "predicate": { "alteredstates:visual_state": 5 }, "model": "alteredstates:item/cigarette_extinguished_0" },
+  { "predicate": { "alteredstates:visual_state": 6 }, "model": "alteredstates:item/cigarette_extinguished_1" },
+  { "predicate": { "alteredstates:visual_state": 7 }, "model": "alteredstates:item/cigarette_extinguished_2" },
+  { "predicate": { "alteredstates:visual_state": 8 }, "model": "alteredstates:item/cigarette_extinguished_3" }
   ]
-
 }

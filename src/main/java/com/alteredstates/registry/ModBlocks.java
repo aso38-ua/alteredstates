@@ -82,6 +82,17 @@ public class ModBlocks {
             )
     );
 
+    // Registramos el Tabaco Salvaje (Arbusto de 1 bloque)
+    public static final DeferredBlock<Block> WILD_TOBACCO = BLOCKS.register("wild_tobacco",
+            () -> new com.alteredstates.block.WildTobaccoBlock(
+                    net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
+                            .noCollission()
+                            .instabreak()
+                            .sound(net.minecraft.world.level.block.SoundType.GRASS)
+            )
+    );
+
 
 
     // ════════════════════════════════════════════════════════════
