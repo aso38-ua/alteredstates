@@ -11,12 +11,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-
 import java.util.List;
 
-public class MysticMushroomDriedItem extends Item implements ICurable, IGrindable {
+public class OniricMushroomDriedItem extends Item implements ICurable, IGrindable {
 
-    public MysticMushroomDriedItem(Properties properties) {
+    public OniricMushroomDriedItem(Properties properties) {
         super(properties
                 .component(ModDataComponentTypes.QUALITY.get(), 2)
                 .food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).alwaysEdible().build())
@@ -25,31 +24,23 @@ public class MysticMushroomDriedItem extends Item implements ICurable, IGrindabl
 
     @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {
-        int quality = this.getQuality(stack);
-
-        // Viaje Extendido: 60 segundos por nivel de calidad
-        // Calidad 2 (Normal) = 2 min | Calidad 3 (Buena) = 3 min | Calidad 4 (Premium) = 4 min
+        int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
         int durationTicks = (quality * 60) * 20;
-
-        // Escalado de Intensidad Física:
-        // Calidad 2 -> Amp 0 (Salto I, Haste I)
-        // Calidad 3 -> Amp 1 (Salto II, Haste II)
-        // Calidad 4 -> Amp 2 (Premium: Salto III, Haste III + Regeneración mística en el efecto)
         int amplifier = Math.max(0, quality - 2);
 
-        // Aplicamos el efecto psicodélico limpio con su Holder directo
-        entity.addEffect(new MobEffectInstance(ModEffects.PSYCHODELIA, durationTicks, amplifier));
+        // Si tienes un efecto ONIRICA creado, úsalo aquí.
+        // Si no, simulamos el viaje sedante y "chill" con efectos vanilla.
+        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, durationTicks, amplifier)); // Te relaja los músculos
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, durationTicks, amplifier)); // No sientes el dolor
+        entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, durationTicks / 2, 0)); // Te cura pasivamente
 
-        // Un pequeño mareo de pantalla al principio para simular la subida (10 segundos)
-        entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
+        // Opcional: añadir tu efecto ModEffects.ONIRICA_EFFECT si existe.
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         ItemStack result = super.finishUsingItem(stack, level, entity);
-        if (!level.isClientSide) {
-            this.applyProductEffects(entity, stack);
-        }
+        if (!level.isClientSide) this.applyProductEffects(entity, stack);
         return result;
     }
 
@@ -57,12 +48,12 @@ public class MysticMushroomDriedItem extends Item implements ICurable, IGrindabl
     public int getCuringTime(ItemStack stack) { return com.alteredstates.Config.CURING_TIME.get(); }
 
     @Override
-    public Item getGrindResult(ItemStack stack) { return com.alteredstates.registry.ModItems.MYSTIC_MUSHROOM_GROUND.get(); }
+    public Item getGrindResult(ItemStack stack) { return com.alteredstates.registry.ModItems.ONIRIC_MUSHROOM_GROUND.get(); }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        Quality qualityEnum = Quality.byLevel(this.getQuality(stack));
+        Quality qualityEnum = Quality.byLevel(stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1));
         //tooltipComponents.add(qualityEnum.getTranslatedName());
-        tooltipComponents.add(Component.translatable("tooltip.alteredstates.mystic_mushroom_dried").withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.alteredstates.oniric_mushroom_dried").withStyle(net.minecraft.ChatFormatting.RED));
     }
 }

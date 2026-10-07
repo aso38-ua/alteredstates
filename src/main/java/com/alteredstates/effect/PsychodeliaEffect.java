@@ -66,7 +66,7 @@ public class PsychodeliaEffect extends MobEffect {
             // ==========================================
             // 🌈 3. EFECTOS VISUALES EXAGERADOS (Cada 5 ticks)
             // ==========================================
-            if (duration % 5 == 0) {
+            if (duration % 20 == 0) {
                 double px = player.getX();
                 double py = player.getY();
                 double pz = player.getZ();

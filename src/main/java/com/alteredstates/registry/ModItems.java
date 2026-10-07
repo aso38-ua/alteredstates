@@ -185,11 +185,22 @@ public class ModItems {
     public static final DeferredItem<Item> MYSTIC_MUSHROOM_GROUND = ITEMS.register("ground_mystic_mushroom",
             () -> new GroundMysticMushroomItem(new Item.Properties()));
 
-    public static final DeferredItem<Item> ROLLED_JOINT = ITEMS.register("rolled_joint",
-            () -> new RolledJointItem(new Item.Properties()));
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_SPORES = ITEMS.register("oniric_mushroom_spores",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(ModBlocks.ONIRIC_MUSHROOM_CROP.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_FRESH = ITEMS.register("oniric_mushroom_fresh",
+            () -> new OniricMushroomItem(new Item.Properties()));
 
     // ===================== EXTRAS ====================
     public static final DeferredItem<Item> HORSE_SEMEN = ITEMS.register("horse_semen",
             () -> new HorseSemenItem(new Item.Properties()));
+  
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_DRIED = ITEMS.register("oniric_mushroom_dried",
+            () -> new OniricMushroomDriedItem(new Item.Properties()));
 
+    public static final DeferredItem<Item> ONIRIC_MUSHROOM_GROUND = ITEMS.register("ground_oniric_mushroom",
+            () -> new GroundOniricMushroomItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> ROLLED_JOINT = ITEMS.register("rolled_joint",
+            () -> new RolledJointItem(new Item.Properties()));
 }

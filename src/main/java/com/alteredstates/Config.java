@@ -1,42 +1,43 @@
 package com.alteredstates;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-// An example config class. This is not required, but it's a good idea to have one to keep your config organized.
-// Demonstrates how to use Neo's config APIs
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-    public static final ModConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER
-            .comment("Whether to log the dirt block on common setup")
-            .define("logDirtBlock", true);
+    // Declaramos las variables primero
+    public static final ModConfigSpec.IntValue DRYING_TIME;
+    public static final ModConfigSpec.IntValue CURING_TIME;
+    public static final ModConfigSpec.DoubleValue BONG_PARANOIA_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue JOINT_DURATION_MULTIPLIER;
 
-    public static final ModConfigSpec.IntValue MAGIC_NUMBER = BUILDER
-            .comment("A magic number")
-            .defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
+    // Las inicializamos en un bloque estático
+    static {
+        BUILDER.push("Tiempos_de_Procesado");
 
-    public static final ModConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER
-            .comment("What you want the introduction message to be for the magic number")
-            .define("magicNumberIntroduction", "The magic number is... ");
+        DRYING_TIME = BUILDER
+                .comment("Tiempo en ticks que tarda en secarse un producto en el secadero (Default: 24000 = 1 dia de juego)")
+                .defineInRange("dryingTime", 24000, 100, 240000);
 
-    // a list of strings that are treated as resource locations for items
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
-            .comment("A list of items to log on common setup.")
-            .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), () -> "", Config::validateItemName);
+        CURING_TIME = BUILDER
+                .comment("Tiempo en ticks que tarda el tarro en subir 1 nivel de calidad (Default: 6000 = 5 minutos reales)")
+                .defineInRange("curingTime", 6000, 100, 100000);
 
-    static final ModConfigSpec SPEC = BUILDER.build();
+        BUILDER.pop();
 
-    private static boolean validateItemName(final Object obj) {
-        return obj instanceof String itemName && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(itemName));
+        BUILDER.push("Balanceo_y_Dificultad");
+
+        BONG_PARANOIA_MULTIPLIER = BUILDER
+                .comment("Multiplicador de probabilidad de paranoia al usar el bong (Default: 1.5)")
+                .defineInRange("bongParanoiaMultiplier", 1.5, 0.0, 5.0);
+
+        JOINT_DURATION_MULTIPLIER = BUILDER
+                .comment("Multiplicador de duracion de los efectos del porro (Default: 1.0)")
+                .defineInRange("jointDurationMultiplier", 1.0, 0.1, 5.0);
+
+        BUILDER.pop();
     }
+
+    // Asegúrate de que esto sea public para que AlteredStates.java pueda registrarlo si lo necesitas
+    public static final ModConfigSpec SPEC = BUILDER.build();
 }

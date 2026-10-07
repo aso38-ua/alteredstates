@@ -10,5 +10,6 @@ public interface ICurable extends IProduct {
         int dryingTime = 4000 + (quality * 600);
         if(quality<3){ dryingTime =+ 1200; } //La ultima calidad
         return dryingTime;
+        return com.alteredstates.Config.CURING_TIME.get();
     }
 }

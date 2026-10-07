@@ -56,7 +56,7 @@ public class MysticMushroomItem extends Item implements IDryable {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         Quality qualityEnum = Quality.byLevel(this.getQuality(stack));
-        tooltipComponents.add(qualityEnum.getTranslatedName());
+        //tooltipComponents.add(qualityEnum.getTranslatedName());
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.mystic_mushroom_fresh").withStyle(net.minecraft.ChatFormatting.DARK_AQUA));
     }
 }
