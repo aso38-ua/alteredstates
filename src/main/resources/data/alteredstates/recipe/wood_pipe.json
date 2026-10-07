@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  W",
+    " W ",
+    "WW "
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "id": "alteredstates:wood_pipe",
+    "count": 1
+  }
+}

@@ -3,10 +3,13 @@ package com.alteredstates.registry;
 import com.alteredstates.AlteredStates;
 import com.alteredstates.block.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlocks {
@@ -79,6 +82,17 @@ public class ModBlocks {
             )
     );
 
+    // Registramos el Tabaco Salvaje (Arbusto de 1 bloque)
+    public static final DeferredBlock<Block> WILD_TOBACCO = BLOCKS.register("wild_tobacco",
+            () -> new com.alteredstates.block.WildTobaccoBlock(
+                    net.minecraft.world.level.block.state.BlockBehaviour.Properties.of()
+                            .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
+                            .noCollission()
+                            .instabreak()
+                            .sound(net.minecraft.world.level.block.SoundType.GRASS)
+            )
+    );
+
 
 
     // ════════════════════════════════════════════════════════════
@@ -102,6 +116,11 @@ public class ModBlocks {
                     .sound(SoundType.CROP)
                     .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
 
+    /*public static final DeferredHolder<Block, LiquidBlock> HORSE_SEMEN_BLOCK = BLOCKS.register("horse_semen_block",
+            () -> new LiquidBlock(ModFluids.HORSE_SEMEN_SOURCE.get(),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
+                            .noLootTable()
+                            .liquid()));*/
     public static final DeferredBlock<Block> ONIRIC_MUSHROOM_CROP = BLOCKS.register("oniric_mushroom_crop",
             () -> new MysticMushroomCropBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)

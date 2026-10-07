@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "GWG",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "W": {
+      "item": "alteredstates:wood_pipe"
+    }
+  },
+  "result": {
+    "id": "alteredstates:gold_pipe",
+    "count": 1
+  }
+}
