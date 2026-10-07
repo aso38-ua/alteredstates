@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " D ",
+    "DGD",
+    " D "
+  ],
+  "key": {
+    "G": {
+      "item": "alteredstates:gold_pipe"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "id": "alteredstates:wisdom_pipe",
+    "count": 1
+  }
+}
