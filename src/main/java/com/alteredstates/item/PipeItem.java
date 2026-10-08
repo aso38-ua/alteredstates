@@ -144,11 +144,9 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
 
             // 3. Desgaste de la pipa por uso
             if (entity instanceof Player player) {
-                if (!player.getAbilities().instabuild) {
-                    stack.setDamageValue(stack.getDamageValue() + 1);
-                    if (stack.getDamageValue() >= stack.getMaxDamage()) {
-                        stack.shrink(1);
-                    }
+                // 3. Desgaste de la pipa por uso
+                if (stack.isDamageableItem()) {
+                    stack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
                 }
             }
         }
