@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:cannabis_trimming"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.paranoia_trip.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.paranoia_trip.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "paranoid": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:paranoia": {}
+        }
+      }
+    }
+  }
+}

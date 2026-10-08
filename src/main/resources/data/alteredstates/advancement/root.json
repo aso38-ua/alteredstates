@@ -1,0 +1,112 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:bong"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.root.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.root.description"
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_indica_seeds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:indica_seeds"
+          }
+        ]
+      }
+    },
+    "has_sativa_seeds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:sativa_seeds"
+          }
+        ]
+      }
+    },
+    "has_mystic_spores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:mystic_mushroom_spores"
+          }
+        ]
+      }
+    },
+    "has_oniric_spores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:oniric_mushroom_spores"
+          }
+        ]
+      }
+    },
+    "has_mystic_fresh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:mystic_mushroom_fresh"
+          }
+        ]
+      }
+    },
+    "has_oniric_fresh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:oniric_mushroom_fresh"
+          }
+        ]
+      }
+    },
+    "has_bong": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:bong"
+          }
+        ]
+      }
+    },
+    "has_rolling_tray": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:rolling_tray"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_indica_seeds",
+      "has_sativa_seeds",
+      "has_mystic_spores",
+      "has_oniric_spores",
+      "has_mystic_fresh",
+      "has_oniric_fresh",
+      "has_bong",
+      "has_rolling_tray"
+    ]
+  ]
+}
