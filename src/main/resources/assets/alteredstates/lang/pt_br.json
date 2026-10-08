@@ -2,7 +2,6 @@
   "itemGroup.alteredstates": "Estados Alterados",
   "block.alteredstates.example_block": "Bloco de Exemplo",
   "item.alteredstates.example_item": "Item de Exemplo",
-
   "alteredstates.configuration.title": "Configurações de Altered States",
   "alteredstates.configuration.section.alteredstates.common.toml": "Configurações de Altered States",
   "alteredstates.configuration.section.alteredstates.common.toml.title": "Configurações de Altered States",
@@ -18,7 +17,6 @@
   "quality.alteredstates.premium": "Premium",
   "block.alteredstates.indica_crop": "Plantação de Índica",
   "block.alteredstates.drying_rack": "Varal de Secagem",
-
   "item.alteredstates.indica_seeds": "Sementes de Índica",
   "item.alteredstates.indica_buds_fresh": "Flores de Índica Frescas",
   "item.alteredstates.indica_buds_dry": "Flores de Índica Secas",
@@ -29,7 +27,7 @@
   "jei.alteredstates.improves_quality": "➔ Aumenta a Qualidade",
   "jei.alteredstates.grinding": "Processo de Moagem",
   "tooltip.alteredstates.rolling_tray.title": "Como Usar:",
-  "tooltip.alteredstates.rolling_tray.step1": "1. Clique com o botão direito com seda ou folha de tabaco seca.",
+  "tooltip.alteredstates.rolling_tray.step1": "1. Clique com o botão direito com papel de seda (baseados) ou folha seca de tabaco (charutos).",
   "tooltip.alteredstates.rolling_tray.step2": "2. Clique com o botão direito com os produtos para bolar.",
   "tooltip.alteredstates.rolling_tray.step3": "3. (Opcional) Adicione um aditivo extra.",
   "tooltip.alteredstates.rolling_tray.step4": "4. SHIFT + Clique com o botão direito com a mão vazia para bolar.",
@@ -92,5 +90,19 @@
   "tooltip.alteredstates.contains": "Contém",
   "tooltip.alteredstates.mystic_mushroom_fresh": "Cogumelo fresco, efeito curto e bruto",
   "tooltip.alteredstates.mystic_mushroom_dried": "Cogumelo seco, efeito prolongado",
-  "jei.alteredstates.rolling": "Processo de Bolar"
+  "jei.alteredstates.rolling": "Processo de Bolar",
+  "item.alteredstates.oniric_mushroom_spores": "Esporos de cogumelo onírico",
+  "item.alteredstates.oniric_mushroom_fresh": "Cogumelo onírico fresco",
+  "item.alteredstates.oniric_mushroom_dried": "Cogumelo onírico seco",
+  "item.alteredstates.ground_oniric_mushroom": "Cogumelo onírico moído",
+  "block.alteredstates.mystic_mushroom_crop": "Cultivo de cogumelo místico",
+  "block.alteredstates.oniric_mushroom_crop": "Cultivo de cogumelo onírico",
+  "tooltip.alteredstates.oniric_mushroom_fresh": "Cogumelo fresco, efeito sedativo intenso",
+  "tooltip.alteredstates.oniric_mushroom_dried": "Cogumelo seco, efeito sedativo prolongado",
+  "effect.alteredstates.psychodelia": "Psicodelia",
+  "effect.alteredstates.indica_stoned": "Lescado (Indica)",
+  "effect.alteredstates.sativa_high": "Euforia (Sativa)",
+  "effect.alteredstates.oniric_trance": "Transe Onírico",
+  "block.alteredstates.composted_substrate": "Substrato compostado",
+  "block.alteredstates.enriched_substrate": "Substrato enriquecido"
 }

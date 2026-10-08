@@ -56,30 +56,29 @@ public class RollingTrayBlock extends BaseEntityBlock {
 
                         // Creamos el porro/cigarro base
                         net.minecraft.world.item.Item resultItem = rollable.getRollResult(tray.getWeed());
-                        ItemStack finalProduct = new ItemStack(resultItem);
+                        if (resultItem != null) {
+                            ItemStack finalProduct = new ItemStack(resultItem);
 
-                        // Le pasamos la calidad
-                        int quality = rollable.getQuality(tray.getWeed());
-                        finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), quality);
+                            // Le pasamos la calidad
+                            int quality = rollable.getQuality(tray.getWeed());
+                            finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.QUALITY.get(), quality);
 
-                        // 💉 LE INYECTAMOS QUÉ LLEVA DENTRO
-                        String contentType = rollable.getContentType(tray.getWeed());
-                        finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.CONTENT_TYPE.get(), contentType);
+                            // 💉 LE INYECTAMOS QUÉ LLEVA DENTRO
+                            String contentType = rollable.getContentType(tray.getWeed());
+                            finalProduct.set(com.alteredstates.registry.ModDataComponentTypes.CONTENT_TYPE.get(), contentType);
 
-                        if (!player.getInventory().add(finalProduct)) {
-                            player.drop(finalProduct, false);
+                            if (!player.getInventory().add(finalProduct)) {
+                                player.drop(finalProduct, false);
+                            }
+
+                            tray.clearTray();
+                            level.playSound(player, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.2F);
+                            return InteractionResult.sidedSuccess(level.isClientSide);
                         }
-
-                        tray.clearTray();
-                        level.playSound(player, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.2F);
-                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
                 // Si es un puro
                 else if(!tray.getLeaves().isEmpty()){
-                    //CigarType type = matchCigarRecipe(tray.getLeaves());
-                    //if (type != null) {
-                        // Creamos el porro/cigarro base
                     Item cigar = matchCigarRecipe(tray.getLeaves());
                     if(cigar != null) {
                         net.minecraft.world.item.Item resultItem = cigar;
@@ -96,7 +95,6 @@ public class RollingTrayBlock extends BaseEntityBlock {
                         tray.clearTray();
                         level.playSound(player, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.2F);
                         return InteractionResult.sidedSuccess(level.isClientSide);
-                        // rolar el puro correspondiente
                     }
                 }
             }
@@ -137,13 +135,17 @@ public class RollingTrayBlock extends BaseEntityBlock {
     }
 
     private Item matchCigarRecipe(ArrayList<ItemStack> leaves) {
+        if (leaves == null || leaves.isEmpty()) return null;
+
         int tripa = 0, capa = 0, capote = 0;
+        int totalLeaves = 0;
 
         for (ItemStack stack : leaves) {
             if (!(stack.getItem() instanceof TobaccoDryLeafItem leafItem)) continue;
 
             TobaccoLeafType type = leafItem.getType(stack);
-            if(type != null) {
+            if (type != null) {
+                totalLeaves += stack.getCount();
                 switch (type) {
                     case TRIPA -> tripa += stack.getCount();
                     case CAPA -> capa += stack.getCount();
@@ -152,21 +154,28 @@ public class RollingTrayBlock extends BaseEntityBlock {
             }
         }
 
-        // Comprobamos primero las recetas más restrictivas (Lancero exige premium)
-        if (capote >= 2 && capa >= 1 && tripa == 0) {
+        if (totalLeaves == 0) return null;
+
+        // Comprobamos primero las recetas más restrictivas
+        if (capote >= 2 && capa >= 1) {
             return ModItems.LANCERO_CIGAR.get();
         }
-        if (tripa >= 1 && capa >= 2 && capote == 0) {
+        if (tripa >= 1 && capa >= 2) {
             return ModItems.TORITO_CIGAR.get();
         }
-        if (tripa >= 2 && capote >= 1 && capa == 0) {
+        if (tripa >= 2 && capote >= 1) {
             return ModItems.ESPLENDIDO_CIGAR.get();
         }
         if (tripa >= 1 && capa >= 1 && capote >= 1) {
             return ModItems.DON_JAVIER_CIGAR.get();
         }
 
-        return null; // combinación no válida
+        // Fallbacks para cualquier otra combinación de hojas de tabaco
+        if (capa >= 2) return ModItems.TORITO_CIGAR.get();
+        if (capote >= 2) return ModItems.LANCERO_CIGAR.get();
+        if (tripa >= 2) return ModItems.ESPLENDIDO_CIGAR.get();
+
+        return ModItems.DON_JAVIER_CIGAR.get();
     }
 
     private int getLeavesQuality(ArrayList<ItemStack> leaves){
@@ -178,6 +187,6 @@ public class RollingTrayBlock extends BaseEntityBlock {
             int quality = leafItem.getQuality(stack);
             if (quality < minQuality) minQuality = quality;
         }
-        return minQuality;
+        return minQuality == Integer.MAX_VALUE ? 1 : minQuality;
     }
 }

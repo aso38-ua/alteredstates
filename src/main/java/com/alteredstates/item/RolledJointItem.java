@@ -48,38 +48,37 @@ public class RolledJointItem extends Item implements ISmokableItem {
         int quality = getQuality(stack);
         String content = getContentType(stack);
         int amplifier = quality >= 3 ? 1 : 0;
+        double durationMult = com.alteredstates.Config.JOINT_DURATION_MULTIPLIER.get();
 
         switch (content) {
             case "indica":
-                entity.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, 800 * quality, amplifier));
-                if (quality >= 4) entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 300, 1));
+                entity.addEffect(new MobEffectInstance(ModEffects.INDICA_EFFECT, (int)(800 * quality * durationMult), amplifier));
+                if (quality >= 4) entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int)(300 * durationMult), 1));
                 applyParanoia(entity, quality);
                 break;
 
             case "sativa":
-                entity.addEffect(new MobEffectInstance(ModEffects.SATIVA_EFFECT, 800 * quality, amplifier));
-                if (quality >= 4) entity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 400, 1));
+                entity.addEffect(new MobEffectInstance(ModEffects.SATIVA_EFFECT, (int)(800 * quality * durationMult), amplifier));
+                if (quality >= 4) entity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, (int)(400 * durationMult), 1));
                 applyParanoia(entity, quality);
                 break;
 
             case "mystic_mushroom":
-                entity.addEffect(new MobEffectInstance(ModEffects.PSYCHODELIA, 200 * quality, amplifier));
+                entity.addEffect(new MobEffectInstance(ModEffects.PSYCHODELIA, (int)(200 * quality * durationMult), amplifier));
                 break;
 
             case "oniric_mushroom":
-                // El viaje fumado te deja anclado y súper relajado
-                entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400 * quality, amplifier));
-                entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 400 * quality, amplifier));
-                if (quality >= 3) entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+                entity.addEffect(new MobEffectInstance(ModEffects.ONIRIC_TRANCE, (int)(400 * quality * durationMult), amplifier));
                 break;
 
             default:
-                entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
+                entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, (int)(200 * durationMult), 0));
                 break;
         }
     }
 
     private void applyParanoia(LivingEntity entity, int quality) {
+        if (!com.alteredstates.Config.ALLOW_PARANOIA.get()) return;
         float paranoiaChance = quality <= 1 ? 0.20f : 0.05f;
         if (entity.level().random.nextFloat() < paranoiaChance) {
             int badDuration = 600 + (100 * quality);

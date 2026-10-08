@@ -54,6 +54,11 @@ public class ModEffects {
             MOB_EFFECTS.register("psychodelia",
                     () -> new PsychodeliaEffect(MobEffectCategory.NEUTRAL, 0x8A2BE2));
 
+    // Efecto de la Seta Onírica (Trance Onírico)
+    public static final DeferredHolder<MobEffect, MobEffect> ONIRIC_TRANCE =
+            MOB_EFFECTS.register("oniric_trance",
+                    () -> new com.alteredstates.effect.OniricTranceEffect(MobEffectCategory.NEUTRAL, 0xC41E3A));
+
     // Clase estática interna para el efecto de digestión
     public static class DigestingEffect extends MobEffect {
         public DigestingEffect() {

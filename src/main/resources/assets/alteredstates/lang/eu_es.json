@@ -2,7 +2,6 @@
   "itemGroup.alteredstates": "Egoera Aldatuak",
   "block.alteredstates.example_block": "Adibide Blokea",
   "item.alteredstates.example_item": "Adibide Elementua",
-
   "alteredstates.configuration.title": "Altered States Ezarpenak",
   "alteredstates.configuration.section.alteredstates.common.toml": "Altered States Ezarpenak",
   "alteredstates.configuration.section.alteredstates.common.toml.title": "Altered States Ezarpenak",
@@ -18,7 +17,6 @@
   "quality.alteredstates.premium": "Bikaina",
   "block.alteredstates.indica_crop": "Indica Landaketa",
   "block.alteredstates.drying_rack": "Lehortegia",
-
   "item.alteredstates.indica_seeds": "Indica Haziak",
   "item.alteredstates.indica_buds_fresh": "Indica Kimu Freskoak",
   "item.alteredstates.indica_buds_dry": "Indica Kimu Lehorrak",
@@ -29,7 +27,7 @@
   "jei.alteredstates.improves_quality": "➔ Kalitatea Hobetzen Du",
   "jei.alteredstates.grinding": "Txikitzeko Prozesua",
   "tooltip.alteredstates.rolling_tray.title": "Nola Erabili:",
-  "tooltip.alteredstates.rolling_tray.step1": "1. Egin eskuin-klika erretzeko paperarekin edo tabako-hosto lehorrarekin.",
+  "tooltip.alteredstates.rolling_tray.step1": "1. Eskuineko klika liatzeko paperarekin edo tabako hosto lehorrarekin.",
   "tooltip.alteredstates.rolling_tray.step2": "2. Egin eskuin-klika biltzeko produktuekin.",
   "tooltip.alteredstates.rolling_tray.step3": "3. (Aukerakoa) Gehitu gehigarri bat.",
   "tooltip.alteredstates.rolling_tray.step4": "4. SHIFT + Eskuin-klika esku hutsik biltzeko.",
@@ -92,5 +90,19 @@
   "tooltip.alteredstates.contains": "Edukia",
   "tooltip.alteredstates.mystic_mushroom_fresh": "Perretxiko freskoa, bidaia motz eta zakarra",
   "tooltip.alteredstates.mystic_mushroom_dried": "Perretxiko lehorra, bidaia luzea",
-  "jei.alteredstates.rolling": "Biltze Prozesua"
+  "jei.alteredstates.rolling": "Biltze Prozesua",
+  "item.alteredstates.oniric_mushroom_spores": "Hongo oniriko sporak",
+  "item.alteredstates.oniric_mushroom_fresh": "Hongo oniriko freskoa",
+  "item.alteredstates.oniric_mushroom_dried": "Hongo oniriko lehorra",
+  "item.alteredstates.ground_oniric_mushroom": "Hongo oniriko txikitua",
+  "block.alteredstates.mystic_mushroom_crop": "Hongo mistiko landarea",
+  "block.alteredstates.oniric_mushroom_crop": "Hongo oniriko landarea",
+  "tooltip.alteredstates.oniric_mushroom_fresh": "Hongo freskoa, efektu lasaigarri sakona",
+  "tooltip.alteredstates.oniric_mushroom_dried": "Hongo lehorra, efektu lasaigarri luzea",
+  "effect.alteredstates.psychodelia": "Psikodelia",
+  "effect.alteredstates.indica_stoned": "Komatuta (Indika)",
+  "effect.alteredstates.sativa_high": "Goian (Sativa)",
+  "effect.alteredstates.oniric_trance": "Transitzio Onirikoa",
+  "block.alteredstates.composted_substrate": "Konpostatutako substratua",
+  "block.alteredstates.enriched_substrate": "Aberastutako substratua"
 }

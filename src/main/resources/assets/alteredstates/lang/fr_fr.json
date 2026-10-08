@@ -2,7 +2,6 @@
   "itemGroup.alteredstates": "États Modifiés",
   "block.alteredstates.example_block": "Bloc d'exemple",
   "item.alteredstates.example_item": "Objet d'exemple",
-
   "alteredstates.configuration.title": "Configurations de Altered States",
   "alteredstates.configuration.section.alteredstates.common.toml": "Configurations de Altered States",
   "alteredstates.configuration.section.alteredstates.common.toml.title": "Configurations de Altered States",
@@ -18,7 +17,6 @@
   "quality.alteredstates.premium": "Premium",
   "block.alteredstates.indica_crop": "Culture d'indica",
   "block.alteredstates.drying_rack": "Séchoir",
-
   "item.alteredstates.indica_seeds": "Graines d'indica",
   "item.alteredstates.indica_buds_fresh": "Têtes d'indica fraîches",
   "item.alteredstates.indica_buds_dry": "Têtes d'indica séchées",
@@ -29,7 +27,7 @@
   "jei.alteredstates.improves_quality": "➔ Améliore la qualité",
   "jei.alteredstates.grinding": "Broyage",
   "tooltip.alteredstates.rolling_tray.title": "Mode d'emploi :",
-  "tooltip.alteredstates.rolling_tray.step1": "1. Clic droit avec une feuille à rouler ou une feuille de tabac séchée.",
+  "tooltip.alteredstates.rolling_tray.step1": "1. Clic droit avec feuille à rouler (joints) ou feuille de tabac séchée (cigares).",
   "tooltip.alteredstates.rolling_tray.step2": "2. Clic droit avec les ingrédients à rouler.",
   "tooltip.alteredstates.rolling_tray.step3": "3. (Optionnel) Ajouter un additif.",
   "tooltip.alteredstates.rolling_tray.step4": "4. MAJ + Clic droit à main nue pour rouler.",
@@ -92,5 +90,19 @@
   "tooltip.alteredstates.contains": "Contient",
   "tooltip.alteredstates.mystic_mushroom_fresh": "Champignon frais, trip court et brut",
   "tooltip.alteredstates.mystic_mushroom_dried": "Champignon séché, trip prolongé",
-  "jei.alteredstates.rolling": "Roulage"
+  "jei.alteredstates.rolling": "Roulage",
+  "item.alteredstates.oniric_mushroom_spores": "Spores de champignon onirique",
+  "item.alteredstates.oniric_mushroom_fresh": "Champignon onirique frais",
+  "item.alteredstates.oniric_mushroom_dried": "Champignon onirique séché",
+  "item.alteredstates.ground_oniric_mushroom": "Champignon onirique moulu",
+  "block.alteredstates.mystic_mushroom_crop": "Culture de champignon mystique",
+  "block.alteredstates.oniric_mushroom_crop": "Culture de champignon onirique",
+  "tooltip.alteredstates.oniric_mushroom_fresh": "Champignon frais, effet sédatif intense",
+  "tooltip.alteredstates.oniric_mushroom_dried": "Champignon séché, effet sédatif prolongé",
+  "effect.alteredstates.psychodelia": "Psychédélisme",
+  "effect.alteredstates.indica_stoned": "Défoncé (Indica)",
+  "effect.alteredstates.sativa_high": "Planant (Sativa)",
+  "effect.alteredstates.oniric_trance": "Trance Onirique",
+  "block.alteredstates.composted_substrate": "Substrat composté",
+  "block.alteredstates.enriched_substrate": "Substrat enrichi"
 }

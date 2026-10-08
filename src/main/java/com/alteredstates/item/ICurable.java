@@ -3,13 +3,14 @@ package com.alteredstates.item;
 import net.minecraft.world.item.ItemStack;
 
 public interface ICurable extends IProduct {
-    // Cuánto tarda en alcanzar la calidad máxima (Premium)
+    // Cuánto tarda en alcanzar el siguiente nivel de calidad en el tarro de curado
     default int getCuringTime(ItemStack stack) {
-        // para darle más realismo, o dejarlo simple devolviendo un número fijo.
         int quality = getQuality(stack);
-        int dryingTime = 4000 + (quality * 600);
-        if(quality<3){ dryingTime =+ 1200; } //La ultima calidad
-        return dryingTime;
-        return com.alteredstates.Config.CURING_TIME.get();
+        int baseTime = com.alteredstates.Config.CURING_TIME.get();
+        int qualityAdd = (quality * 600);
+        if (quality < 3) {
+            qualityAdd += 1200;
+        }
+        return baseTime + qualityAdd;
     }
 }

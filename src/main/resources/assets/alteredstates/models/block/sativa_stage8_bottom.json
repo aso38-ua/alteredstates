@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "alteredstates:block/sunken_cross",
   "render_type": "minecraft:cutout",
   "textures": {
     "cross": "alteredstates:block/sativa_stage8_bottom"

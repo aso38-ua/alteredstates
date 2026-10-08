@@ -2,7 +2,6 @@
   "itemGroup.alteredstates": "意識狀態",
   "block.alteredstates.example_block": "範例方塊",
   "item.alteredstates.example_item": "範例物品",
-
   "alteredstates.configuration.title": "Altered States 配置",
   "alteredstates.configuration.section.alteredstates.common.toml": "Altered States 配置",
   "alteredstates.configuration.section.alteredstates.common.toml.title": "Altered States 配置",
@@ -18,7 +17,6 @@
   "quality.alteredstates.premium": "極品",
   "block.alteredstates.indica_crop": "因迪卡作物",
   "block.alteredstates.drying_rack": "晾曬架",
-
   "item.alteredstates.indica_seeds": "因迪卡種子",
   "item.alteredstates.indica_buds_fresh": "新鮮的因迪卡花蕾",
   "item.alteredstates.indica_buds_dry": "乾燥的因迪卡花蕾",
@@ -29,7 +27,7 @@
   "jei.alteredstates.improves_quality": "➔ 提升品質",
   "jei.alteredstates.grinding": "研磨處理",
   "tooltip.alteredstates.rolling_tray.title": "使用方法:",
-  "tooltip.alteredstates.rolling_tray.step1": "1. 手持捲菸紙或乾燥菸葉右鍵點擊。",
+  "tooltip.alteredstates.rolling_tray.step1": "1. 使用卷煙紙（卷煙/大麻煙）或乾燥煙葉（雪茄）右鍵點擊。",
   "tooltip.alteredstates.rolling_tray.step2": "2. 手持欲捲製的物品右鍵點擊。",
   "tooltip.alteredstates.rolling_tray.step3": "3. (可選) 添加額外添加劑。",
   "tooltip.alteredstates.rolling_tray.step4": "4. SHIFT + 空手右鍵點擊進行捲製。",
@@ -92,5 +90,19 @@
   "tooltip.alteredstates.contains": "包含",
   "tooltip.alteredstates.mystic_mushroom_fresh": "新鮮蘑菇，短促而狂烈的體驗",
   "tooltip.alteredstates.mystic_mushroom_dried": "乾燥蘑菇，持久平穩的體驗",
-  "jei.alteredstates.rolling": "捲製過程"
+  "jei.alteredstates.rolling": "捲製過程",
+  "item.alteredstates.oniric_mushroom_spores": "夢幻蘑菇孢子",
+  "item.alteredstates.oniric_mushroom_fresh": "新鮮夢幻蘑菇",
+  "item.alteredstates.oniric_mushroom_dried": "乾燥夢幻蘑菇",
+  "item.alteredstates.ground_oniric_mushroom": "研磨夢幻蘑菇",
+  "block.alteredstates.mystic_mushroom_crop": "神秘蘑菇作物",
+  "block.alteredstates.oniric_mushroom_crop": "夢幻蘑菇作物",
+  "tooltip.alteredstates.oniric_mushroom_fresh": "新鮮蘑菇，強效鎮靜體驗",
+  "tooltip.alteredstates.oniric_mushroom_dried": "乾燥蘑菇，延長鎮靜體驗",
+  "effect.alteredstates.psychodelia": "迷幻",
+  "effect.alteredstates.indica_stoned": "沉醉（Indica）",
+  "effect.alteredstates.sativa_high": "興奮（Sativa）",
+  "effect.alteredstates.oniric_trance": "夢幻出神",
+  "block.alteredstates.composted_substrate": "堆肥基質",
+  "block.alteredstates.enriched_substrate": "富集基質"
 }
