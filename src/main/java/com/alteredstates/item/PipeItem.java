@@ -1,7 +1,9 @@
 package com.alteredstates.item;
 
 import com.alteredstates.registry.ModDataComponentTypes;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -132,6 +134,9 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
 
     @Override
     public ItemStack onSmokeFinished(ItemStack stack, Level level, LivingEntity entity) {
+        if (entity instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
+        }
         if (!level.isClientSide) {
             level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.CANDLE_EXTINGUISH, SoundSource.PLAYERS, 0.8F, 1.0F);

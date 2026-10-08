@@ -1,0 +1,12 @@
+{
+  "display": {
+    "icon": { "id": "alteredstates:cannabis_trimming" },
+    "title": { "translate": "advancement.alteredstates.root.title" },
+    "description": { "translate": "advancement.alteredstates.root.desc" },
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": { "tick": { "trigger": "minecraft:tick" } },
+  "requirements": [["tick"]]
+}

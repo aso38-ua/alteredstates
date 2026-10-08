@@ -1,5 +1,7 @@
 package com.alteredstates.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,6 +47,10 @@ public class HorseSemenItem extends Item {
     // Lógica al terminar de beber
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity) {
+        if (entity instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
+        }
+
         ItemStack result = super.finishUsingItem(stack, world, entity);
 
         if (!world.isClientSide && entity instanceof Player player) {
