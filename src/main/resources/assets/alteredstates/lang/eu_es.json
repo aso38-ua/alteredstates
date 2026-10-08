@@ -104,5 +104,6 @@
   "effect.alteredstates.sativa_high": "Goian (Sativa)",
   "effect.alteredstates.oniric_trance": "Transitzio Onirikoa",
   "block.alteredstates.composted_substrate": "Konpostatutako substratua",
-  "block.alteredstates.enriched_substrate": "Aberastutako substratua"
+  "block.alteredstates.enriched_substrate": "Aberastutako substratua",
+  "tooltip.alteredstates.pipe.empty": "Hutsa"
 }

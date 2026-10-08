@@ -104,5 +104,6 @@
   "effect.alteredstates.sativa_high": "Euforia (Sativa)",
   "effect.alteredstates.oniric_trance": "Transe Onírico",
   "block.alteredstates.composted_substrate": "Substrato compostado",
-  "block.alteredstates.enriched_substrate": "Substrato enriquecido"
+  "block.alteredstates.enriched_substrate": "Substrato enriquecido",
+  "tooltip.alteredstates.pipe.empty": "Vazio"
 }

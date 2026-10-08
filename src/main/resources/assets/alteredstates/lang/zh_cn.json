@@ -104,5 +104,6 @@
   "effect.alteredstates.sativa_high": "兴奋（Sativa）",
   "effect.alteredstates.oniric_trance": "梦幻出神",
   "block.alteredstates.composted_substrate": "堆肥基质",
-  "block.alteredstates.enriched_substrate": "富集基质"
+  "block.alteredstates.enriched_substrate": "富集基质",
+  "tooltip.alteredstates.pipe.empty": "空的"
 }

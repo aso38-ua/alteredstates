@@ -1,8 +1,10 @@
 package com.alteredstates.item;
 
 import com.alteredstates.registry.ModDataComponentTypes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
@@ -158,16 +161,44 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
         return stack;
     }
 
-    // 🔍 ASUNCIÓN: IPipable expone "int getQuality(ItemStack stack)". Si en tu IPipable
-    // se llama distinto (o si ISmokableItem no declara este método), ajusta la firma/@Override.
-    /*@Override
-    public int getQuality(ItemStack stack) {
+    // ─── HOVER TEXT (TOOLTIP DINÁMICO) ──────────────────────────────────────
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         ItemStack content = getContent(stack);
-        if (content.getItem() instanceof IPipable pipable) {
-            return pipable.getQuality(content);
+
+        if (content.isEmpty()) {
+            // Pipa vacía
+            tooltipComponents.add(Component.translatable("tooltip.alteredstates.pipe.empty").withStyle(ChatFormatting.GRAY));
+            return;
         }
-        return 0;
-    }*/
+
+        // 🌿 Mostramos qué lleva dentro
+        if (content.getItem() instanceof ICannabisProduct cannabisProduct) {
+            // Es marihuana → mostramos la cepa (Indica / Sativa)
+            CannabisStrain strain = cannabisProduct.getStrain(content);
+            Component strainName = strain == CannabisStrain.INDICA
+                    ? Component.literal("Indica").withStyle(ChatFormatting.DARK_GREEN)
+                    : Component.literal("Sativa").withStyle(ChatFormatting.GREEN);
+            tooltipComponents.add(Component.translatable("tooltip.alteredstates.contains").append(": ").append(strainName));
+        } else {
+            // Es tabaco u otro item → usamos el nombre del item
+            tooltipComponents.add(Component.translatable("tooltip.alteredstates.contains").append(": ")
+                    .append(content.getHoverName().copy().withStyle(ChatFormatting.YELLOW)));
+        }
+
+        // ⭐ Mostramos la calidad
+        int qualityLevel;
+        if (content.getItem() instanceof IProduct product) {
+            qualityLevel = product.getQuality(content);
+        } else {
+            qualityLevel = content.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+        }
+
+        Quality quality = Quality.byLevel(qualityLevel);
+        tooltipComponents.add(Component.translatable("tooltip.alteredstates.quality")
+                .append(quality.getTranslatedName()));
+    }
 
     private ItemStack getContent(ItemStack stack){
         ItemContainerContents contents = stack.getOrDefault(ModDataComponentTypes.PIPE_CONTENT.get(), ItemContainerContents.EMPTY);

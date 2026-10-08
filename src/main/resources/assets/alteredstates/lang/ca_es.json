@@ -104,5 +104,6 @@
   "effect.alteredstates.sativa_high": "Subidó (Sativa)",
   "effect.alteredstates.oniric_trance": "Tràngol Oníric",
   "block.alteredstates.composted_substrate": "Substrat compostat",
-  "block.alteredstates.enriched_substrate": "Substrat enriquit"
+  "block.alteredstates.enriched_substrate": "Substrat enriquit",
+  "tooltip.alteredstates.pipe.empty": "Buida"
 }

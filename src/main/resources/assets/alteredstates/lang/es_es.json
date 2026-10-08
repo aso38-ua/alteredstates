@@ -114,5 +114,6 @@
 
   "advancement.alteredstates.vicious.title": "Vicioso",
   "advancement.alteredstates.vicious.desc": "Fuma hasta la muerte",
-  "death.attack.alteredstates.cigarette": "%1$s murió por causas naturales"
+  "death.attack.alteredstates.cigarette": "%1$s murió por causas naturales",
+  "tooltip.alteredstates.pipe.empty": "Vacía"
 }

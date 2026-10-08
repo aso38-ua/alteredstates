@@ -192,8 +192,6 @@ public class ModItems {
             () -> new OniricMushroomItem(new Item.Properties()));
 
     // ===================== EXTRAS ====================
-    public static final DeferredItem<Item> HORSE_SEMEN = ITEMS.register("horse_semen",
-            () -> new HorseSemenItem(new Item.Properties()));
   
     public static final DeferredItem<Item> ONIRIC_MUSHROOM_DRIED = ITEMS.register("oniric_mushroom_dried",
             () -> new OniricMushroomDriedItem(new Item.Properties()));
@@ -203,4 +201,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> ROLLED_JOINT = ITEMS.register("rolled_joint",
             () -> new RolledJointItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> HORSE_SEMEN = ITEMS.register("horse_semen",
+            () -> new HorseSemenItem(new Item.Properties()));
 }

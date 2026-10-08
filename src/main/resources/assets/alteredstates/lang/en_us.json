@@ -118,6 +118,7 @@
   "advancement.alteredstates.vicious.title": "Vicious",
   "advancement.alteredstates.vicious.desc": "Smoke till dead",
   "death.attack.alteredstates.cigarette": "%1$s died of natural causes",
+  "tooltip.alteredstates.pipe.empty": "Empty",
 
   "advancement.alteredstates.very_eleganto.title": "Very eleganto",
   "advancement.alteredstates.very_eleganto.desc": "Get the WISDOM PIPE",

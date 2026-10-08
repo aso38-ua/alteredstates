@@ -104,5 +104,6 @@
   "effect.alteredstates.sativa_high": "Planant (Sativa)",
   "effect.alteredstates.oniric_trance": "Trance Onirique",
   "block.alteredstates.composted_substrate": "Substrat composté",
-  "block.alteredstates.enriched_substrate": "Substrat enrichi"
+  "block.alteredstates.enriched_substrate": "Substrat enrichi",
+  "tooltip.alteredstates.pipe.empty": "Vide"
 }
