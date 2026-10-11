@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:mystic_mushroom_dried"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.lucy_in_the_sky.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.lucy_in_the_sky.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:mystic_shroom",
+  "criteria": {
+    "psychodelic": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:psychodelia": {}
+        }
+      }
+    }
+  }
+}

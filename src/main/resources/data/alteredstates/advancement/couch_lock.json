@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:indica_buds_dry"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.couch_lock.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.couch_lock.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:indica_grower",
+  "criteria": {
+    "stoned": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:indica_stoned": {}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:oniric_mushroom_dried"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.inception.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.inception.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:oniric_shroom",
+  "criteria": {
+    "trance": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:oniric_trance": {}
+        }
+      }
+    }
+  }
+}
