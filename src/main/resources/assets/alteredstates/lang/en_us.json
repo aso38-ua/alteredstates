@@ -141,4 +141,24 @@
   "advancements.alteredstates.paranoia_trip.description": "Survive an acute bout of paranoia after excessive consumption.",
   "advancements.alteredstates.master_shaman.title": "Transcendental Shaman",
   "advancements.alteredstates.master_shaman.description": "Experience all 4 altered states of consciousness: Indica, Sativa, Psychedelia, and Oniric Trance."
+
+  "advancement.alteredstates.root.title": "Altered States",
+  "advancement.alteredstates.root.desc": "Bienvenido al vicio",
+
+  "advancement.alteredstates.your_mother.title": "Your mother would be proud",
+  "advancement.alteredstates.your_mother.desc": "Get a horse to ejaculate into a bucket",
+
+  "advancement.alteredstates.your_mother2.title": "Your mother would be super proud",
+  "advancement.alteredstates.your_mother2.desc": "Swallow one bucket full of horse semen",
+
+  "advancement.alteredstates.vicious.title": "Vicious",
+  "advancement.alteredstates.vicious.desc": "Smoke till dead",
+  "death.attack.alteredstates.cigarette": "%1$s died of natural causes",
+  "tooltip.alteredstates.pipe.empty": "Empty",
+
+  "advancement.alteredstates.very_eleganto.title": "Very eleganto",
+  "advancement.alteredstates.very_eleganto.desc": "Get the WISDOM PIPE",
+
+  "advancement.alteredstates.youre_a_man.title": "You're a man",
+  "advancement.alteredstates.youre_a_man.desc": "If you smoke you must be a man"
 }
