@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:curing_jar"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.curing_master.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.curing_master.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_curing_jar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:curing_jar"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -14,16 +14,24 @@ public class ClientEffectHandler {
 
         if (mc.player == null || mc.gameRenderer == null) return;
 
-        boolean hasPsychodelia = mc.player.hasEffect(ModEffects.PSYCHODELIA);
+        if (!com.alteredstates.Config.ENABLE_SCREEN_SHADERS.get()) {
+            if (isTripShaderActive) {
+                mc.gameRenderer.shutdownEffect();
+                isTripShaderActive = false;
+            }
+            return;
+        }
 
-        if (hasPsychodelia && !isTripShaderActive) {
+        boolean hasTripEffect = mc.player.hasEffect(ModEffects.PSYCHODELIA) || mc.player.hasEffect(ModEffects.ONIRIC_TRANCE);
+
+        if (hasTripEffect && !isTripShaderActive) {
             ResourceLocation shaderPath = ResourceLocation.fromNamespaceAndPath("alteredstates", "shaders/post/viaje.json");
             try {
                 mc.gameRenderer.loadEffect(shaderPath);
                 isTripShaderActive = true;
             } catch (Exception ignored) {}
 
-        } else if (!hasPsychodelia && isTripShaderActive) {
+        } else if (!hasTripEffect && isTripShaderActive) {
             mc.gameRenderer.shutdownEffect();
             isTripShaderActive = false;
         }

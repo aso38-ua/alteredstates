@@ -1,14 +1,10 @@
 package com.alteredstates.item;
 
-import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModItems;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class TobaccoDryLeafItem extends TobccoLeafItem implements ICurable, IGrindable, IRollable {
-
-    TobaccoLeafType type;
+public class TobaccoDryLeafItem extends TobccoLeafItem implements ICurable, IGrindable {
 
     public TobaccoDryLeafItem(Properties properties, TobaccoLeafType type) {
         super(properties, type);
@@ -20,18 +16,6 @@ public class TobaccoDryLeafItem extends TobccoLeafItem implements ICurable, IGri
         return ModItems.ROLLING_TOBACCO.get();
     }
 
-    @Override
-    public int getCuringTime(ItemStack stack) {
-        return 6000; // Tiempo que tarda en el tarro en subir calidad (5m)
-    }
 
-    @Override
-    public Item getRollResult(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public String getContentType(ItemStack stack) {
-        return "";
-    }
 }
+

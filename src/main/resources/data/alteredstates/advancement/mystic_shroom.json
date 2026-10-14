@@ -1,0 +1,46 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:mystic_mushroom_fresh"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.mystic_shroom.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.mystic_shroom.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:substrate_master",
+  "criteria": {
+    "has_mystic_fresh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:mystic_mushroom_fresh"
+          }
+        ]
+      }
+    },
+    "has_mystic_spores": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:mystic_mushroom_spores"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mystic_fresh",
+      "has_mystic_spores"
+    ]
+  ]
+}

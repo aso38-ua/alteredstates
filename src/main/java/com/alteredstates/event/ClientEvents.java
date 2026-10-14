@@ -6,8 +6,10 @@ import com.alteredstates.client.render.BongRenderer;
 import com.alteredstates.item.CigaretteItem;
 import com.alteredstates.registry.ModBlockEntities;
 import com.alteredstates.registry.ModItems;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,6 +19,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import com.alteredstates.registry.ModDataComponentTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 @EventBusSubscriber(modid = "alteredstates", value = Dist.CLIENT)public class ClientEvents {
@@ -67,5 +70,17 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
                     }
             );
         });
+    }
+
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player
+                && event.getSource().is(CigaretteItem.CIGARETTE_DAMAGE)) {
+            AdvancementHolder adv = player.server.getAdvancements()
+                    .get(ResourceLocation.fromNamespaceAndPath("alteredstates", "vicious"));
+            if (adv != null) {
+                player.getAdvancements().award(adv, "death");
+            }
+        }
     }
 }

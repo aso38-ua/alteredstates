@@ -28,13 +28,8 @@ public class OniricMushroomDriedItem extends Item implements ICurable, IGrindabl
         int durationTicks = (quality * 60) * 20;
         int amplifier = Math.max(0, quality - 2);
 
-        // Si tienes un efecto ONIRICA creado, úsalo aquí.
-        // Si no, simulamos el viaje sedante y "chill" con efectos vanilla.
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, durationTicks, amplifier)); // Te relaja los músculos
-        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, durationTicks, amplifier)); // No sientes el dolor
-        entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, durationTicks / 2, 0)); // Te cura pasivamente
-
-        // Opcional: añadir tu efecto ModEffects.ONIRICA_EFFECT si existe.
+        entity.addEffect(new MobEffectInstance(ModEffects.ONIRIC_TRANCE, durationTicks, amplifier));
+        entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 160, 0));
     }
 
     @Override
@@ -44,8 +39,7 @@ public class OniricMushroomDriedItem extends Item implements ICurable, IGrindabl
         return result;
     }
 
-    @Override
-    public int getCuringTime(ItemStack stack) { return com.alteredstates.Config.CURING_TIME.get(); }
+
 
     @Override
     public Item getGrindResult(ItemStack stack) { return com.alteredstates.registry.ModItems.ONIRIC_MUSHROOM_GROUND.get(); }

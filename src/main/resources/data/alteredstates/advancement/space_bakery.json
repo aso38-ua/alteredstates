@@ -1,0 +1,44 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:brownie"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.space_bakery.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.space_bakery.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_brownie": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:brownie"
+          }
+        ]
+      }
+    },
+    "ate_brownie": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "alteredstates:brownie"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brownie",
+      "ate_brownie"
+    ]
+  ]
+}

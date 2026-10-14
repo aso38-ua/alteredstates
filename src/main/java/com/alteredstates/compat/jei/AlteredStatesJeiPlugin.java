@@ -115,9 +115,9 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
             @Override public IDrawable getBackground() { return background; }
             @Override public IDrawable getIcon() { return iconRollingTray; }
             @Override public void setRecipe(IRecipeLayoutBuilder builder, RollingRecipeWrapper recipe, IFocusGroup focuses) {
-                builder.addSlot(RecipeIngredientRole.INPUT, 5, 8).addItemStack(recipe.paper());
-                builder.addSlot(RecipeIngredientRole.INPUT, 25, 8).addItemStack(recipe.weed());
-                builder.addSlot(RecipeIngredientRole.INPUT, 45, 8).addItemStack(recipe.additive());
+                builder.addSlot(RecipeIngredientRole.INPUT, 5, 8).addItemStack(recipe.slot1());
+                builder.addSlot(RecipeIngredientRole.INPUT, 25, 8).addItemStack(recipe.slot2());
+                builder.addSlot(RecipeIngredientRole.INPUT, 45, 8).addItemStack(recipe.slot3());
                 builder.addSlot(RecipeIngredientRole.OUTPUT, 110, 8).addItemStack(recipe.output());
             }
             @Override public void draw(RollingRecipeWrapper r, IRecipeSlotsView v, GuiGraphics g, double x, double y) {
@@ -149,51 +149,136 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         // --- RECETAS DE SECADO ---
         List<DryingRecipeWrapper> dryingRecipes = new ArrayList<>();
+        // Cannabis
         ItemStack indicaDry = new ItemStack(ModItems.INDICA_BUDS_DRY.get()); indicaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
         dryingRecipes.add(new DryingRecipeWrapper(new ItemStack(ModItems.INDICA_BUDS_FRESH.get()), indicaDry));
         ItemStack sativaDry = new ItemStack(ModItems.SATIVA_BUDS_DRY.get()); sativaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
         dryingRecipes.add(new DryingRecipeWrapper(new ItemStack(ModItems.SATIVA_BUDS_FRESH.get()), sativaDry));
+
+        // Tabaco: Capote, Capa y Tripa frescas -> secas
+        ItemStack capoteDry = new ItemStack(ModItems.CAPOTE_DRY.get()); capoteDry.set(ModDataComponentTypes.QUALITY.get(), 1);
+        dryingRecipes.add(new DryingRecipeWrapper(new ItemStack(ModItems.CAPOTE_FRESH.get()), capoteDry));
+        ItemStack capaDry = new ItemStack(ModItems.CAPA_DRY.get()); capaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
+        dryingRecipes.add(new DryingRecipeWrapper(new ItemStack(ModItems.CAPA_FRESH.get()), capaDry));
+        ItemStack tripaDry = new ItemStack(ModItems.TRIPA_DRY.get()); tripaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
+        dryingRecipes.add(new DryingRecipeWrapper(new ItemStack(ModItems.TRIPA_FRESH.get()), tripaDry));
+
         registration.addRecipes(DRYING_TYPE, dryingRecipes);
 
         // --- RECETAS DE CURADO ---
         List<CuringRecipeWrapper> curingRecipes = new ArrayList<>();
+        // Cannabis
         ItemStack indicaInCure = new ItemStack(ModItems.INDICA_BUDS_DRY.get()); indicaInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
         ItemStack indicaOutCure = new ItemStack(ModItems.INDICA_BUDS_DRY.get()); indicaOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
         curingRecipes.add(new CuringRecipeWrapper(indicaInCure, indicaOutCure));
         ItemStack sativaInCure = new ItemStack(ModItems.SATIVA_BUDS_DRY.get()); sativaInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
         ItemStack sativaOutCure = new ItemStack(ModItems.SATIVA_BUDS_DRY.get()); sativaOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
         curingRecipes.add(new CuringRecipeWrapper(sativaInCure, sativaOutCure));
+
+        // Tabaco: hojas secas en bote de curado (aumentan calidad)
+        ItemStack capoteInCure = new ItemStack(ModItems.CAPOTE_DRY.get()); capoteInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack capoteOutCure = new ItemStack(ModItems.CAPOTE_DRY.get()); capoteOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
+        curingRecipes.add(new CuringRecipeWrapper(capoteInCure, capoteOutCure));
+
+        ItemStack capaInCure = new ItemStack(ModItems.CAPA_DRY.get()); capaInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack capaOutCure = new ItemStack(ModItems.CAPA_DRY.get()); capaOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
+        curingRecipes.add(new CuringRecipeWrapper(capaInCure, capaOutCure));
+
+        ItemStack tripaInCure = new ItemStack(ModItems.TRIPA_DRY.get()); tripaInCure.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack tripaOutCure = new ItemStack(ModItems.TRIPA_DRY.get()); tripaOutCure.set(ModDataComponentTypes.QUALITY.get(), 2);
+        curingRecipes.add(new CuringRecipeWrapper(tripaInCure, tripaOutCure));
+
         registration.addRecipes(CURING_TYPE, curingRecipes);
 
         // --- RECETAS DE GRINDER ---
         List<GrindingRecipeWrapper> grindingRecipes = new ArrayList<>();
+        // Cannabis
         ItemStack indicaOutGrind = new ItemStack(ModItems.INDICA_GROUND.get()); indicaOutGrind.set(ModDataComponentTypes.QUALITY.get(), 1);
         grindingRecipes.add(new GrindingRecipeWrapper(new ItemStack(ModItems.INDICA_BUDS_DRY.get()), indicaOutGrind));
         ItemStack sativaOutGrind = new ItemStack(ModItems.SATIVA_GROUND.get()); sativaOutGrind.set(ModDataComponentTypes.QUALITY.get(), 1);
         grindingRecipes.add(new GrindingRecipeWrapper(new ItemStack(ModItems.SATIVA_BUDS_DRY.get()), sativaOutGrind));
+
+        // Tabaco: picar hojas secas en el grinder produce tabaco de liar
+        ItemStack rollingTobaccoOut = new ItemStack(ModItems.ROLLING_TOBACCO.get()); rollingTobaccoOut.set(ModDataComponentTypes.QUALITY.get(), 1);
+        grindingRecipes.add(new GrindingRecipeWrapper(new ItemStack(ModItems.CAPOTE_DRY.get()), rollingTobaccoOut));
+        grindingRecipes.add(new GrindingRecipeWrapper(new ItemStack(ModItems.CAPA_DRY.get()), rollingTobaccoOut));
+        grindingRecipes.add(new GrindingRecipeWrapper(new ItemStack(ModItems.TRIPA_DRY.get()), rollingTobaccoOut));
+
         registration.addRecipes(GRINDING_TYPE, grindingRecipes);
 
         // --- RECETAS DE BANDEJA DE LIAR ---
         List<RollingRecipeWrapper> rollingRecipes = new ArrayList<>();
         ItemStack vanillaPaper = new ItemStack(Items.PAPER);
 
-        // Indica
+        // Cannabis: Porros
         ItemStack iGround = new ItemStack(ModItems.INDICA_GROUND.get()); iGround.set(ModDataComponentTypes.QUALITY.get(), 1);
         ItemStack iJoint = new ItemStack(ModItems.ROLLED_JOINT.get());
         iJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
         iJoint.set(ModDataComponentTypes.CONTENT_TYPE.get(), "indica");
         rollingRecipes.add(new RollingRecipeWrapper(vanillaPaper, iGround, ItemStack.EMPTY, iJoint));
 
-        // Sativa
         ItemStack sGround = new ItemStack(ModItems.SATIVA_GROUND.get()); sGround.set(ModDataComponentTypes.QUALITY.get(), 1);
         ItemStack sJoint = new ItemStack(ModItems.ROLLED_JOINT.get());
         sJoint.set(ModDataComponentTypes.QUALITY.get(), 1);
         sJoint.set(ModDataComponentTypes.CONTENT_TYPE.get(), "sativa");
         rollingRecipes.add(new RollingRecipeWrapper(vanillaPaper, sGround, ItemStack.EMPTY, sJoint));
 
+        // Tabaco: Cigarrillo (Papel + Tabaco de liar)
+        ItemStack rollTobaccoIn = new ItemStack(ModItems.ROLLING_TOBACCO.get());
+        rollTobaccoIn.set(ModDataComponentTypes.QUALITY.get(), 1);
+        ItemStack cigarette = new ItemStack(ModItems.CIGARETTE.get());
+        cigarette.set(ModDataComponentTypes.QUALITY.get(), 1);
+        cigarette.set(ModDataComponentTypes.CONTENT_TYPE.get(), "Rolling tobacco");
+        rollingRecipes.add(new RollingRecipeWrapper(vanillaPaper, rollTobaccoIn, ItemStack.EMPTY, cigarette));
+
+        // Tabaco: Puros (3 hojas secas)
+        // 1. Lancero: 2x Capote + 1x Capa
+        ItemStack lanceroCigar = new ItemStack(ModItems.LANCERO_CIGAR.get());
+        lanceroCigar.set(ModDataComponentTypes.QUALITY.get(), 1);
+        rollingRecipes.add(new RollingRecipeWrapper(
+                new ItemStack(ModItems.CAPOTE_DRY.get()),
+                new ItemStack(ModItems.CAPOTE_DRY.get()),
+                new ItemStack(ModItems.CAPA_DRY.get()),
+                lanceroCigar
+        ));
+
+        // 2. Torito: 2x Capa + 1x Tripa
+        ItemStack toritoCigar = new ItemStack(ModItems.TORITO_CIGAR.get());
+        toritoCigar.set(ModDataComponentTypes.QUALITY.get(), 1);
+        rollingRecipes.add(new RollingRecipeWrapper(
+                new ItemStack(ModItems.CAPA_DRY.get()),
+                new ItemStack(ModItems.CAPA_DRY.get()),
+                new ItemStack(ModItems.TRIPA_DRY.get()),
+                toritoCigar
+        ));
+
+        // 3. Espléndido: 2x Tripa + 1x Capote
+        ItemStack esplendidoCigar = new ItemStack(ModItems.ESPLENDIDO_CIGAR.get());
+        esplendidoCigar.set(ModDataComponentTypes.QUALITY.get(), 1);
+        rollingRecipes.add(new RollingRecipeWrapper(
+                new ItemStack(ModItems.TRIPA_DRY.get()),
+                new ItemStack(ModItems.TRIPA_DRY.get()),
+                new ItemStack(ModItems.CAPOTE_DRY.get()),
+                esplendidoCigar
+        ));
+
+        // 4. Don Javier: 1x Capa + 1x Capote + 1x Tripa
+        ItemStack donJavierCigar = new ItemStack(ModItems.DON_JAVIER_CIGAR.get());
+        donJavierCigar.set(ModDataComponentTypes.QUALITY.get(), 1);
+        rollingRecipes.add(new RollingRecipeWrapper(
+                new ItemStack(ModItems.CAPA_DRY.get()),
+                new ItemStack(ModItems.CAPOTE_DRY.get()),
+                new ItemStack(ModItems.TRIPA_DRY.get()),
+                donJavierCigar
+        ));
+
+        registration.addRecipes(ROLLING_TYPE, rollingRecipes);
+
+        // --- RECETAS DE BONG ---
         List<BongRecipeWrapper> bongRecipes = new ArrayList<>();
         bongRecipes.add(new BongRecipeWrapper(new ItemStack(ModItems.INDICA_GROUND.get())));
         bongRecipes.add(new BongRecipeWrapper(new ItemStack(ModItems.SATIVA_GROUND.get())));
+        bongRecipes.add(new BongRecipeWrapper(new ItemStack(ModItems.ROLLING_TOBACCO.get())));
         registration.addRecipes(BONG_TYPE, bongRecipes);
 
         // --- INFORMACIÓN DE LA MANTEQUILLA CANÁBICA ---
@@ -255,8 +340,6 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
                 new RecipeHolder<>(ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, "jei_visual_cannabutter_sativa"), fakeSativaButterRecipe),
                 new RecipeHolder<>(ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, "jei_visual_brownie"), fakeBrownieRecipe)
         ));
-
-        registration.addRecipes(ROLLING_TYPE, rollingRecipes);
     }
 
     @Override
@@ -271,6 +354,10 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
     public record DryingRecipeWrapper(ItemStack input, ItemStack output) {}
     public record CuringRecipeWrapper(ItemStack input, ItemStack output) {}
     public record GrindingRecipeWrapper(ItemStack input, ItemStack output) {}
-    public record RollingRecipeWrapper(ItemStack paper, ItemStack weed, ItemStack additive, ItemStack output) {}
+    public record RollingRecipeWrapper(ItemStack slot1, ItemStack slot2, ItemStack slot3, ItemStack output) {
+        public ItemStack paper() { return slot1; }
+        public ItemStack weed() { return slot2; }
+        public ItemStack additive() { return slot3; }
+    }
     public record BongRecipeWrapper(ItemStack weed) {}
 }

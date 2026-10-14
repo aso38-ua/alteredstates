@@ -78,7 +78,13 @@ public class RollingTrayBlockEntity extends BlockEntity {
         if (!paper.isEmpty()) tag.put("Paper", paper.saveOptional(registries));
         if (!weed.isEmpty()) tag.put("Weed", weed.saveOptional(registries));
         if (!additive.isEmpty()) tag.put("Additive", additive.saveOptional(registries));
-        if (!leaves.isEmpty()) for(ItemStack leave : leaves) tag.put("Leave", leave.saveOptional(registries));
+        if (!leaves.isEmpty()) {
+            net.minecraft.nbt.ListTag leavesList = new net.minecraft.nbt.ListTag();
+            for (ItemStack leave : leaves) {
+                leavesList.add(leave.saveOptional(registries));
+            }
+            tag.put("Leaves", leavesList);
+        }
     }
 
     @Override
@@ -87,7 +93,16 @@ public class RollingTrayBlockEntity extends BlockEntity {
         paper = tag.contains("Paper") ? ItemStack.parseOptional(registries, tag.getCompound("Paper")) : ItemStack.EMPTY;
         weed = tag.contains("Weed") ? ItemStack.parseOptional(registries, tag.getCompound("Weed")) : ItemStack.EMPTY;
         additive = tag.contains("Additive") ? ItemStack.parseOptional(registries, tag.getCompound("Additive")) : ItemStack.EMPTY;
-        for (ItemStack leave : leaves) leave = tag.contains("Leave") ? ItemStack.parseOptional(registries, tag.getCompound("Leave")) : ItemStack.EMPTY;
+        leaves.clear();
+        if (tag.contains("Leaves", net.minecraft.nbt.Tag.TAG_LIST)) {
+            net.minecraft.nbt.ListTag leavesList = tag.getList("Leaves", net.minecraft.nbt.Tag.TAG_COMPOUND);
+            for (int i = 0; i < leavesList.size(); i++) {
+                ItemStack leave = ItemStack.parseOptional(registries, leavesList.getCompound(i));
+                if (!leave.isEmpty()) {
+                    leaves.add(leave);
+                }
+            }
+        }
     }
 
     @Override

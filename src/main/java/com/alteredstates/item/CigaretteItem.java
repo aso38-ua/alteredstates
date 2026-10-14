@@ -5,8 +5,11 @@ import com.alteredstates.component.CigarData;
 import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,6 +34,9 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
 
     private static final int MAX_PUFFS = 4;
     private static final long AUTO_EXTINGUISH_TICKS = 6000L; // 5 minutos
+    public static final ResourceKey<DamageType> CIGARETTE_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE,
+                    ResourceLocation.fromNamespaceAndPath("alteredstates", "cigarette"));
 
     public CigaretteItem(Properties properties) {
         super(properties.stacksTo(1).durability(MAX_PUFFS)
@@ -160,17 +167,24 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
 
     @Override
     public ItemStack onSmokeFinished(ItemStack stack, Level level, LivingEntity entity) {
+        if (entity instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
+        }
+
         CigarData data = getData(stack);
         int newPuffs = data.puffsTaken() + 1;
+
+        setData(stack, data.withPuff(level.getGameTime()));
+        applyProductEffects(entity, stack);
+
+        // al dar la calada:
+        entity.hurt(level.damageSources().source(CIGARETTE_DAMAGE), 1.0F);
 
         if (newPuffs >= MAX_PUFFS) {
             stack.shrink(1);
             return stack;
         }
-
-        setData(stack, data.withPuff(level.getGameTime()));
-        applyProductEffects(entity, stack);
-        return stack;
+        else{   return stack;   }
     }
 
     @Override
@@ -187,9 +201,11 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         // Obtenemos los datos de forma limpia a través de la interfaz
         int quality = getQuality(stack);
 
-        if (entity instanceof Player player) {
+        /*if (entity instanceof Player player) {
             player.hurt(player.damageSources().starve(), 1.0F); // 1.0F = medio corazón
-        }
+        }*/
+
+
 
         int duration = 300 * quality;
         int amplifier = 1;

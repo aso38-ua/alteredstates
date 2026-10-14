@@ -23,10 +23,12 @@ public class OniricMushroomItem extends Item implements IDryable {
 
     @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {
-        // Toxicidad cruda, da muchísimo sueño y te deja clavado en el sitio
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 2));
-        entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0)); // Mareo visual pesado
-        entity.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 0));    // Ligeramente tóxica sin secar
+        int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+        int durationTicks = (quality * 15) * 20;
+
+        entity.addEffect(new MobEffectInstance(com.alteredstates.registry.ModEffects.ONIRIC_TRANCE, durationTicks, 0));
+        entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0));
+        entity.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 0));
     }
 
     @Override

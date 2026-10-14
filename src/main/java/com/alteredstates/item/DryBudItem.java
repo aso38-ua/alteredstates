@@ -12,11 +12,7 @@ public class DryBudItem extends CannabisBudItem implements ICurable, IGrindable 
         super(properties, isIndica);
     }
 
-    // --- Lógica del Tarro de Curado (ICurable) ---
-    @Override
-    public int getCuringTime(ItemStack stack) {
-        return com.alteredstates.Config.CURING_TIME.get();
-    }
+
 
     // --- Lógica del Grinder (IGrindable) ---
     @Override

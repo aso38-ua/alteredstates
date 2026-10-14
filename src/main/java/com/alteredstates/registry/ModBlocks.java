@@ -122,8 +122,8 @@ public class ModBlocks {
                             .noLootTable()
                             .liquid()));*/
     public static final DeferredBlock<Block> ONIRIC_MUSHROOM_CROP = BLOCKS.register("oniric_mushroom_crop",
-            () -> new MysticMushroomCropBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_PURPLE)
+            () -> new OniricMushroomCropBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
                     .noCollission()
                     .randomTicks()
                     .instabreak()

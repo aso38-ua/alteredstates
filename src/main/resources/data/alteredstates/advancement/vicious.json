@@ -1,0 +1,14 @@
+{
+  "parent": "alteredstates:root",
+  "display": {
+    "icon": { "id": "minecraft:skeleton_skull" },
+    "title": { "translate": "advancement.alteredstates.vicious.title" },
+    "description": { "translate": "advancement.alteredstates.vicious.desc" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": { "death": { "trigger": "minecraft:impossible" } },
+  "requirements": [["death"]]
+}

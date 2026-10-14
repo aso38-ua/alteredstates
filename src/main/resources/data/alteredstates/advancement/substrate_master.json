@@ -1,0 +1,46 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:enriched_substrate"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.substrate_master.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.substrate_master.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_enriched": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:enriched_substrate"
+          }
+        ]
+      }
+    },
+    "has_composted": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:composted_substrate"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_enriched",
+      "has_composted"
+    ]
+  ]
+}

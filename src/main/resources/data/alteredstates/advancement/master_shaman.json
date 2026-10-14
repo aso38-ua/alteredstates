@@ -1,0 +1,52 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:wisdom_pipe"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.master_shaman.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.master_shaman.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "indica_effect": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:indica_stoned": {}
+        }
+      }
+    },
+    "sativa_effect": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:sativa_high": {}
+        }
+      }
+    },
+    "mystic_effect": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:psychodelia": {}
+        }
+      }
+    },
+    "oniric_effect": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:oniric_trance": {}
+        }
+      }
+    }
+  }
+}

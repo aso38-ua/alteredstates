@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:indica_buds_fresh"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.indica_grower.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.indica_grower.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_indica_fresh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:indica_buds_fresh"
+          }
+        ]
+      }
+    }
+  }
+}

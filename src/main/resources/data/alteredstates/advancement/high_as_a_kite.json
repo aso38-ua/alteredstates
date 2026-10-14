@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:sativa_buds_dry"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.high_as_a_kite.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.high_as_a_kite.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:sativa_grower",
+  "criteria": {
+    "high": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alteredstates:sativa_high": {}
+        }
+      }
+    }
+  }
+}

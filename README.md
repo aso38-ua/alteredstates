@@ -1,25 +1,68 @@
+![AlteredStates Banner](images/banner.png)
 
-Installation information
-=======
+# Altered States
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+**Altered States** is an immersive Minecraft mod that introduces a wide range of drug-related content, adding new plants, consumables, and tools to enhance gameplay and roleplay experiences.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+---
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+## 🌱 Features
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+### Tobacco
+- Growable tobacco plants
+- Cigarettes, cigars, and smoking pipes
+- Loose tobacco and roll-your-own cigarettes
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+### Marijuana
+- Growable cannabis plants with two distinct strains: **Indica** and **Sativa**
+- Each strain has its own seeds, growth characteristics and effects
+- Customizable joints that carry the effects of the strain they're rolled with
+
+| Strain | Profile | Effects |
+|--------|---------|---------|
+| **Indica** | Relaxing | *(e.g. Slowness, Resistance, Regeneration)* |
+| **Sativa** | Energizing | *(e.g. Speed, Haste, Jump Boost)* |
+
+### Other Substances
+- Hallucinogenic mushrooms
+- Lean
+- Ephedrine
+- Ayahuasca
+- Peyote
+- Methamphetamine
+- Mimosa
+
+---
+
+## 🛠 Compatibility
+- Designed for version of Minecraft 1.21.1 NeoForge
+- Works alongside most content mods
+
+---
+
+## 📦 Installation
+1. Download the latest release from the [Releases](../../releases) page.
+2. Place the `.jar` file into your `mods` folder.
+3. Launch Minecraft with NeoForge.
+
+---
+
+## ⚠ Disclaimer
+This mod is intended for **fictional gameplay purposes only**. It does not promote or encourage real-life drug use.
+
+---
+
+## 🤝 Contributing
+Contributions, bug reports, and feature suggestions are welcome via the [Issues](../../issues) tab.
+
+---
+
+## 📜 License
+- **Code:** [LGPL-3.0-or-later](COPYING.LESSER)
+- **Assets** (textures, models, sounds): [CC BY 4.0](LICENSE-ASSETS.md)
+
+Copyright (C) 2026 SuperJavidoor and aso38-ua.
+
+By contributing, you agree that your contributions will be licensed under the same terms.
+
+---

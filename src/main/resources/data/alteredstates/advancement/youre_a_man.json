@@ -1,0 +1,18 @@
+{
+  "parent": "alteredstates:root",
+  "display": {
+    "icon": { "id": "alteredstates:cigarette" },
+    "title": { "translate": "advancement.alteredstates.youre_a_man.title" },
+    "description": { "translate": "advancement.alteredstates.youre_a_man.desc" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "eat": {
+      "trigger": "minecraft:consume_item",
+      "conditions": { "item": { "items": "alteredstates:cigarette" } }    }
+  },
+  "requirements": [["eat"]]
+}

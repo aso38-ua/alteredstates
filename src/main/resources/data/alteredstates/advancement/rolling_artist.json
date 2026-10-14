@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:rolling_tray"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.rolling_artist.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.rolling_artist.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_rolling_tray": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:rolling_tray"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "parent": "alteredstates:root",
+  "display": {
+    "icon": { "id": "alteredstates:wisdom_pipe" },
+    "title": { "translate": "advancement.alteredstates.very_eleganto.title" },
+    "description": { "translate": "advancement.alteredstates.very_eleganto.desc" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "eat": {
+      "trigger": "minecraft:consume_item",
+      "conditions": { "item": { "items": "alteredstates:wisdom_pipe" } }    }
+  },
+  "requirements": [["eat"]]
+}

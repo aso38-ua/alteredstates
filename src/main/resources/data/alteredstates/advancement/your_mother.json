@@ -1,0 +1,18 @@
+{
+  "parent": "alteredstates:root",
+  "display": {
+    "icon": { "id": "alteredstates:horse_semen" },
+    "title": { "translate": "advancement.alteredstates.your_mother.title" },
+    "description": { "translate": "advancement.alteredstates.your_mother.desc" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "item": { "items": "alteredstates:horse_semen" } }    }
+  },
+  "requirements": [["obtain"]]
+}

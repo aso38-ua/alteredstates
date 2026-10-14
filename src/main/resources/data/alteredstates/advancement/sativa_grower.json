@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:sativa_buds_fresh"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.sativa_grower.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.sativa_grower.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_sativa_fresh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:sativa_buds_fresh"
+          }
+        ]
+      }
+    }
+  }
+}

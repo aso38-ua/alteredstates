@@ -51,18 +51,21 @@ public class SmokingEffectProcessor {
         }
 
         // 💀 Paranoia del Bong con el multiplicador de la Configuración
-        float baseParanoiaChance = quality <= 1 ? 0.50f : (quality == 2 ? 0.30f : 0.15f);
-        float finalParanoiaChance = baseParanoiaChance * com.alteredstates.Config.BONG_PARANOIA_MULTIPLIER.get().floatValue();
+        if (com.alteredstates.Config.ALLOW_PARANOIA.get()) {
+            float baseParanoiaChance = quality <= 1 ? 0.50f : (quality == 2 ? 0.30f : 0.15f);
+            float finalParanoiaChance = baseParanoiaChance * com.alteredstates.Config.BONG_PARANOIA_MULTIPLIER.get().floatValue();
 
-        if (entity.level().random.nextFloat() < finalParanoiaChance) {
-            int badDuration = 800 + (200 * quality);
-            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(ModEffects.PARANOIA, badDuration, 1)); // Paranoia nivel 2!
+            if (entity.level().random.nextFloat() < finalParanoiaChance) {
+                int badDuration = 800 + (200 * quality);
+                entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(ModEffects.PARANOIA, badDuration, 1)); // Paranoia nivel 2!
+            }
         }
     }
 
     public static void applyEdibleEffects(Player player, boolean isIndica, int qualityLevel) {
+        double mult = com.alteredstates.Config.EDIBLE_DURATION_MULTIPLIER.get();
         // ⏱️ REAJUSTE: 2400 ticks = 2 minutos reales por cada punto de calidad
-        int duration = 2400 * qualityLevel;
+        int duration = (int) (2400 * qualityLevel * mult);
         int intensity = 1; // Efecto Nivel II
 
         // Si la calidad es 0 (Basura), evitamos duraciones de 0 ticks
@@ -73,7 +76,7 @@ public class SmokingEffectProcessor {
         player.addEffect(new MobEffectInstance(mainEffect, duration, intensity, false, false, true));
 
         // 🎲 2. LÓGICA DEL MAL VIAJE: Si el alimento era de mala calidad (Regular o Basura)
-        if (qualityLevel <= 2) {
+        if (com.alteredstates.Config.ALLOW_PARANOIA.get() && qualityLevel <= 2) {
             // Un 50% de probabilidad de sufrir paranoia por fumar/comer cosas de mala calidad
             if (player.level().random.nextFloat() < 0.50f) {
                 // 600 ticks = 30 segundos de paranoia/mal viaje

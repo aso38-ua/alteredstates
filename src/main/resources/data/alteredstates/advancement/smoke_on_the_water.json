@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "id": "alteredstates:bong"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.smoke_on_the_water.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.smoke_on_the_water.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "alteredstates:root",
+  "criteria": {
+    "has_bong": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:bong"
+          }
+        ]
+      }
+    }
+  }
+}
