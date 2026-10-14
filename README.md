@@ -25,12 +25,6 @@
 
 ### Other Substances
 - Hallucinogenic mushrooms
-- Lean
-- Ephedrine
-- Ayahuasca
-- Peyote
-- Methamphetamine
-- Mimosa
 
 ---
 
