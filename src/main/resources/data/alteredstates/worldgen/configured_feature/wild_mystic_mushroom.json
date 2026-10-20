@@ -11,7 +11,7 @@
           "to_place": {
             "type": "minecraft:simple_state_provider",
             "state": {
-              "Name": "alteredstates:mystic_mushroom_crop",
+              "Name": "alteredstates:wild_mystic_mushroom",
               "Properties": {
                 "age": "3"
               }

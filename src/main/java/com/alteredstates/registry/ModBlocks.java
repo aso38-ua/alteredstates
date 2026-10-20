@@ -129,4 +129,18 @@ public class ModBlocks {
                     .instabreak()
                     .sound(SoundType.CROP)
                     .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+
+    public static final DeferredBlock<Block> WILD_MYSTIC_MUSHROOM = BLOCKS.register("wild_mystic_mushroom",
+            () -> new WildMysticMushroomBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)));
+
+    public static final DeferredBlock<Block> WILD_ONIRIC_MUSHROOM = BLOCKS.register("wild_oniric_mushroom",
+            () -> new WildOniricMushroomBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)));
 }

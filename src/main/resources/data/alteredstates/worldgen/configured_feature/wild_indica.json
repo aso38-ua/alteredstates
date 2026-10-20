@@ -1,7 +1,7 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 8,
+    "tries": 4,
     "xz_spread": 7,
     "y_spread": 3,
     "feature": {
@@ -21,7 +21,7 @@
           "type": "minecraft:block_predicate_filter",
           "predicate": {
             "type": "minecraft:matching_blocks",
-            "blocks": ["minecraft:air"]
+            "blocks": ["minecraft:air", "minecraft:short_grass", "minecraft:tall_grass", "minecraft:fern", "minecraft:large_fern"]
           }
         }
       ]
