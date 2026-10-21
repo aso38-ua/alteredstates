@@ -13,6 +13,7 @@ public class Config {
     public static final ModConfigSpec.DoubleValue EDIBLE_DURATION_MULTIPLIER;
     public static final ModConfigSpec.BooleanValue ALLOW_PARANOIA;
     public static final ModConfigSpec.BooleanValue ENABLE_SCREEN_SHADERS;
+    public static final ModConfigSpec.DoubleValue STONED_OVERLAY_OPACITY;
 
     static {
         BUILDER.push("Tiempos_de_Procesado");
@@ -48,6 +49,10 @@ public class Config {
         ENABLE_SCREEN_SHADERS = BUILDER
                 .comment("Habilita o deshabilita los shaders visuales de viaje/humo en pantalla (Default: true)")
                 .define("enableScreenShaders", true);
+
+        STONED_OVERLAY_OPACITY = BUILDER
+                .comment("Opacidad suave del efecto de humo en pantalla cuando se esta fumado (Default: 0.35, rango 0.05 a 1.0)")
+                .defineInRange("stonedOverlayOpacity", 0.35, 0.05, 1.0);
 
         BUILDER.pop();
     }
