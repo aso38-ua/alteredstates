@@ -19,22 +19,48 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.Containers;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 import java.util.ArrayList;
 
 public class RollingTrayBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
 
-    public RollingTrayBlock(Properties properties) { super(properties); }
+    public RollingTrayBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(stateDefinition.any()
+                .setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(
+            StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    // ── PARTE 3: asignar dirección al colocar ────────────────────
+    // ► AÑADIR ESTE MÉTODO
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return defaultBlockState()
+                .setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+    }
 
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return null; }
     @Override public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return SHAPE; }
     @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
+
+    public static final DirectionProperty FACING =
+            BlockStateProperties.HORIZONTAL_FACING;
 
     @Nullable
     @Override

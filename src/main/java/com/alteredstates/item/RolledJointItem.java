@@ -89,9 +89,9 @@ public class RolledJointItem extends Item implements ISmokableItem {
     // ─── LÓGICA DE JUEGO NATURA (DELEGANDO A LA INTERFAZ) ───────────────────
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        playSmokingSound(level, player, player.getItemInHand(hand));
-        return this.startSmoking(level, player, hand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player,
+                                                  InteractionHand hand) {
+        return startSmokingAnyHand(level, player, hand);
     }
 
     @Override

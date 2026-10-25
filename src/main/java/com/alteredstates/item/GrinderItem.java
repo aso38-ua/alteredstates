@@ -15,6 +15,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 public class GrinderItem extends Item {
+
     public GrinderItem(Properties properties) {
         super(properties.durability(128));
     }
@@ -26,39 +27,64 @@ public class GrinderItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 30; // 1.5 segundos
+        return 30;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack grinder = player.getItemInHand(hand);
-        ItemStack offhandItem = player.getOffhandItem();
+        ItemStack thisItem = player.getItemInHand(hand);
+        ItemStack otherItem = player.getItemInHand(
+                hand == InteractionHand.MAIN_HAND
+                        ? InteractionHand.OFF_HAND
+                        : InteractionHand.MAIN_HAND
+        );
 
-        // 🟢 Magia: Acepta cualquier cosa que implemente IGrindable
-        if (hand == InteractionHand.MAIN_HAND && offhandItem.getItem() instanceof com.alteredstates.item.IGrindable) {
+        // Grinder en ESTA mano, material en la otra
+        if (thisItem.getItem() instanceof GrinderItem
+                && otherItem.getItem() instanceof IGrindable) {
             player.startUsingItem(hand);
-            return InteractionResultHolder.consume(grinder);
+            return InteractionResultHolder.consume(thisItem);
         }
-        return InteractionResultHolder.pass(grinder);
+
+        // Material en ESTA mano, grinder en la otra
+        // (el jugador usa el item grindable y tiene el grinder en la otra mano)
+        if (thisItem.getItem() instanceof IGrindable
+                && otherItem.getItem() instanceof GrinderItem) {
+            // Delegamos al grinder de la otra mano
+            player.startUsingItem(
+                    hand == InteractionHand.MAIN_HAND
+                            ? InteractionHand.OFF_HAND
+                            : InteractionHand.MAIN_HAND
+            );
+            return InteractionResultHolder.consume(thisItem);
+        }
+
+        return InteractionResultHolder.pass(thisItem);
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int count) {
         if (level.isClientSide && entity instanceof Player player) {
-            ItemStack offhandItem = player.getOffhandItem();
+            // Buscamos el material grindable en cualquier mano
+            ItemStack material = getGrindableMaterial(player);
 
             if (count % 4 == 0) {
-                level.playLocalSound(player.getX(), player.getY(), player.getZ(),
-                        com.alteredstates.registry.ModSounds.GRINDER_CRUSH.get(), net.minecraft.sounds.SoundSource.PLAYERS, 0.6F, 0.8F, false);
+                level.playLocalSound(
+                        player.getX(), player.getY(), player.getZ(),
+                        com.alteredstates.registry.ModSounds.GRINDER_CRUSH.get(),
+                        SoundSource.PLAYERS, 0.6F, 0.8F, false
+                );
             }
 
-            if (!offhandItem.isEmpty()) {
+            if (!material.isEmpty()) {
                 for (int i = 0; i < 2; i++) {
-                    level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, offhandItem),
+                    level.addParticle(
+                            new ItemParticleOption(ParticleTypes.ITEM, material),
                             player.getX() + (level.random.nextDouble() - 0.5D) * 0.4D,
                             player.getY() + 1.2D,
                             player.getZ() + (level.random.nextDouble() - 0.5D) * 0.4D,
-                            0D, 0.1D, 0D);
+                            0D, 0.1D, 0D
+                    );
                 }
             }
         }
@@ -67,26 +93,28 @@ public class GrinderItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof Player player) {
-            ItemStack offhandItem = player.getOffhandItem();
+            ItemStack material = getGrindableMaterial(player);
+            ItemStack grinderStack = getGrinderStack(player);
 
-            // 🟢 Magia: Verificamos si es "triturable" y ejecutamos la lógica
-            if (offhandItem.getItem() instanceof com.alteredstates.item.IGrindable grindableProduct) {
-
-                int currentQuality = offhandItem.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+            if (!material.isEmpty() && material.getItem() instanceof IGrindable grindable) {
+                int quality = material.getOrDefault(
+                        ModDataComponentTypes.QUALITY.get(), 1);
 
                 if (!player.getAbilities().instabuild) {
-                    offhandItem.shrink(1);
-                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(InteractionHand.MAIN_HAND));
+                    material.shrink(1);
+                    // Dañamos el grinder que tenga en cualquier mano
+                    if (grinderStack != null) {
+                        grinderStack.hurtAndBreak(1, player,
+                                LivingEntity.getSlotForHand(getGrinderHand(player)));
+                    }
                 }
 
-                // Le preguntamos al ítem en qué se convierte
-                Item groundItemResult = grindableProduct.getGrindResult(offhandItem);
+                Item groundResult = grindable.getGrindResult(material);
+                ItemStack groundStack = new ItemStack(groundResult);
+                groundStack.set(ModDataComponentTypes.QUALITY.get(), quality);
 
-                ItemStack groundCannabis = new ItemStack(groundItemResult);
-                groundCannabis.set(ModDataComponentTypes.QUALITY.get(), currentQuality);
-
-                if (!player.getInventory().add(groundCannabis)) {
-                    player.drop(groundCannabis, false);
+                if (!player.getInventory().add(groundStack)) {
+                    player.drop(groundStack, false);
                 }
 
                 level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -94,5 +122,32 @@ public class GrinderItem extends Item {
             }
         }
         return stack;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────
+
+    /** Devuelve el ItemStack grindable del jugador, esté en la mano que esté */
+    private static ItemStack getGrindableMaterial(Player player) {
+        if (player.getMainHandItem().getItem() instanceof IGrindable)
+            return player.getMainHandItem();
+        if (player.getOffhandItem().getItem() instanceof IGrindable)
+            return player.getOffhandItem();
+        return ItemStack.EMPTY;
+    }
+
+    /** Devuelve el ItemStack del grinder del jugador */
+    private static ItemStack getGrinderStack(Player player) {
+        if (player.getMainHandItem().getItem() instanceof GrinderItem)
+            return player.getMainHandItem();
+        if (player.getOffhandItem().getItem() instanceof GrinderItem)
+            return player.getOffhandItem();
+        return null;
+    }
+
+    /** Devuelve la mano que tiene el grinder */
+    private static InteractionHand getGrinderHand(Player player) {
+        return player.getMainHandItem().getItem() instanceof GrinderItem
+                ? InteractionHand.MAIN_HAND
+                : InteractionHand.OFF_HAND;
     }
 }

@@ -35,4 +35,41 @@ public interface ISmokableItem {
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(itemstack);
     }
+
+    /**
+     * Versión mejorada de startSmoking que detecta mechero en cualquier mano.
+     * El item fumable puede estar en cualquiera de las dos manos,
+     * y el mechero en la otra.
+     */
+    default InteractionResultHolder<ItemStack> startSmokingAnyHand(
+            Level level, Player player, InteractionHand hand) {
+
+        ItemStack thisItem  = player.getItemInHand(hand);
+        InteractionHand otherHand = hand == InteractionHand.MAIN_HAND
+                ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        ItemStack otherItem = player.getItemInHand(otherHand);
+
+        boolean lighterInThisHand  = isLighter(thisItem);
+        boolean lighterInOtherHand = isLighter(otherItem);
+
+        // Caso 1: este item es fumable, mechero en la otra mano
+        if (!lighterInThisHand && lighterInOtherHand
+                && thisItem.getItem() instanceof ISmokableItem) {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(thisItem);
+        }
+
+        // Caso 2: este item es el mechero, fumable en la otra mano
+        if (lighterInThisHand
+                && otherItem.getItem() instanceof ISmokableItem) {
+            player.startUsingItem(otherHand);
+            return InteractionResultHolder.consume(otherItem);
+        }
+
+        return InteractionResultHolder.pass(thisItem);
+    }
+
+    private static boolean isLighter(ItemStack stack) {
+        return stack.is(net.minecraft.world.item.Items.FLINT_AND_STEEL);
+    }
 }

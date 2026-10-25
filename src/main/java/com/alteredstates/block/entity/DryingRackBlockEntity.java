@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,22 +44,6 @@ public class DryingRackBlockEntity extends BlockEntity {
             }
         }
         return false;
-    }
-
-    public ItemStack takeFinishedItem() {
-        for (int i = 0; i < INVENTORY_SIZE; i++) {
-            if (!this.items[i].isEmpty() && !(this.items[i].getItem() instanceof com.alteredstates.item.IDryable)) {
-                ItemStack taken = this.items[i];
-                this.items[i] = ItemStack.EMPTY;
-                this.dryingTimes[i] = 0;
-                setChanged();
-                if (level != null) {
-                    level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-                }
-                return taken;
-            }
-        }
-        return ItemStack.EMPTY;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity blockEntity) {
@@ -150,6 +135,57 @@ public class DryingRackBlockEntity extends BlockEntity {
                 }
             }
         }
+    }
+
+    public boolean hasSpace() {
+        for (ItemStack s : items) if (s.isEmpty()) return true;
+        return false;
+    }
+
+    public boolean hasAnyItem() {
+        for (ItemStack s : items) if (!s.isEmpty()) return true;
+        return false;
+    }
+
+    // "Terminado" = ya no es IDryable (es el resultado seco)
+    private boolean isFinished(int i) {
+        return !items[i].isEmpty()
+                && !(items[i].getItem() instanceof com.alteredstates.item.IDryable);
+    }
+
+    public boolean hasFinishedOfType(net.minecraft.world.item.Item type) {
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+            if (isFinished(i) && items[i].is(type)) return true;
+        return false;
+    }
+
+    public ItemStack takeFinishedOfType(net.minecraft.world.item.Item type) {
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+            if (isFinished(i) && items[i].is(type)) return removeSlot(i);
+        return ItemStack.EMPTY;
+    }
+
+    public ItemStack takeFinishedItem() {
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+            if (isFinished(i)) return removeSlot(i);
+        return ItemStack.EMPTY;
+    }
+
+    // Deshacer: saca el último item colgado, aunque se esté secando
+    public ItemStack takeLastItem() {
+        for (int i = INVENTORY_SIZE - 1; i >= 0; i--)
+            if (!items[i].isEmpty()) return removeSlot(i);
+        return ItemStack.EMPTY;
+    }
+
+    private ItemStack removeSlot(int i) {
+        ItemStack taken = items[i];
+        items[i] = ItemStack.EMPTY;
+        dryingTimes[i] = 0;
+        setChanged();
+        if (level != null)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        return taken;
     }
 
     @Override

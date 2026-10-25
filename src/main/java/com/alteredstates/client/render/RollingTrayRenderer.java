@@ -19,35 +19,38 @@ public class RollingTrayRenderer implements BlockEntityRenderer<RollingTrayBlock
     }
 
     @Override
-    public void render(RollingTrayBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
+    public void render(RollingTrayBlockEntity blockEntity, float partialTick, PoseStack poseStack,
+                       MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
         ItemStack paper = blockEntity.getPaper();
         ItemStack weed = blockEntity.getWeed();
         ItemStack additive = blockEntity.getAdditive();
         var leaves = blockEntity.getLeaves();
 
+        poseStack.pushPose();
+        BlockRotationHelper.applyFacing(poseStack, blockEntity.getBlockState());
 
         if (!paper.isEmpty()) {
             poseStack.pushPose();
-            poseStack.translate(0.5D, 0.13D, 0.5D); // A 2 píxeles de altura (sobre la madera)
+            poseStack.translate(0.5D, 0.13D, 0.5D);
             poseStack.scale(0.5F, 0.5F, 0.5F);
-            poseStack.mulPose(Axis.XP.rotationDegrees(90F)); // Lo tumba horizontal
+            poseStack.mulPose(Axis.XP.rotationDegrees(90F));
             renderItem(paper, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
             poseStack.popPose();
         }
 
         if (!weed.isEmpty()) {
             poseStack.pushPose();
-            poseStack.translate(0.5D, 0.15D, 0.5D); // Ligeramente encima del papel
+            poseStack.translate(0.5D, 0.15D, 0.5D);
             poseStack.scale(0.4F, 0.4F, 0.4F);
             poseStack.mulPose(Axis.XP.rotationDegrees(90F));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(45F)); // Girado para dar caos
+            poseStack.mulPose(Axis.ZP.rotationDegrees(45F));
             renderItem(weed, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
             poseStack.popPose();
         }
 
         if (!additive.isEmpty()) {
             poseStack.pushPose();
-            poseStack.translate(0.5D, 0.17D, 0.5D); // Encima de la hierba
+            poseStack.translate(0.5D, 0.17D, 0.5D);
             poseStack.scale(0.3F, 0.3F, 0.3F);
             poseStack.mulPose(Axis.XP.rotationDegrees(90F));
             poseStack.mulPose(Axis.ZP.rotationDegrees(-30F));
@@ -55,27 +58,28 @@ public class RollingTrayRenderer implements BlockEntityRenderer<RollingTrayBlock
             poseStack.popPose();
         }
 
-        // 🍂 Hojas de tabaco (hasta 3, en abanico)
-        if (!leaves.isEmpty()) {
-            for (int i = 0; i < leaves.size(); i++) {
-                ItemStack leaf = leaves.get(i);
-                if (leaf.isEmpty()) continue;
+        // Hojas de tabaco (hasta 3, en abanico)
+        for (int i = 0; i < leaves.size(); i++) {
+            ItemStack leaf = leaves.get(i);
+            if (leaf.isEmpty()) continue;
 
-                poseStack.pushPose();
-                // separa cada hoja en X para que no se pisen entre ellas
-                double offsetX = (i - 1) * 0.18D; // -0.18, 0, +0.18
-                poseStack.translate(0.5D + offsetX, 0.13D, 0.5D);
-                poseStack.scale(0.45F, 0.45F, 0.45F);
-                poseStack.mulPose(Axis.XP.rotationDegrees(90F));
-                poseStack.mulPose(Axis.ZP.rotationDegrees(15F * i)); // las gira un poco distinto entre sí
-                renderItem(leaf, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
-                poseStack.popPose();
-            }
+            poseStack.pushPose();
+            double offsetX = (i - 1) * 0.18D;
+            poseStack.translate(0.5D + offsetX, 0.13D, 0.5D);
+            poseStack.scale(0.45F, 0.45F, 0.45F);
+            poseStack.mulPose(Axis.XP.rotationDegrees(90F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(15F * i));
+            renderItem(leaf, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
+            poseStack.popPose();
         }
+
+        poseStack.popPose();
     }
 
-    private void renderItem(ItemStack stack, RollingTrayBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
-        BakedModel bakedModel = this.itemRenderer.getModel(stack, blockEntity.getLevel(), null, 0);
-        this.itemRenderer.render(stack, ItemDisplayContext.FIXED, false, poseStack, bufferSource, light, overlay, bakedModel);
+    private void renderItem(ItemStack stack, RollingTrayBlockEntity be, PoseStack poseStack,
+                            MultiBufferSource bufferSource, int light, int overlay) {
+        BakedModel model = this.itemRenderer.getModel(stack, be.getLevel(), null, 0);
+        this.itemRenderer.render(stack, ItemDisplayContext.FIXED, false, poseStack,
+                bufferSource, light, overlay, model);
     }
 }

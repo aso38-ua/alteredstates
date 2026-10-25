@@ -19,33 +19,24 @@ public class BongRenderer implements BlockEntityRenderer<BongBlockEntity> {
     }
 
     @Override
-    public void render(BongBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
-        ItemStack weed = blockEntity.getBowlContent();
+    public void render(BongBlockEntity blockEntity, float partialTick, PoseStack poseStack,
+                       MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
+        ItemStack content = blockEntity.getBowlContent();
+        if (content.isEmpty()) return;
 
-        // 🟢 Si el inventario del bong (la cazoleta) tiene algo de hierba...
-        if (!weed.isEmpty()) {
-            poseStack.pushPose();
+        poseStack.pushPose();
+        BlockRotationHelper.applyFacing(poseStack, blockEntity.getBlockState());
 
-            // 📍 Posición exacta en la nueva cazoleta de pizarra
-            poseStack.translate(0.91D, 0.46D, 0.5D);
+        // Posición de la cazoleta (el modelo no es simétrico, por eso hay que rotarla)
+        poseStack.translate(0.91D, 0.46D, 0.5D);
+        poseStack.scale(0.20F, 0.20F, 0.20F);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(-22.5F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(90F));
 
-            // 🔍 Hacemos la textura de la hierba muy pequeñita (15% de su tamaño real)
-            poseStack.scale(0.20F, 0.20F, 0.20F);
+        BakedModel model = this.itemRenderer.getModel(content, blockEntity.getLevel(), null, 0);
+        this.itemRenderer.render(content, ItemDisplayContext.FIXED, false, poseStack,
+                bufferSource, combinedLight, combinedOverlay, model);
 
-            // 📐 Inclinamos la hierba para que se asiente plana (-22.5 grados por el tubo)
-            poseStack.mulPose(Axis.ZP.rotationDegrees(-22.5F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(90F)); // Tumbamos el ítem 2D como en la bandeja
-
-            // Dibujamos el ítem en la pantalla
-            renderItem(weed, blockEntity, poseStack, bufferSource, combinedLight, combinedOverlay);
-
-            poseStack.popPose();
-        }
-    }
-
-    // El mismo método auxiliar que usaste para la RollingTray
-    private void renderItem(ItemStack stack, BongBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
-        BakedModel bakedModel = this.itemRenderer.getModel(stack, blockEntity.getLevel(), null, 0);
-        this.itemRenderer.render(stack, ItemDisplayContext.FIXED, false, poseStack, bufferSource, light, overlay, bakedModel);
+        poseStack.popPose();
     }
 }

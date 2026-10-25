@@ -27,6 +27,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+
+import static com.alteredstates.block.DryingRackBlock.FACING;
 
 public class BongBlock extends BaseEntityBlock {
     // 🟢 Las propiedades van DENTRO de la clase
@@ -40,12 +46,13 @@ public class BongBlock extends BaseEntityBlock {
     public BongBlock(Properties properties) {
         super(properties);
         // Registramos el estado inicial: sin agua y sin hierba
-        this.registerDefaultState(this.stateDefinition.any().setValue(HAS_WATER, false).setValue(HAS_WEED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HAS_WATER, false).setValue(HAS_WEED, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(HAS_WATER, HAS_WEED);
+    protected void createBlockStateDefinition(
+            StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(HAS_WATER, HAS_WEED, FACING); // ← añadir FACING aquí
     }
 
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return null; }

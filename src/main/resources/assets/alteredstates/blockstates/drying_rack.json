@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "alteredstates:block/drying_rack" }
+    "facing=north": { "model": "alteredstates:block/drying_rack" },
+    "facing=south": { "model": "alteredstates:block/drying_rack", "y": 180 },
+    "facing=east":  { "model": "alteredstates:block/drying_rack", "y": 90  },
+    "facing=west":  { "model": "alteredstates:block/drying_rack", "y": 270 }
   }
 }

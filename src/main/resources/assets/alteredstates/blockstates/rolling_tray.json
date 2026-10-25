@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "alteredstates:block/rolling_tray"
-    }
+    "facing=north": { "model": "alteredstates:block/rolling_tray" },
+    "facing=south": { "model": "alteredstates:block/rolling_tray", "y": 180 },
+    "facing=east":  { "model": "alteredstates:block/rolling_tray", "y": 90  },
+    "facing=west":  { "model": "alteredstates:block/rolling_tray", "y": 270 }
   }
 }

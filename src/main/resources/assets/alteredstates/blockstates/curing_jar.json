@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "alteredstates:block/curing_jar"
-    }
+    "facing=north": { "model": "alteredstates:block/curing_jar" },
+    "facing=south": { "model": "alteredstates:block/curing_jar", "y": 180 },
+    "facing=east":  { "model": "alteredstates:block/curing_jar", "y": 90  },
+    "facing=west":  { "model": "alteredstates:block/curing_jar", "y": 270 }
   }
 }
