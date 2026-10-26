@@ -143,4 +143,25 @@ public class ModBlocks {
                     .noCollission()
                     .instabreak()
                     .sound(SoundType.GRASS)));
+
+    public static final DeferredBlock<Block> COCA_CROP = BLOCKS.register("coca_crop",
+            () -> new CocaCropBlock(BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP)));
+
+    public static final DeferredBlock<Block> WILD_COCA = BLOCKS.register("wild_coca",
+            () -> new WildCocaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .sound(SoundType.GRASS)));
+
+    public static final DeferredBlock<Block> INDUSTRIAL_CAULDRON = BLOCKS.register("industrial_cauldron",
+            () -> new IndustrialCauldronBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(3.0f)
+                    .noOcclusion()
+                    .sound(SoundType.METAL)));
 }

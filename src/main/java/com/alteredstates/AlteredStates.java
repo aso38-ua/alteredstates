@@ -6,9 +6,12 @@ import com.alteredstates.compat.fd.FDRecipes;
 import com.alteredstates.event.ClientEvents;
 import com.alteredstates.registry.*;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
@@ -36,6 +39,8 @@ public class AlteredStates {
 
         modEventBus.addListener(this::commonSetup);
 
+        modEventBus.addListener(this::registerCaps);
+
         if (CompatManager.FARMERS_DELIGHT) {
             FDRecipes.register(); // Esto registra las recetas custom de FD sin petar si no está
         }
@@ -55,5 +60,11 @@ public class AlteredStates {
             }
             // Create y Serene Seasons se registran via sus propios eventos
         });
+    }
+
+    private void registerCaps(final RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.INDUSTRIAL_CAULDRON.get(),
+                (be, side) -> be.getFluidHandler());
     }
 }

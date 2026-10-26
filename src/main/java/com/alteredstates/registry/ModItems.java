@@ -204,4 +204,17 @@ public class ModItems {
 
     public static final DeferredItem<Item> HORSE_SEMEN = ITEMS.register("horse_semen",
             () -> new HorseSemenItem(new Item.Properties()));
+
+    //  COCA
+    public static final DeferredItem<Item> COCA_SEEDS = ITEMS.register("coca_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.COCA_CROP.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> COCA_LEAF = ITEMS.register("coca_leaf",
+            () -> new CocaLeafItem(new Item.Properties()));
+    public static final DeferredItem<Item> COCA_LEAF_DRY = ITEMS.register("coca_leaf_dry",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> COCA_PASTE = ITEMS.register("coca_paste",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> INDUSTRIAL_CAULDRON = ITEMS.register("industrial_cauldron",
+            () -> new BlockItem(ModBlocks.INDUSTRIAL_CAULDRON.get(), new Item.Properties()));
 }

@@ -2,10 +2,12 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.block.entity.DryingRackBlockEntity;
+import com.alteredstates.block.entity.IndustrialCauldronBlockEntity;
 import com.alteredstates.block.entity.RollingTrayBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
@@ -27,6 +29,10 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<RollingTrayBlockEntity>> ROLLING_TRAY =
             BLOCK_ENTITIES.register("rolling_tray", () ->
                     BlockEntityType.Builder.of(RollingTrayBlockEntity::new, ModBlocks.ROLLING_TRAY.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IndustrialCauldronBlockEntity>> INDUSTRIAL_CAULDRON =
+            BLOCK_ENTITIES.register("industrial_cauldron", () -> BlockEntityType.Builder.of(
+                    IndustrialCauldronBlockEntity::new, ModBlocks.INDUSTRIAL_CAULDRON.get()).build(null));
 
     public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.alteredstates.block.entity.BongBlockEntity>> BONG = BLOCK_ENTITIES.register("bong",
             () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(com.alteredstates.block.entity.BongBlockEntity::new, com.alteredstates.registry.ModBlocks.BONG.get()).build(null));

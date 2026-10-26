@@ -160,5 +160,9 @@
   "advancement.alteredstates.very_eleganto.desc": "Get the WISDOM PIPE",
 
   "advancement.alteredstates.youre_a_man.title": "You're a man",
-  "advancement.alteredstates.youre_a_man.desc": "If you smoke you must be a man"
+  "advancement.alteredstates.youre_a_man.desc": "If you smoke you must be a man",
+
+  "block.alteredstates.industrial_cauldron": "Industrial Cauldron",
+  "item.alteredstates.coca_leaf_dry": "Dried Coca Leaf",
+  "item.alteredstates.coca_paste": "Coca Paste"
 }
