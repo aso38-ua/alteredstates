@@ -215,6 +215,16 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> COCA_PASTE = ITEMS.register("coca_paste",
             () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> INDUSTRIAL_CAULDRON = ITEMS.register("industrial_cauldron",
             () -> new BlockItem(ModBlocks.INDUSTRIAL_CAULDRON.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> LAB_FURNACE = ITEMS.register("lab_furnace",
+            () -> new BlockItem(ModBlocks.LAB_FURNACE.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> COCAINE_ROCK = ITEMS.register("cocaine_rock",
+            () -> new CocaineRockItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> COCAINE_POWDER = ITEMS.register("cocaine_powder",
+            () -> new CocainePowderItem(new Item.Properties()));
 }

@@ -164,4 +164,12 @@ public class ModBlocks {
                     .strength(3.0f)
                     .noOcclusion()
                     .sound(SoundType.METAL)));
+
+    public static final DeferredBlock<Block> LAB_FURNACE = BLOCKS.register("lab_furnace",
+            () -> new LabFurnaceBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(3.5f)
+                    .noOcclusion()
+                    .sound(SoundType.METAL)
+                    .lightLevel(s -> s.getValue(LabFurnaceBlock.LIT) ? 13 : 0)));
 }

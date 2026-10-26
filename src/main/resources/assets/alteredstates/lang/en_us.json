@@ -164,5 +164,8 @@
 
   "block.alteredstates.industrial_cauldron": "Industrial Cauldron",
   "item.alteredstates.coca_leaf_dry": "Dried Coca Leaf",
-  "item.alteredstates.coca_paste": "Coca Paste"
+  "item.alteredstates.coca_paste": "Coca Paste",
+  "block.alteredstates.lab_furnace": "Lab Furnace",
+  "item.alteredstates.cocaine_rock": "Cocaine Rock",
+  "item.alteredstates.cocaine_powder": "Cocaine Powder"
 }

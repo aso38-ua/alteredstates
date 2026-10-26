@@ -22,6 +22,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import com.alteredstates.client.render.LabFurnaceRenderer;
 
 @EventBusSubscriber(modid = "alteredstates", value = Dist.CLIENT)public class ClientEvents {
 
@@ -51,6 +52,8 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
         event.registerBlockEntityRenderer(ModBlockEntities.BONG.get(), BongRenderer::new);
 
         event.registerBlockEntityRenderer(ModBlockEntities.INDUSTRIAL_CAULDRON.get(), IndustrialCauldronRenderer::new);
+
+        event.registerBlockEntityRenderer(ModBlockEntities.LAB_FURNACE.get(), LabFurnaceRenderer::new);
     }
 
     @SubscribeEvent // on the mod event bus only on the physical client

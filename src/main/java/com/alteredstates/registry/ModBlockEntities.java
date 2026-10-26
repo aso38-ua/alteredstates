@@ -3,6 +3,7 @@ package com.alteredstates.registry;
 import com.alteredstates.AlteredStates;
 import com.alteredstates.block.entity.DryingRackBlockEntity;
 import com.alteredstates.block.entity.IndustrialCauldronBlockEntity;
+import com.alteredstates.block.entity.LabFurnaceBlockEntity;
 import com.alteredstates.block.entity.RollingTrayBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -33,6 +34,10 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IndustrialCauldronBlockEntity>> INDUSTRIAL_CAULDRON =
             BLOCK_ENTITIES.register("industrial_cauldron", () -> BlockEntityType.Builder.of(
                     IndustrialCauldronBlockEntity::new, ModBlocks.INDUSTRIAL_CAULDRON.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LabFurnaceBlockEntity>> LAB_FURNACE =
+            BLOCK_ENTITIES.register("lab_furnace", () -> BlockEntityType.Builder.of(
+                    LabFurnaceBlockEntity::new, ModBlocks.LAB_FURNACE.get()).build(null));
 
     public static final net.neoforged.neoforge.registries.DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.alteredstates.block.entity.BongBlockEntity>> BONG = BLOCK_ENTITIES.register("bong",
             () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(com.alteredstates.block.entity.BongBlockEntity::new, com.alteredstates.registry.ModBlocks.BONG.get()).build(null));

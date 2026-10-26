@@ -1,6 +1,7 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
+import com.alteredstates.cocaine.CocaineData;
 import com.alteredstates.data.attachment.PlayerSubstanceData;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -23,4 +24,8 @@ public class ModAttachments {
                             .serialize(PlayerSubstanceData.CODEC)
                             .build()
             );
+
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<CocaineData>> COCAINE_DATA =
+            ATTACHMENT_TYPES.register("cocaine_data", () ->
+                    AttachmentType.builder(CocaineData::new).serialize(CocaineData.CODEC).copyOnDeath().build());
 }
