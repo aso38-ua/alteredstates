@@ -1,5 +1,6 @@
 package com.alteredstates;
 
+import com.alteredstates.client.PalSetup;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,5 +28,9 @@ public class AlteredStatesClient {
         // Some client setup code
         AlteredStates.LOGGER.info("HELLO FROM CLIENT SETUP");
         AlteredStates.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        event.enqueueWork(() -> {
+            AlteredStates.LOGGER.info("[PAL debug] registrando capa");
+            PalSetup.register();
+        });
     }
 }

@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 public interface ISmokableItem {
 
     // Simula llevar el ítem a la boca (la animación del arco es perfecta para esto)
-    default UseAnim getSmokeAnimation(ItemStack stack) {
-        return UseAnim.BOW;
+    default SmokeAnimation getSmokeAnimation(ItemStack stack) {
+        return SmokeAnimation.SMOKING;
     }
 
     // Cuánto dura una calada (32 ticks = 1.6 segundos)

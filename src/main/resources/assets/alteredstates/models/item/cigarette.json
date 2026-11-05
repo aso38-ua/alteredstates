@@ -1,19 +1,45 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "alteredstates:item/cigarette"
-  },
-  "overrides": [
-  { "predicate": { "alteredstates:visual_state": 0 }, "model": "alteredstates:item/cigarette_unlit" },
-
-  { "predicate": { "alteredstates:visual_state": 1 }, "model": "alteredstates:item/cigarette_lit_0" },
-  { "predicate": { "alteredstates:visual_state": 2 }, "model": "alteredstates:item/cigarette_lit_1" },
-  { "predicate": { "alteredstates:visual_state": 3 }, "model": "alteredstates:item/cigarette_lit_2" },
-  { "predicate": { "alteredstates:visual_state": 4 }, "model": "alteredstates:item/cigarette_lit_3" },
-
-  { "predicate": { "alteredstates:visual_state": 5 }, "model": "alteredstates:item/cigarette_extinguished_0" },
-  { "predicate": { "alteredstates:visual_state": 6 }, "model": "alteredstates:item/cigarette_extinguished_1" },
-  { "predicate": { "alteredstates:visual_state": 7 }, "model": "alteredstates:item/cigarette_extinguished_2" },
-  { "predicate": { "alteredstates:visual_state": 8 }, "model": "alteredstates:item/cigarette_extinguished_3" }
-  ]
+  "parent": "builtin/entity",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "firstperson_righthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "firstperson_lefthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "gui": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [-4.75, -2.25, 0],
+      "scale": [0.2, 0.2, 0.2]
+    },
+    "head": {
+      "rotation": [-63.16, 62.86, -17.29],
+      "translation": [0, -4, -6.25],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "ground": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, 0.5, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "fixed": {
+      "rotation": [-24.81, 0, -84.1],
+      "translation": [-2, -1.75, 0.25],
+      "scale": [0.1, 0.1, 0.1]
+    }
+  }
 }

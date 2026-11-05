@@ -3,11 +3,15 @@ package com.alteredstates.event;
 import com.alteredstates.client.render.DryingRackRenderer;
 import com.alteredstates.client.render.CuringJarRenderer;
 import com.alteredstates.client.render.BongRenderer;
+import com.alteredstates.client.render.CigaretteHeadLayer;
 import com.alteredstates.item.CigaretteItem;
 import com.alteredstates.registry.ModBlockEntities;
 import com.alteredstates.registry.ModItems;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -48,6 +52,17 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
         event.registerBlockEntityRenderer(ModBlockEntities.ROLLING_TRAY.get(), com.alteredstates.client.render.RollingTrayRenderer::new);
 
         event.registerBlockEntityRenderer(ModBlockEntities.BONG.get(), BongRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void addCigaretteHeadLayer(EntityRenderersEvent.AddLayers event) {
+        ItemInHandRenderer itemRenderer = event.getContext().getItemInHandRenderer();
+        for (PlayerSkin.Model skin : event.getSkins()) {
+            PlayerRenderer renderer = event.getSkin(skin);
+            if (renderer != null) {
+                renderer.addLayer(new CigaretteHeadLayer(renderer, itemRenderer));
+            }
+        }
     }
 
     @SubscribeEvent // on the mod event bus only on the physical client

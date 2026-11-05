@@ -94,10 +94,10 @@ public class RolledJointItem extends Item implements ISmokableItem {
         return this.startSmoking(level, player, hand);
     }
 
-    @Override
+    /*@Override
     public UseAnim getUseAnimation(ItemStack stack) {
         return this.getSmokeAnimation(stack);
-    }
+    }*/
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {

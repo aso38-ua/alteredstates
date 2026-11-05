@@ -2,6 +2,7 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.component.CigarData;
+import com.alteredstates.component.EmberState;
 import com.alteredstates.item.CigarType;
 import com.alteredstates.item.PipeType;
 import com.alteredstates.item.TobaccoLeafType;
@@ -63,6 +64,12 @@ public class ModDataComponentTypes {
             DATA_COMPONENT_TYPES.register("cigar_data", () -> DataComponentType.<CigarData>builder()
                     .persistent(CigarData.CODEC)
                     .networkSynchronized(CigarData.STREAM_CODEC)
+                    .build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<EmberState>> EMBER =
+            DATA_COMPONENT_TYPES.register("ember", () -> DataComponentType.<EmberState>builder()
+                    .persistent(EmberState.CODEC)
+                    .networkSynchronized(EmberState.STREAM_CODEC)
                     .build());
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<PipeType>> PIPE_TYPE =

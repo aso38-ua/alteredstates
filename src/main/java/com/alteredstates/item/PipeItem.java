@@ -79,13 +79,13 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
         return InteractionResultHolder.consume(pipeStack);
     }
 
-    @Override
+    /*@Override
     public UseAnim getUseAnimation(ItemStack stack) {
         // TOOT_HORN acerca el item a la boca del jugador, visualmente es lo más parecido a fumar en pipa.
         // Si CigarItem/CigaretteItem usan otra animación, cámbiala aquí para mantener consistencia.
         //return UseAnim.TOOT_HORN;
         return this.getSmokeAnimation(stack);
-    }
+    }*/
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {

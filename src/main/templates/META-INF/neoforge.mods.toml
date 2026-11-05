@@ -88,6 +88,18 @@ config="${mod_id}.mixins.json"
     ordering="NONE"
     side="BOTH"
 
+[[dependencies.${mod_id}]]
+    modId = "player_animation_library"
+    type = "required"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId = "geckolib"
+    type = "required"
+    ordering = "NONE"
+    side = "CLIENT"
+
 # ── Dependencias opcionales ──────────────────────────────────
 [[dependencies.${mod_id}]]
     modId="farmersdelight"

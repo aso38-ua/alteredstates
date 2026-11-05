@@ -57,6 +57,21 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+
+    // Maven de PlayerAnimationLibrary
+    maven {
+        name = "RedlanceMinecraft"
+        url = "https://repo.redlance.org/public"
+    }
+
+    // Maven de GeckoLib
+    maven {
+        name = 'GeckoLib'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup 'software.bernie.geckolib'
+        }
+    }
 }
 
 base {
@@ -169,6 +184,19 @@ dependencies {
 
     // --- GLITCHCORE (Vía Modrinth) ---
     localRuntime "curse.maven:glitchcore-955399:8109792"
+
+    // --- PLAYER ANIMATION LIBRARY ---
+    //implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}"
+    // --- PLAYER ANIMATION LIBRARY ---
+    implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}") {
+        // Minecraft ya trae estas librerías con versión fija; las de PAL chocan con ellas
+        exclude group: 'com.google.code.gson'
+        exclude group: 'org.slf4j'
+        exclude group: 'it.unimi.dsi'
+        exclude group: 'io.netty'
+    }
+    // --- GECKOLIB ---
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
