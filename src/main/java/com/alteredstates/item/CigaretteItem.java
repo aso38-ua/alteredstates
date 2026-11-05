@@ -220,6 +220,7 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         if (level.isClientSide) return; // todo el efecto es del servidor
 
         setData(cigaretteStack, getData(cigaretteStack).light(level.getGameTime()));
+        markLit(cigaretteStack, level);
 
         InteractionHand lighterHand = cigaretteHand == InteractionHand.MAIN_HAND
                 ? InteractionHand.OFF_HAND
@@ -321,6 +322,13 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         EmberState old = stack.getOrDefault(ModDataComponentTypes.EMBER.get(), EmberState.OFF);
         EmberState now = old.with(smoking, level.getGameTime());
         if (now != old) stack.set(ModDataComponentTypes.EMBER.get(), now);
+    }
+
+    public static void markLit(ItemStack stack, Level level) {
+        EmberState state = stack.getOrDefault(ModDataComponentTypes.EMBER.get(), EmberState.OFF);
+        if (state.litTick() < 0) {
+            stack.set(ModDataComponentTypes.EMBER.get(), state.withLit(level.getGameTime()));
+        }
     }
 
     @Override
