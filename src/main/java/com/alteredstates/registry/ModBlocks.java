@@ -158,6 +158,12 @@ public class ModBlocks {
                     .instabreak()
                     .sound(SoundType.GRASS)));
 
+    public static final DeferredBlock<Block> CUTTING_MIRROR = BLOCKS.register("cutting_mirror",
+            () -> new CuttingMirrorBlock(BlockBehaviour.Properties.of()
+                    .strength(0.8f)
+                    .noOcclusion()
+                    .sound(SoundType.GLASS)));
+
     public static final DeferredBlock<Block> INDUSTRIAL_CAULDRON = BLOCKS.register("industrial_cauldron",
             () -> new IndustrialCauldronBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)

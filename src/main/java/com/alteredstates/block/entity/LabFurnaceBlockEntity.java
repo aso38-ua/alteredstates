@@ -6,13 +6,18 @@ import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModItems;
 import com.alteredstates.util.HeatHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
+
+import javax.annotation.Nullable;
 
 /**
  * Horno de laboratorio (sin GUI): pasta de coca -> cocaína en roca.
@@ -80,6 +85,104 @@ public class LabFurnaceBlockEntity extends BlockEntity {
         return taken;
     }
 
+    // ───────────── Capability de Ítems (automatización tolvas / Create) ─────────────
+    private final IItemHandler itemHandlerUp = new IItemHandler() {
+        @Override public int getSlots() { return 1; }
+        @Override public ItemStack getStackInSlot(int slot) { return input; }
+        @Override public int getSlotLimit(int slot) { return MAX_INPUT; }
+        @Override public boolean isItemValid(int slot, ItemStack stack) { return stack.is(ModItems.COCA_PASTE.get()); }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (!stack.is(ModItems.COCA_PASTE.get())) return stack;
+            int room = MAX_INPUT - input.getCount();
+            if (room <= 0) return stack;
+            if (!input.isEmpty() && !ItemStack.isSameItemSameComponents(input, stack)) return stack;
+
+            int toInsert = Math.min(room, stack.getCount());
+            if (!simulate) {
+                if (input.isEmpty()) input = stack.copyWithCount(toInsert);
+                else input.grow(toInsert);
+                sync();
+            }
+            if (toInsert >= stack.getCount()) return ItemStack.EMPTY;
+            return stack.copyWithCount(stack.getCount() - toInsert);
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return ItemStack.EMPTY; // No se extrae por arriba
+        }
+    };
+
+    private final IItemHandler itemHandlerDown = new IItemHandler() {
+        @Override public int getSlots() { return 1; }
+        @Override public ItemStack getStackInSlot(int slot) { return output; }
+        @Override public int getSlotLimit(int slot) { return 64; }
+        @Override public boolean isItemValid(int slot, ItemStack stack) { return false; }
+        @Override public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) { return stack; }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (output.isEmpty() || amount <= 0) return ItemStack.EMPTY;
+            int toExtract = Math.min(amount, output.getCount());
+            ItemStack res = output.copyWithCount(toExtract);
+            if (!simulate) {
+                output.shrink(toExtract);
+                if (output.isEmpty()) output = ItemStack.EMPTY;
+                sync();
+            }
+            return res;
+        }
+    };
+
+    private final IItemHandler itemHandlerSides = new IItemHandler() {
+        @Override public int getSlots() { return 3; } // 0: Input, 1: Fuel, 2: Output
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return switch (slot) {
+                case 0 -> input;
+                case 2 -> output;
+                default -> ItemStack.EMPTY;
+            };
+        }
+        @Override public int getSlotLimit(int slot) { return slot == 0 ? MAX_INPUT : 64; }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if (slot == 0) return stack.is(ModItems.COCA_PASTE.get());
+            if (slot == 1) return stack.getBurnTime(RecipeType.SMELTING) > 0;
+            return false;
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (slot == 0 && stack.is(ModItems.COCA_PASTE.get())) {
+                return itemHandlerUp.insertItem(0, stack, simulate);
+            }
+            if (slot == 1) {
+                int burn = stack.getBurnTime(RecipeType.SMELTING);
+                if (burn > 0 && canTakeFuel(burn)) {
+                    if (!simulate) addFuel(burn);
+                    return stack.copyWithCount(stack.getCount() - 1);
+                }
+            }
+            return stack;
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot == 2) return itemHandlerDown.extractItem(0, amount, simulate);
+            return ItemStack.EMPTY;
+        }
+    };
+
+    public IItemHandler getItemHandler(@Nullable Direction side) {
+        if (side == Direction.UP) return itemHandlerUp;
+        if (side == Direction.DOWN) return itemHandlerDown;
+        return itemHandlerSides;
+    }
+
     // ───────────── Cocción ─────────────
     private ItemStack makeRock() {
         ItemStack rock = new ItemStack(ModItems.COCAINE_ROCK.get(), 1);
@@ -142,6 +245,10 @@ public class LabFurnaceBlockEntity extends BlockEntity {
         if (!output.isEmpty()) tag.put("Output", output.save(registries));
         tag.putInt("Progress", progress);
         tag.putInt("Fuel", fuelTicks);
+        // Compatibilidad con Jade / WTHIT (barras de progreso y combustible)
+        tag.putInt("CookTime", progress);
+        tag.putInt("CookTimeTotal", COOK_TICKS);
+        tag.putInt("BurnTime", fuelTicks);
     }
 
     @Override

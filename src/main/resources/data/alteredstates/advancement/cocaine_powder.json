@@ -1,0 +1,36 @@
+{
+  "parent": "alteredstates:cocaine_rock",
+  "display": {
+    "icon": {
+      "id": "alteredstates:cocaine_powder"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.cocaine_powder.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.cocaine_powder.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_cocaine_powder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:cocaine_powder"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cocaine_powder"
+    ]
+  ]
+}
+

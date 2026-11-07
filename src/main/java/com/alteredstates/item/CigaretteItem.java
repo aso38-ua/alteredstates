@@ -177,6 +177,10 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
         setData(stack, data.withPuff(level.getGameTime()));
         applyProductEffects(entity, stack);
 
+        if (entity instanceof ServerPlayer serverPlayer) {
+            com.alteredstates.substance.SubstanceManager.onConsume(serverPlayer, "tobacco", stack, getQuality(stack));
+        }
+
         // al dar la calada:
         entity.hurt(level.damageSources().source(CIGARETTE_DAMAGE), 1.0F);
 

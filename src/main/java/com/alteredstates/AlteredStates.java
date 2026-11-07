@@ -67,5 +67,13 @@ public class AlteredStates {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
                 ModBlockEntities.INDUSTRIAL_CAULDRON.get(),
                 (be, side) -> be.getFluidHandler());
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.INDUSTRIAL_CAULDRON.get(),
+                (be, side) -> be.getItemHandler(side));
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.LAB_FURNACE.get(),
+                (be, side) -> be.getItemHandler(side));
     }
 }

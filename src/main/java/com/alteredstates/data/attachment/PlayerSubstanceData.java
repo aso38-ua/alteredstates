@@ -36,7 +36,10 @@ public class PlayerSubstanceData {
                             .forGetter(d -> Map.copyOf(d.tolerance)),
                     Codec.unboundedMap(Codec.STRING, Codec.LONG)
                             .optionalFieldOf("last_consumption", Map.of())
-                            .forGetter(d -> Map.copyOf(d.lastConsumption))
+                            .forGetter(d -> Map.copyOf(d.lastConsumption)),
+                    Codec.unboundedMap(Codec.STRING, Codec.INT)
+                            .optionalFieldOf("dependency", Map.of())
+                            .forGetter(d -> Map.copyOf(d.dependency))
             ).apply(instance, PlayerSubstanceData::fromCodec)
     );
 
@@ -46,6 +49,7 @@ public class PlayerSubstanceData {
     private int    phaseTicks;
     private final Map<String, Integer> tolerance;
     private final Map<String, Long>    lastConsumption;
+    private final Map<String, Integer> dependency;
 
     // ── Constructor por defecto (jugador nuevo) ──────────────────
     public PlayerSubstanceData() {
@@ -54,18 +58,21 @@ public class PlayerSubstanceData {
         this.phaseTicks       = 0;
         this.tolerance        = new HashMap<>();
         this.lastConsumption  = new HashMap<>();
+        this.dependency       = new HashMap<>();
     }
 
     // ── Constructor codec ────────────────────────────────────────
     private static PlayerSubstanceData fromCodec(
             String activeSubstance, int phaseIndex, int phaseTicks,
-            Map<String, Integer> tolerance, Map<String, Long> lastConsumption) {
+            Map<String, Integer> tolerance, Map<String, Long> lastConsumption,
+            Map<String, Integer> dependency) {
         PlayerSubstanceData d = new PlayerSubstanceData();
         d.activeSubstance = activeSubstance;
         d.phaseIndex      = phaseIndex;
         d.phaseTicks      = phaseTicks;
         d.tolerance.putAll(tolerance);
         d.lastConsumption.putAll(lastConsumption);
+        d.dependency.putAll(dependency);
         return d;
     }
 
@@ -91,6 +98,36 @@ public class PlayerSubstanceData {
 
     public void resetTolerance(String substanceId) {
         tolerance.remove(substanceId);
+    }
+
+    // ── Dependencia ──────────────────────────────────────────────
+    public int getDependency(String substanceId) {
+        return dependency.getOrDefault(substanceId, 0);
+    }
+
+    public void setDependency(String substanceId, int value) {
+        dependency.put(substanceId, Math.max(0, Math.min(100, value)));
+    }
+
+    public void setTolerance(String substanceId, int value) {
+        int v = Math.max(0, Math.min(10, value));
+        if (v == 0) tolerance.remove(substanceId);
+        else tolerance.put(substanceId, v);
+    }
+
+    /** Borra tolerancia, dependencia y último consumo de una sustancia (comando reset). */
+    public void resetSubstance(String substanceId) {
+        tolerance.remove(substanceId);
+        dependency.remove(substanceId);
+        lastConsumption.remove(substanceId);
+    }
+
+    public void incrementDependency(String substanceId, int amount) {
+        dependency.merge(substanceId, amount, (curr, add) -> Math.max(0, Math.min(100, curr + add)));
+    }
+
+    public void decrementDependency(String substanceId, int amount) {
+        dependency.computeIfPresent(substanceId, (k, v) -> v <= amount ? null : v - amount);
     }
 
     // ── Último consumo ───────────────────────────────────────────

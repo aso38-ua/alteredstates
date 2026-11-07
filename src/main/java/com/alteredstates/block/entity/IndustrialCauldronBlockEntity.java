@@ -6,6 +6,7 @@ import com.alteredstates.registry.ModDataComponentTypes;
 import com.alteredstates.registry.ModGasoline;
 import com.alteredstates.registry.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -31,6 +32,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,6 +240,118 @@ public class IndustrialCauldronBlockEntity extends BlockEntity {
 
     public IFluidHandler getFluidHandler() { return fluidHandler; }
 
+    // ───────────── Capability de Ítems (automatización tolvas / Create) ─────────────
+    private final IItemHandler itemHandlerAll = new IItemHandler() {
+        @Override
+        public int getSlots() { return 2; } // 0: Input, 1: Output
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            if (slot == 1) return output;
+            return ingredients.isEmpty() ? ItemStack.EMPTY : ingredients.get(0);
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (slot != 0 || stack.isEmpty()) return stack;
+            if (!output.isEmpty()) return stack;
+
+            int room = 0;
+            if (waterStage()) {
+                if (isCoal(stack)) room = COAL_NEEDED - count(IndustrialCauldronBlockEntity::isCoal);
+                else if (isBlaze(stack)) room = BLAZE_NEEDED - count(IndustrialCauldronBlockEntity::isBlaze);
+            } else if (gasolineStage()) {
+                if (isLeaf(stack)) room = LEAVES_NEEDED - count(IndustrialCauldronBlockEntity::isLeaf);
+            }
+            if (room <= 0) return stack;
+
+            int toInsert = Math.min(room, stack.getCount());
+            if (!simulate) {
+                boolean merged = false;
+                for (ItemStack s : ingredients) {
+                    if (ItemStack.isSameItemSameComponents(s, stack)) {
+                        s.grow(toInsert);
+                        merged = true;
+                        break;
+                    }
+                }
+                if (!merged) ingredients.add(stack.copyWithCount(toInsert));
+                progress = 0;
+                sync();
+            }
+
+            if (toInsert >= stack.getCount()) return ItemStack.EMPTY;
+            return stack.copyWithCount(stack.getCount() - toInsert);
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot != 1 || output.isEmpty() || amount <= 0) return ItemStack.EMPTY;
+            int toExtract = Math.min(amount, output.getCount());
+            ItemStack result = output.copyWithCount(toExtract);
+            if (!simulate) {
+                output.shrink(toExtract);
+                if (output.isEmpty()) output = ItemStack.EMPTY;
+                sync();
+            }
+            return result;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 64;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if (slot != 0) return false;
+            if (waterStage()) return isCoal(stack) || isBlaze(stack);
+            if (gasolineStage()) return isLeaf(stack);
+            return false;
+        }
+    };
+
+    private final IItemHandler itemHandlerExtractOnly = new IItemHandler() {
+        @Override
+        public int getSlots() { return 1; }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return output;
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            return stack; // No admite inserción por abajo
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (output.isEmpty() || amount <= 0) return ItemStack.EMPTY;
+            int toExtract = Math.min(amount, output.getCount());
+            ItemStack result = output.copyWithCount(toExtract);
+            if (!simulate) {
+                output.shrink(toExtract);
+                if (output.isEmpty()) output = ItemStack.EMPTY;
+                sync();
+            }
+            return result;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) { return 64; }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) { return false; }
+    };
+
+    public IItemHandler getItemHandler(@Nullable Direction side) {
+        if (side == Direction.DOWN) {
+            return itemHandlerExtractOnly;
+        }
+        return itemHandlerAll;
+    }
+
     // ───────────── Calor ─────────────
     private int computeHeat() {
         if (level == null) return 0;
@@ -330,7 +446,9 @@ public class IndustrialCauldronBlockEntity extends BlockEntity {
         tag.putInt("Water", waterMb);
         tag.putInt("Gasoline", gasolineMb);
         tag.putInt("Progress", progress);
+        tag.putInt("MaxProgress", duration(currentRecipe()));
         tag.putBoolean("Brewing", brewing);
+        tag.putInt("Heat", heat);
         ListTag list = new ListTag();
         for (ItemStack s : ingredients) list.add(s.save(registries));
         tag.put("Ingredients", list);

@@ -21,10 +21,14 @@ public class ModCreativeTabs {
                             // Icono temporal hasta tener el joint registrado
                             .icon(() -> new ItemStack(ModItems.INDICA_BUDS_FRESH.get()))
                             .displayItems((params, output) -> {
-                                // Se populará automáticamente cuando
-                                // añadamos items reales al DeferredRegister
                                 ModItems.ITEMS.getEntries().forEach(
                                         holder -> output.accept(holder.get())
+                                );
+                                ModGasoline.ITEMS.getEntries().forEach(
+                                        holder -> {
+                                            ItemStack stack = new ItemStack(holder.get());
+                                            output.accept(stack);
+                                        }
                                 );
                             })
                             .build()

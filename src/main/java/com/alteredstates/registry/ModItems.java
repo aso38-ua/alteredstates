@@ -228,6 +228,8 @@ public class ModItems {
     public static final DeferredItem<Item> COCAINE_POWDER = ITEMS.register("cocaine_powder",
             () -> new CocainePowderItem(new Item.Properties()));
 
-    public static final DeferredItem<Item> CUTTING_AGENT = ITEMS.register("cutting_agent",
-            () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CUTTING_MIRROR = ITEMS.register("cutting_mirror",
+            () -> new BlockItem(ModBlocks.CUTTING_MIRROR.get(), new Item.Properties()));
+
+    public static final DeferredItem<Item> GASOLINE_BUCKET = ModGasoline.GASOLINE_BUCKET;
 }

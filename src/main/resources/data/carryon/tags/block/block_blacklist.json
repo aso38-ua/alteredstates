@@ -1,6 +1,12 @@
 {
   "replace": false,
   "values": [
-    "alteredstates:rolling_tray"
+    "alteredstates:rolling_tray",
+    "alteredstates:industrial_cauldron",
+    "alteredstates:lab_furnace",
+    "alteredstates:cutting_mirror",
+    "alteredstates:drying_rack",
+    "alteredstates:curing_jar",
+    "alteredstates:bong"
   ]
 }

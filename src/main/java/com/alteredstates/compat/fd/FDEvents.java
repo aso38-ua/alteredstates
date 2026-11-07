@@ -45,11 +45,13 @@ public class FDEvents {
                 if (!boardItem.isEmpty()) {
                     ItemStack resultStack = ItemStack.EMPTY;
 
-                    // Identificamos qué cogollo está en la tabla
+                    // Identificamos qué cogollo u hoja está en la tabla
                     if (boardItem.is(ModItems.INDICA_BUDS_DRY.get())) {
                         resultStack = new ItemStack(ModItems.INDICA_GROUND.get());
                     } else if (boardItem.is(ModItems.SATIVA_BUDS_DRY.get())) {
                         resultStack = new ItemStack(ModItems.SATIVA_GROUND.get());
+                    } else if (boardItem.is(ModItems.COCA_LEAF.get())) {
+                        resultStack = new ItemStack(ModItems.COCA_LEAF_DRY.get());
                     }
 
                     // Si es uno de nuestros cogollos, ejecutamos la lógica dinámica

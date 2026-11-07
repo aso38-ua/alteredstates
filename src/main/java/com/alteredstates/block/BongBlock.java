@@ -103,6 +103,15 @@ public class BongBlock extends BaseEntityBlock {
                         bongableProduct.applyProductEffects(player, substance);
                     }
 
+                    if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                        int q = substance.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+                        if (substance.is(ModItems.INDICA_GROUND.get()) || substance.is(ModItems.SATIVA_GROUND.get())) {
+                            com.alteredstates.substance.SubstanceManager.onConsume(serverPlayer, "cannabis", substance, q);
+                        } else if (substance.is(ModItems.ROLLING_TOBACCO.get())) {
+                            com.alteredstates.substance.SubstanceManager.onConsume(serverPlayer, "tobacco", substance, q);
+                        }
+                    }
+
                     handStack.hurtAndBreak(1, player, net.minecraft.world.entity.LivingEntity.getSlotForHand(player.getUsedItemHand()));
                 } else {
                     // Partículas en el lado del cliente (Se quedan igual)

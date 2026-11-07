@@ -25,6 +25,10 @@ public class EdibleEffectHandler {
 
                 // IMPORTANTE: Asegúrate de llamar a 'applyEdibleEffects' y no a 'applyBongEffects'
                 com.alteredstates.util.SmokingEffectProcessor.applyEdibleEffects(player, isIndica, quality);
+
+                if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    com.alteredstates.substance.SubstanceManager.onConsume(serverPlayer, "cannabis", net.minecraft.world.item.ItemStack.EMPTY, quality);
+                }
             }
         }
     }

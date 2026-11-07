@@ -147,6 +147,10 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
             // 1. Aplicamos los efectos del tabaco que está dentro
             this.applyProductEffects(entity, stack);
 
+            if (entity instanceof ServerPlayer serverPlayer) {
+                com.alteredstates.substance.SubstanceManager.onConsume(serverPlayer, "tobacco", stack, getQuality(stack));
+            }
+
             // 2. VACIAR LA PIPA (Removemos el componente para que vuelva a estar vacía)
             stack.remove(ModDataComponentTypes.PIPE_CONTENT.get());
 

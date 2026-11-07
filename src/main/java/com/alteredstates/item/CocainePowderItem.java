@@ -41,6 +41,9 @@ public class CocainePowderItem extends Item implements IProduct {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (player instanceof ServerPlayer sp && CocaineEffects.isCollapsed(sp)) {
+            return InteractionResultHolder.fail(stack);
+        }
         player.startUsingItem(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.SNIFFER_SNIFFING, SoundSource.PLAYERS, 0.9F, 1.3F);
@@ -63,6 +66,8 @@ public class CocainePowderItem extends Item implements IProduct {
         if (entity instanceof ServerPlayer player) {
             int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 2);
             CocaineEffects.use(player, quality);
+            level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.SNIFFER_HAPPY, SoundSource.PLAYERS, 0.7F, 1.6F);
             if (!player.hasInfiniteMaterials()) stack.shrink(1);
         }
         return stack;

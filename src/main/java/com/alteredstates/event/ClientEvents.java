@@ -32,10 +32,17 @@ import com.alteredstates.client.render.LabFurnaceRenderer;
 
         // 🔍 Si el ítem tiene el componente guardado internamente, lo mostramos
         if (stack.has(ModDataComponentTypes.QUALITY.get())) {
-            int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
-
-            // Añade "⭐ Calidad: X" en color dorado al final de la descripción
-            event.getToolTip().add(Component.literal("⭐ Calidad: " + quality).withStyle(ChatFormatting.GOLD));
+            if (!(stack.getItem() instanceof com.alteredstates.item.RolledJointItem) && !(stack.getItem() instanceof com.alteredstates.item.CigaretteItem)) {
+                int quality = stack.getOrDefault(ModDataComponentTypes.QUALITY.get(), 1);
+                Component qualityName = switch (quality) {
+                    case 0 -> Component.translatable("tooltip.alteredstates.quality.bad");
+                    case 1 -> Component.translatable("tooltip.alteredstates.quality.regular");
+                    case 2 -> Component.translatable("tooltip.alteredstates.quality.normal");
+                    case 3 -> Component.translatable("tooltip.alteredstates.quality.good");
+                    default -> Component.translatable("tooltip.alteredstates.quality.premium");
+                };
+                event.getToolTip().add(Component.literal("⭐ ").append(Component.translatable("tooltip.alteredstates.quality_format", qualityName)).withStyle(ChatFormatting.GOLD));
+            }
         }
     }
 

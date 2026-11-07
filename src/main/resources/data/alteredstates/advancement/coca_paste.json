@@ -1,0 +1,36 @@
+{
+  "parent": "alteredstates:coca_farmer",
+  "display": {
+    "icon": {
+      "id": "alteredstates:coca_paste"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.coca_paste.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.coca_paste.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_coca_paste": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:coca_paste"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_coca_paste"
+    ]
+  ]
+}
+

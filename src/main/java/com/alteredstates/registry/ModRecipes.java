@@ -3,11 +3,9 @@ package com.alteredstates.registry;
 import com.alteredstates.AlteredStates;
 import com.alteredstates.recipe.BrownieRecipe;
 import com.alteredstates.recipe.CannabutterRecipe;
-import com.alteredstates.recipe.CocaineCutRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -25,7 +23,4 @@ public class ModRecipes {
     public static final Supplier<RecipeSerializer<BrownieRecipe>> BROWNIE_SERIALIZER =
             SERIALIZERS.register("crafting_special_brownie",
                     () -> new SimpleCraftingRecipeSerializer<>(BrownieRecipe::new));
-
-    public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<CocaineCutRecipe>> COCAINE_CUT =
-            SERIALIZERS.register("cocaine_cut", () -> new SimpleCraftingRecipeSerializer<>(CocaineCutRecipe::new));
 }

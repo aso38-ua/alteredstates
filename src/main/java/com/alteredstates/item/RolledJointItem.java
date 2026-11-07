@@ -147,6 +147,13 @@ public class RolledJointItem extends Item implements ISmokableItem {
             // 🚀 LLAMADA A NUESTRO SEMÁFORO DE EFECTOS
             this.applyProductEffects(entity, stack);
 
+            if (entity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                String content = getContentType(stack);
+                if ("indica".equals(content) || "sativa".equals(content)) {
+                    com.alteredstates.substance.SubstanceManager.onConsume(serverPlayer, "cannabis", stack, getQuality(stack));
+                }
+            }
+
             if (entity instanceof Player player) {
                 if (!player.getAbilities().instabuild) {
                     stack.setDamageValue(stack.getDamageValue() + 1);

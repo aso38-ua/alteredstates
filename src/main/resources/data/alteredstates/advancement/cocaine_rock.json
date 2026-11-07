@@ -1,0 +1,36 @@
+{
+  "parent": "alteredstates:coca_paste",
+  "display": {
+    "icon": {
+      "id": "alteredstates:cocaine_rock"
+    },
+    "title": {
+      "translate": "advancements.alteredstates.cocaine_rock.title"
+    },
+    "description": {
+      "translate": "advancements.alteredstates.cocaine_rock.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_cocaine_rock": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:cocaine_rock"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cocaine_rock"
+    ]
+  ]
+}
+
