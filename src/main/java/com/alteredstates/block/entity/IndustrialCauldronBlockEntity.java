@@ -3,6 +3,7 @@ package com.alteredstates.block.entity;
 import com.alteredstates.AlteredStates;
 import com.alteredstates.registry.ModBlockEntities;
 import com.alteredstates.registry.ModDataComponentTypes;
+import com.alteredstates.registry.ModGasoline;
 import com.alteredstates.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -198,10 +199,22 @@ public class IndustrialCauldronBlockEntity extends BlockEntity {
         return Math.max(accepted, 0);
     }
 
-    /** Capability de fluidos: solo admite (agua y disolventes). No se puede sacar por tubería. */
+    /** Saca gasolina (cubo o tubería). Devuelve los mB sacados. */
+    public int drainInternal(int amount, boolean execute) {
+        int drained = Math.min(amount, gasolineMb);
+        if (drained > 0 && execute) {
+            gasolineMb -= drained;
+            progress = 0;
+            sync();
+        }
+        return Math.max(drained, 0);
+    }
+
+    /** Capability de fluidos: admite agua y disolventes; permite sacar la gasolina. */
     private final IFluidHandler fluidHandler = new IFluidHandler() {
         @Override public int getTanks() { return 1; }
         @Override public FluidStack getFluidInTank(int tank) {
+            if (gasolineMb > 0) return new FluidStack(ModGasoline.SOURCE.get(), gasolineMb);
             return waterMb > 0 ? new FluidStack(Fluids.WATER, waterMb) : FluidStack.EMPTY;
         }
         @Override public int getTankCapacity(int tank) { return GASOLINE_MAX; }
@@ -211,8 +224,14 @@ public class IndustrialCauldronBlockEntity extends BlockEntity {
         @Override public int fill(FluidStack resource, FluidAction action) {
             return fillInternal(resource, action.execute());
         }
-        @Override public FluidStack drain(FluidStack resource, FluidAction action) { return FluidStack.EMPTY; }
-        @Override public FluidStack drain(int maxDrain, FluidAction action) { return FluidStack.EMPTY; }
+        @Override public FluidStack drain(FluidStack resource, FluidAction action) {
+            if (resource.isEmpty() || !resource.is(ModGasoline.SOURCE.get())) return FluidStack.EMPTY;
+            return drain(resource.getAmount(), action);
+        }
+        @Override public FluidStack drain(int maxDrain, FluidAction action) {
+            int drained = drainInternal(maxDrain, action.execute());
+            return drained > 0 ? new FluidStack(ModGasoline.SOURCE.get(), drained) : FluidStack.EMPTY;
+        }
     };
 
     public IFluidHandler getFluidHandler() { return fluidHandler; }

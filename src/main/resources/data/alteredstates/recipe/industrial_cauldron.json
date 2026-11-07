@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "ICI",
+    "PIP"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "P": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "id": "alteredstates:industrial_cauldron",
+    "count": 1
+  }
+}

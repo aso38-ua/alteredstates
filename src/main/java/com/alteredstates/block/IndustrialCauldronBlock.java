@@ -2,9 +2,11 @@ package com.alteredstates.block;
 
 import com.alteredstates.block.entity.IndustrialCauldronBlockEntity;
 import com.alteredstates.registry.ModBlockEntities;
+import com.alteredstates.registry.ModGasoline;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -79,6 +81,30 @@ public class IndustrialCauldronBlock extends BaseEntityBlock {
                                               Player player, InteractionHand hand, BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof IndustrialCauldronBlockEntity be)) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        // 0) Cubo vacío: recoge 1000 mB de gasolina
+        if (stack.is(Items.BUCKET) && be.getGasolineMb() >= 1000) {
+            if (!level.isClientSide) {
+                be.drainInternal(1000, true);
+                ItemStack filled = new ItemStack(ModGasoline.GASOLINE_BUCKET.get());
+                if (player.hasInfiniteMaterials()) {
+                    if (!player.getInventory().contains(filled)) player.getInventory().add(filled);
+                } else {
+                    player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
+                }
+                level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 0.8F);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
+
+        // 0b) Cubo vacío pero con menos de 1000 mB: avisa de cuánto hay
+        if (stack.is(Items.BUCKET) && be.getGasolineMb() > 0) {
+            if (!level.isClientSide) {
+                player.displayClientMessage(Component.literal("Gasolina en el caldero: " + be.getGasolineMb()
+                        + " mB (hacen falta 1000 para llenar un cubo)"), true);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
 
         // 1) Cubos con fluido

@@ -13,6 +13,7 @@ public class CocaineData {
     public long highStart = 0L;
     public long phaseEnd = 0L;          // fin de la fase actual (subidón o bajón)
     public int phase = PHASE_NONE;
+    public int quality = 2;             // calidad de la dosis que manda ahora mismo (0-4)
     public int tolerance = 0;           // sube con cada dosis, se resetea tras 5 días sin consumir
     public int dependency = 0;          // 0..100, baja muy despacio
     public int recentUses = 0;          // dosis dentro de la ventana de sobredosis
@@ -20,12 +21,13 @@ public class CocaineData {
 
     public CocaineData() {}
 
-    public CocaineData(long lastUse, long highStart, long phaseEnd, int phase,
+    public CocaineData(long lastUse, long highStart, long phaseEnd, int phase, int quality,
                        int tolerance, int dependency, int recentUses, long recentStart) {
         this.lastUse = lastUse;
         this.highStart = highStart;
         this.phaseEnd = phaseEnd;
         this.phase = phase;
+        this.quality = quality;
         this.tolerance = tolerance;
         this.dependency = dependency;
         this.recentUses = recentUses;
@@ -37,6 +39,7 @@ public class CocaineData {
             Codec.LONG.optionalFieldOf("highStart", 0L).forGetter(d -> d.highStart),
             Codec.LONG.optionalFieldOf("phaseEnd", 0L).forGetter(d -> d.phaseEnd),
             Codec.INT.optionalFieldOf("phase", 0).forGetter(d -> d.phase),
+            Codec.INT.optionalFieldOf("quality", 2).forGetter(d -> d.quality),
             Codec.INT.optionalFieldOf("tolerance", 0).forGetter(d -> d.tolerance),
             Codec.INT.optionalFieldOf("dependency", 0).forGetter(d -> d.dependency),
             Codec.INT.optionalFieldOf("recentUses", 0).forGetter(d -> d.recentUses),

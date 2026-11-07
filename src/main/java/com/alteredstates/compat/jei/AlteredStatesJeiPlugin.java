@@ -272,6 +272,12 @@ public class AlteredStatesJeiPlugin implements IModPlugin {
                 donJavierCigar
         ));
 
+        ItemStack cocaDry = new ItemStack(ModItems.COCA_LEAF_DRY.get()); cocaDry.set(ModDataComponentTypes.QUALITY.get(), 1);
+        dryingRecipes.add(new DryingRecipeWrapper(new ItemStack(ModItems.COCA_LEAF.get()), cocaDry));
+        // Grinder: roca -> polvo
+        ItemStack cocaPowder = new ItemStack(ModItems.COCAINE_POWDER.get()); cocaPowder.set(ModDataComponentTypes.QUALITY.get(), 1);
+        grindingRecipes.add(new GrindingRecipeWrapper(new ItemStack(ModItems.COCAINE_ROCK.get()), cocaPowder));
+
         registration.addRecipes(ROLLING_TYPE, rollingRecipes);
 
         // --- RECETAS DE BONG ---

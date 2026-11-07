@@ -66,6 +66,12 @@ public class ModEffects {
         }
     }
 
+    public static final DeferredHolder<MobEffect, MobEffect> COCAINE_RUSH = MOB_EFFECTS.register("cocaine_rush",
+            () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0xFFD54F) {});
+
+    public static final DeferredHolder<MobEffect, MobEffect> COCAINE_CRASH = MOB_EFFECTS.register("cocaine_crash",
+            () -> new MobEffect(MobEffectCategory.HARMFUL, 0x5C6370) {});
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

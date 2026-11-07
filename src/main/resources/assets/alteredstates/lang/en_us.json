@@ -167,5 +167,12 @@
   "item.alteredstates.coca_paste": "Coca Paste",
   "block.alteredstates.lab_furnace": "Lab Furnace",
   "item.alteredstates.cocaine_rock": "Cocaine Rock",
-  "item.alteredstates.cocaine_powder": "Cocaine Powder"
+  "item.alteredstates.cocaine_powder": "Cocaine Powder",
+
+  "fluid_type.alteredstates.gasoline": "Crude Gasoline",
+  "block.alteredstates.gasoline": "Crude Gasoline",
+  "item.alteredstates.gasoline_bucket": "Crude Gasoline Bucket",
+  "item.alteredstates.cutting_agent": "Cutting Agent",
+  "effect.alteredstates.cocaine_rush": "Cocaine Rush",
+  "effect.alteredstates.cocaine_crash": "Cocaine Crash"
 }

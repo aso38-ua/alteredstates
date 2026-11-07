@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "alteredstates:gasoline",
+    "alteredstates:flowing_gasoline",
     {
       "id": "#c:gasoline",
       "required": false

@@ -35,6 +35,10 @@ public class ClientEffectHandler {
     // Tick counter para animaciones suaves
     private static float animationTick = 0;
 
+    // Fundido suave de los overlays de cocaína (0 = invisible, 1 = a tope)
+    private static float rushFade = 0.0F;
+    private static float crashFade = 0.0F;
+
     /**
      * Incrementar el contador de animación y gestionar la carga/descarga del shader post-process vanilla.
      */
@@ -47,7 +51,12 @@ public class ClientEffectHandler {
         boolean hasOniricTrance = mc.player.hasEffect(ModEffects.ONIRIC_TRANCE);
         boolean hasTripEffect = hasPsychodelia || hasOniricTrance;
 
-        if (hasTripEffect) {
+        boolean hasRush = mc.player.hasEffect(ModEffects.COCAINE_RUSH);
+        boolean hasCrash = mc.player.hasEffect(ModEffects.COCAINE_CRASH);
+        rushFade = approach(rushFade, hasRush ? 1.0F : 0.0F, hasRush ? 0.012F : 0.02F);
+        crashFade = approach(crashFade, hasCrash ? 1.0F : 0.0F, hasCrash ? 0.012F : 0.02F);
+
+        if (hasTripEffect || rushFade > 0.001F || crashFade > 0.001F) {
             animationTick += 1.0F;
         } else {
             animationTick = 0;
@@ -95,7 +104,8 @@ public class ClientEffectHandler {
         boolean hasPsychodelia = mc.player.hasEffect(ModEffects.PSYCHODELIA);
         boolean hasOniricTrance = mc.player.hasEffect(ModEffects.ONIRIC_TRANCE);
 
-        if (!hasPsychodelia && !hasOniricTrance) return;
+        boolean showCocaine = rushFade > 0.001F || crashFade > 0.001F;
+        if (!hasPsychodelia && !hasOniricTrance && !showCocaine) return;
 
         Matrix4f pose = event.getGuiGraphics().pose().last().pose();
         int screenWidth = event.getGuiGraphics().guiWidth();
@@ -112,6 +122,99 @@ public class ClientEffectHandler {
         if (hasOniricTrance) {
             renderOniricTranceOverlay(pose, screenWidth, screenHeight, time);
         }
+
+        if (rushFade > 0.001F) {
+            renderRushOverlay(pose, screenWidth, screenHeight, time, rushFade);
+        }
+        if (crashFade > 0.001F) {
+            renderCrashOverlay(pose, screenWidth, screenHeight, time, crashFade);
+        }
+    }
+
+    private static float approach(float value, float target, float step) {
+        if (value < target) return Math.min(target, value + step);
+        return Math.max(target, value - step);
+    }
+
+    /**
+     * Subidón de cocaína: velo cálido tipo éxtasis. Pasteles (rosa, dorado, turquesa) que se
+     * desplazan despacio por las esquinas, con un pulso lento y un brillo suave en los bordes.
+     */
+    private static void renderRushOverlay(Matrix4f pose, int w, int h, float time, float fade) {
+        float t = time * 0.35F;
+        float pulse = 0.85F + 0.15F * (float) Math.sin(time * 1.1F);
+        float a = 0.13F * fade * pulse;
+
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+
+        // Cada esquina recorre despacio pastel rosa -> dorado -> turquesa
+        float[] tl = pastel(t);
+        float[] tr = pastel(t + 2.1F);
+        float[] br = pastel(t + 4.2F);
+        float[] bl = pastel(t + 1.0F);
+
+        BufferBuilder buf = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        buf.addVertex(pose, 0, h, 0).setColor(bl[0], bl[1], bl[2], a);
+        buf.addVertex(pose, w, h, 0).setColor(br[0], br[1], br[2], a);
+        buf.addVertex(pose, w, 0, 0).setColor(tr[0], tr[1], tr[2], a);
+        buf.addVertex(pose, 0, 0, 0).setColor(tl[0], tl[1], tl[2], a);
+        BufferUploader.drawWithShader(buf.buildOrThrow());
+
+        // Brillo suave en los bordes (viñeta luminosa)
+        renderVignette(pose, w, h, 1.0F, 0.85F, 0.6F, 0.20F * fade * pulse, 0.22F);
+
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableBlend();
+    }
+
+    /** Bajón: pantalla apagada y grisácea con viñeta oscura que respira despacio. */
+    private static void renderCrashOverlay(Matrix4f pose, int w, int h, float time, float fade) {
+        float breathe = 0.9F + 0.1F * (float) Math.sin(time * 0.5F);
+        renderColorOverlay(pose, 0, 0, w, h, 0.42F, 0.45F, 0.52F, 0.26F * fade * breathe);
+        renderVignette(pose, w, h, 0.05F, 0.06F, 0.10F, 0.55F * fade * breathe, 0.30F);
+    }
+
+    /** Color pastel suave a partir de una fase. */
+    private static float[] pastel(float phase) {
+        return new float[] {
+                0.75F + 0.25F * (float) Math.sin(phase),
+                0.65F + 0.25F * (float) Math.sin(phase + 2.094F),
+                0.75F + 0.25F * (float) Math.sin(phase + 4.188F)
+        };
+    }
+
+    /** Viñeta: 4 franjas en los bordes que se desvanecen hacia el centro. */
+    private static void renderVignette(Matrix4f pose, int w, int h, float r, float g, float b, float edgeAlpha, float thickness) {
+        RenderSystem.enableBlend();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        float tx = w * thickness;
+        float ty = h * thickness;
+
+        BufferBuilder buf = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        // arriba
+        buf.addVertex(pose, 0, ty, 0).setColor(r, g, b, 0.0F);
+        buf.addVertex(pose, w, ty, 0).setColor(r, g, b, 0.0F);
+        buf.addVertex(pose, w, 0, 0).setColor(r, g, b, edgeAlpha);
+        buf.addVertex(pose, 0, 0, 0).setColor(r, g, b, edgeAlpha);
+        // abajo
+        buf.addVertex(pose, 0, h, 0).setColor(r, g, b, edgeAlpha);
+        buf.addVertex(pose, w, h, 0).setColor(r, g, b, edgeAlpha);
+        buf.addVertex(pose, w, h - ty, 0).setColor(r, g, b, 0.0F);
+        buf.addVertex(pose, 0, h - ty, 0).setColor(r, g, b, 0.0F);
+        // izquierda
+        buf.addVertex(pose, 0, h, 0).setColor(r, g, b, edgeAlpha);
+        buf.addVertex(pose, tx, h, 0).setColor(r, g, b, 0.0F);
+        buf.addVertex(pose, tx, 0, 0).setColor(r, g, b, 0.0F);
+        buf.addVertex(pose, 0, 0, 0).setColor(r, g, b, edgeAlpha);
+        // derecha
+        buf.addVertex(pose, w - tx, h, 0).setColor(r, g, b, 0.0F);
+        buf.addVertex(pose, w, h, 0).setColor(r, g, b, edgeAlpha);
+        buf.addVertex(pose, w, 0, 0).setColor(r, g, b, edgeAlpha);
+        buf.addVertex(pose, w - tx, 0, 0).setColor(r, g, b, 0.0F);
+        BufferUploader.drawWithShader(buf.buildOrThrow());
+        RenderSystem.disableBlend();
     }
 
     /**

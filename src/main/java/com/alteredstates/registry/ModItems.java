@@ -227,4 +227,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> COCAINE_POWDER = ITEMS.register("cocaine_powder",
             () -> new CocainePowderItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> CUTTING_AGENT = ITEMS.register("cutting_agent",
+            () -> new Item(new Item.Properties()));
 }

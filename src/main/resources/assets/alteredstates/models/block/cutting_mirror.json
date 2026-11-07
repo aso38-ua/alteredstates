@@ -1,0 +1,556 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "minecraft:block/iron_block",
+    "frame": "minecraft:block/iron_block",
+    "mirror": "minecraft:block/light_gray_stained_glass",
+    "powder": "minecraft:block/white_concrete_powder",
+    "card": "minecraft:block/light_blue_concrete"
+  },
+  "elements": [
+    {
+      "name": "Marco_N",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        2,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "east": {
+          "uv": [
+            1,
+            14,
+            2,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "south": {
+          "uv": [
+            1,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "west": {
+          "uv": [
+            1,
+            14,
+            2,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "up": {
+          "uv": [
+            1,
+            1,
+            15,
+            2
+          ],
+          "texture": "#frame"
+        },
+        "down": {
+          "uv": [
+            1,
+            1,
+            15,
+            2
+          ],
+          "texture": "#frame"
+        }
+      }
+    },
+    {
+      "name": "Marco_S",
+      "from": [
+        1,
+        0,
+        14
+      ],
+      "to": [
+        15,
+        2,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "east": {
+          "uv": [
+            14,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "south": {
+          "uv": [
+            1,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "west": {
+          "uv": [
+            14,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "up": {
+          "uv": [
+            1,
+            14,
+            15,
+            15
+          ],
+          "texture": "#frame"
+        },
+        "down": {
+          "uv": [
+            1,
+            14,
+            15,
+            15
+          ],
+          "texture": "#frame"
+        }
+      }
+    },
+    {
+      "name": "Marco_O",
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        2,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            14,
+            2,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "east": {
+          "uv": [
+            2,
+            14,
+            14,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "south": {
+          "uv": [
+            1,
+            14,
+            2,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "west": {
+          "uv": [
+            2,
+            14,
+            14,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "up": {
+          "uv": [
+            1,
+            2,
+            2,
+            14
+          ],
+          "texture": "#frame"
+        },
+        "down": {
+          "uv": [
+            1,
+            2,
+            2,
+            14
+          ],
+          "texture": "#frame"
+        }
+      }
+    },
+    {
+      "name": "Marco_E",
+      "from": [
+        14,
+        0,
+        2
+      ],
+      "to": [
+        15,
+        2,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "east": {
+          "uv": [
+            2,
+            14,
+            14,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "south": {
+          "uv": [
+            14,
+            14,
+            15,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "west": {
+          "uv": [
+            2,
+            14,
+            14,
+            16
+          ],
+          "texture": "#frame"
+        },
+        "up": {
+          "uv": [
+            14,
+            2,
+            15,
+            14
+          ],
+          "texture": "#frame"
+        },
+        "down": {
+          "uv": [
+            14,
+            2,
+            15,
+            14
+          ],
+          "texture": "#frame"
+        }
+      }
+    },
+    {
+      "name": "Espejo",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        1.5,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            14.5,
+            14,
+            16
+          ],
+          "texture": "#mirror"
+        },
+        "east": {
+          "uv": [
+            2,
+            14.5,
+            14,
+            16
+          ],
+          "texture": "#mirror"
+        },
+        "south": {
+          "uv": [
+            2,
+            14.5,
+            14,
+            16
+          ],
+          "texture": "#mirror"
+        },
+        "west": {
+          "uv": [
+            2,
+            14.5,
+            14,
+            16
+          ],
+          "texture": "#mirror"
+        },
+        "up": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#mirror"
+        }
+      }
+    },
+    {
+      "name": "Linea",
+      "from": [
+        4,
+        1.55,
+        6.5
+      ],
+      "to": [
+        10,
+        1.75,
+        7.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            14.25,
+            10,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            14.25,
+            7.5,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "south": {
+          "uv": [
+            4,
+            14.25,
+            10,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            14.25,
+            7.5,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "up": {
+          "uv": [
+            4,
+            6.5,
+            10,
+            7.5
+          ],
+          "texture": "#powder"
+        },
+        "down": {
+          "uv": [
+            4,
+            6.5,
+            10,
+            7.5
+          ],
+          "texture": "#powder"
+        }
+      }
+    },
+    {
+      "name": "Linea2",
+      "from": [
+        4,
+        1.55,
+        8.5
+      ],
+      "to": [
+        9,
+        1.75,
+        9.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            14.25,
+            9,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "east": {
+          "uv": [
+            8.5,
+            14.25,
+            9.3,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "south": {
+          "uv": [
+            4,
+            14.25,
+            9,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "west": {
+          "uv": [
+            8.5,
+            14.25,
+            9.3,
+            14.45
+          ],
+          "texture": "#powder"
+        },
+        "up": {
+          "uv": [
+            4,
+            8.5,
+            9,
+            9.3
+          ],
+          "texture": "#powder"
+        },
+        "down": {
+          "uv": [
+            4,
+            8.5,
+            9,
+            9.3
+          ],
+          "texture": "#powder"
+        }
+      }
+    },
+    {
+      "name": "Tarjeta",
+      "from": [
+        10.5,
+        1.55,
+        5
+      ],
+      "to": [
+        13.5,
+        1.7,
+        8
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            10.5,
+            14.3,
+            13.5,
+            14.45
+          ],
+          "texture": "#card"
+        },
+        "east": {
+          "uv": [
+            5,
+            14.3,
+            8,
+            14.45
+          ],
+          "texture": "#card"
+        },
+        "south": {
+          "uv": [
+            10.5,
+            14.3,
+            13.5,
+            14.45
+          ],
+          "texture": "#card"
+        },
+        "west": {
+          "uv": [
+            5,
+            14.3,
+            8,
+            14.45
+          ],
+          "texture": "#card"
+        },
+        "up": {
+          "uv": [
+            10.5,
+            5,
+            13.5,
+            8
+          ],
+          "texture": "#card"
+        },
+        "down": {
+          "uv": [
+            10.5,
+            5,
+            13.5,
+            8
+          ],
+          "texture": "#card"
+        }
+      }
+    }
+  ]
+}

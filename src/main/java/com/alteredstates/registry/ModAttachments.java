@@ -28,4 +28,6 @@ public class ModAttachments {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<CocaineData>> COCAINE_DATA =
             ATTACHMENT_TYPES.register("cocaine_data", () ->
                     AttachmentType.builder(CocaineData::new).serialize(CocaineData.CODEC).copyOnDeath().build());
+
+
 }
