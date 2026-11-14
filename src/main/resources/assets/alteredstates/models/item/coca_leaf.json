@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alteredstates:item/coca_leaf"
+    "layer0": "alteredstates:item/coca_leaf",
+    "layer1": "alteredstates:item/coca_leaf_o"
   }
 }

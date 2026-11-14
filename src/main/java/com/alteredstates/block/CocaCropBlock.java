@@ -113,6 +113,11 @@ public class CocaCropBlock extends CropBlock {
         return quality;
     }
 
+    /**
+     * Crecimiento: la luz y la lluvia las llevamos nosotros; las ESTACIONES las deciden Serene Seasons y
+     * Ecliptic Seasons a traves de los tags (data/sereneseasons/tags/.. y data/eclipticseasons/tags/..)
+     * porque aqui disparamos el evento de crecimiento de cultivos, igual que el CropBlock de vanilla.
+     */
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!level.isAreaLoaded(pos, 1)) return;
@@ -121,19 +126,13 @@ public class CocaCropBlock extends CropBlock {
 
         int light = level.getMaxLocalRawBrightness(pos.above());
         float lightMod = light < 8 ? 0.2F : (light <= 11 ? 0.5F : 1.2F);
-
-        float seasonMod = 1.0F;
-        if (CompatManager.SERENE_SEASONS) {
-            Season s = SeasonHelper.getSeasonState(level).getSubSeason().getSeason();
-            if (s == Season.WINTER) return;
-            if (s == Season.SUMMER) seasonMod = 1.2F;
-            else if (s == Season.AUTUMN) seasonMod = 0.6F;
-        }
         float rainMod = (level.isRaining() && level.canSeeSky(pos.above())) ? 0.8F : 1.0F;
 
-        float chance = getGrowthSpeed(this.defaultBlockState(), level, pos) * lightMod * seasonMod * rainMod;
-        if (random.nextInt((int) (25.0F / chance) + 1) == 0) {
+        float chance = getGrowthSpeed(this.defaultBlockState(), level, pos) * lightMod * rainMod;
+        if (random.nextInt((int) (25.0F / chance) + 1) == 0
+                && net.neoforged.neoforge.common.CommonHooks.canCropGrow(level, pos, state, true)) {
             level.setBlock(pos, this.getStateForAge(age + 1), 2);
+            net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(level, pos, state);
         }
     }
 }
