@@ -2,28 +2,33 @@ package com.alteredstates.client.render;
 
 import com.alteredstates.item.CigaretteItem;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
 
+/** Un único modelo para todos los fumables: lee qué archivos usar de animatable.visuals(). */
 public class CigaretteModel extends GeoModel<CigaretteItem> {
-    private static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(
-            "alteredstates", "geo/item/cigarette.geo.json");
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(
-            "alteredstates", "textures/item/cigarette.png");
-    private static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(
-            "alteredstates", "animations/item/cigarette.animation.json");
 
     @Override
     public ResourceLocation getModelResource(CigaretteItem animatable) {
-        return MODEL;
+        return animatable.visuals().model();
+    }
+
+    @Override
+    public ResourceLocation getModelResource(CigaretteItem animatable, @Nullable GeoRenderer<CigaretteItem> renderer) {
+        if (renderer instanceof CigaretteRenderer cigaretteRenderer && cigaretteRenderer.isFirstPersonRender()) {
+            return animatable.visuals().fpModel();
+        }
+        return animatable.visuals().model();
     }
 
     @Override
     public ResourceLocation getTextureResource(CigaretteItem animatable) {
-        return TEXTURE;
+        return animatable.visuals().texture();
     }
 
     @Override
     public ResourceLocation getAnimationResource(CigaretteItem animatable) {
-        return ANIMATION;
+        return animatable.visuals().fpAnimation();
     }
 }

@@ -5,6 +5,7 @@ import com.alteredstates.component.EmberState;
 import com.alteredstates.registry.ModDataComponentTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.level.Level;
+import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,6 +35,10 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -41,21 +47,67 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
 
     /** Ticks mantenidos para que la calada dé efecto (una vez por calada). */
     private static final long EFFECT_TICKS = 36L;
+    /* private static final RawAnimation FIRST_PERSON_IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation FIRST_PERSON_RAISE_HOLD = RawAnimation.begin()
+            .thenPlay("raise").thenLoop("hold");
+    private static final RawAnimation FIRST_PERSON_LOWER_IDLE = RawAnimation.begin()
+            .thenPlay("lower").thenLoop("idle"); */
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final SmokeVisuals visuals;
 
     public static final ResourceKey<DamageType> CIGARETTE_DAMAGE =
             ResourceKey.create(Registries.DAMAGE_TYPE,
                     ResourceLocation.fromNamespaceAndPath("alteredstates", "cigarette"));
 
-    public CigaretteItem(Properties properties) {
+    public CigaretteItem(Item.Properties properties) {
+        this(properties, SmokeVisuals.CIGARETTE);
+    }
+
+    public CigaretteItem(Item.Properties properties, SmokeVisuals visuals) {
         super(properties.stacksTo(1)
                 .component(ModDataComponentTypes.QUALITY.get(), 1)
                 .component(ModDataComponentTypes.CIGAR_DATA.get(), CigarData.NEW));
+        this.visuals = visuals;
         GeoItem.registerSyncedAnimatable(this);
     }
 
+    public SmokeVisuals visuals() {
+        return visuals;
+    }
+
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) { }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "first_person_cigarette", state -> {
+            if (state.getData(DataTickets.ITEM_RENDER_PERSPECTIVE) != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
+                return PlayState.STOP;
+            }
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player == null || !player.getMainHandItem().is(this)) {
+                return PlayState.STOP;
+            }
+            FpClips clips = this.visuals.clips();
+            boolean smoking = player.isUsingItem() && player.getUseItem().is(this);
+            if (smoking) {
+                if (!state.isCurrentAnimation(clips.raiseHold())) {
+                    state.resetCurrentAnimation();
+                }
+                return state.setAndContinue(clips.raiseHold());
+            }
+            if (state.isCurrentAnimation(clips.raiseHold())) {
+                state.resetCurrentAnimation();
+                return state.setAndContinue(clips.lowerIdle());
+            }
+            if (state.isCurrentAnimation(clips.lowerIdle())) {
+                return PlayState.CONTINUE;
+            }
+            return state.setAndContinue(clips.idle());
+        }));
+    }
+
+    @Override
+    public boolean isPerspectiveAware() {
+        return true;
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() { return cache; }
@@ -100,7 +152,7 @@ public class CigaretteItem extends Item implements ISmokableItem, ITobaccoProduc
 
     @Override
     public SmokeAnimation getSmokeAnimation(ItemStack stack) {
-        return SmokeAnimation.CIGARETTE;
+        return this.visuals.thirdPerson();
     }
     // --------------------------------------------------------------- uso / humo
 

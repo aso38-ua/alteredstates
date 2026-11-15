@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public final class PalSetup {
@@ -40,8 +40,7 @@ public final class PalSetup {
     private record Clips(RawAnimation start, RawAnimation lower) {}
 
     // Siempre las mismas instancias, para que PAL no reinicie la animación cada frame
-    private static final Map<SmokeAnimation, Clips> CLIPS = new EnumMap<>(SmokeAnimation.class);
-
+    private static final Map<SmokeAnimation, Clips> CLIPS = new HashMap<>();
     private PalSetup() {}
 
     private static ResourceLocation suffixed(ResourceLocation base, String suffix) {
@@ -121,11 +120,12 @@ public final class PalSetup {
                 return PlayState.STOP;
             });
 
-            controller.setFirstPersonMode(FirstPersonMode.THIRD_PERSON_MODEL);
+            controller.setFirstPersonMode(FirstPersonMode.NONE);
             controller.setFirstPersonConfiguration(new FirstPersonConfiguration().setShowRightArm(true));
             controller.setFirstPersonFollowsCamera(true);
             //controller.addModifierLast(new FirstPersonBodyOffset(1.92f));
             return controller;
         });
     }
+
 }

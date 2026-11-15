@@ -4,6 +4,7 @@ import com.alteredstates.client.render.DryingRackRenderer;
 import com.alteredstates.client.render.CuringJarRenderer;
 import com.alteredstates.client.render.BongRenderer;
 import com.alteredstates.client.render.CigaretteHeadLayer;
+import com.alteredstates.client.PalSetup;
 import com.alteredstates.item.CigaretteItem;
 import com.alteredstates.registry.ModBlockEntities;
 import com.alteredstates.registry.ModItems;
@@ -68,6 +69,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
     @SubscribeEvent // on the mod event bus only on the physical client
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> { // ItemProperties#register is not threadsafe, so we need to call it on the main thread
+            PalSetup.register();
             ItemProperties.register(
                     // The item to apply the property to.
                     ModItems.CIGARETTE.get(),

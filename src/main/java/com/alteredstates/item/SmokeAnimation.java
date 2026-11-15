@@ -1,25 +1,25 @@
 package com.alteredstates.item;
 
-import com.alteredstates.AlteredStates;
 import net.minecraft.resources.ResourceLocation;
 
-public enum SmokeAnimation {
-    //          base de los clips   raise  lower  (ticks; duración real del clip en segundos × 20)
-    SMOKING    ("smoking",          7,     7),   // por defecto; sin clips => sin animación
-    CIGARETTE  ("cigarette",        7,     7);
-    // PIPE("pipe", 10, 8), JOINT("joint", ...) ...
+/**
+ * Animación de tercera persona (PAL) de un ítem fumable.
+ *
+ * Antes era un enum cerrado: para añadir una animación había que editar el enum. Ahora es un record:
+ * se crea una con SmokeAnimation.of("cigar", 9, 9) y listo, sin tocar PalSetup.
+ *
+ * "name" es el prefijo de los tres clips de player_animations/:
+ *     <name>_raise.json   <name>_hold.json   <name>_lower.json
+ * raiseTicks/lowerTicks = duración en ticks del raise y del lower (PalSetup los usa para que el
+ * lower arranque desde el punto justo si sueltas el ítem a medio levantar).
+ */
+public record SmokeAnimation(ResourceLocation id, int raiseTicks, int lowerTicks) {
 
-    private final ResourceLocation id;
-    private final int raiseTicks;
-    private final int lowerTicks;
+    /** Valor por defecto de ISmokableItem. Ojo: no existen smoking_raise/hold/lower.json todavía. */
+    public static final SmokeAnimation SMOKING = of("smoking", 7, 7);
+    public static final SmokeAnimation CIGARETTE = of("cigarette", 7, 7);
 
-    SmokeAnimation(String name, int raiseTicks, int lowerTicks) {
-        this.id = ResourceLocation.fromNamespaceAndPath(AlteredStates.MOD_ID, name);
-        this.raiseTicks = raiseTicks;
-        this.lowerTicks = lowerTicks;
+    public static SmokeAnimation of(String name, int raiseTicks, int lowerTicks) {
+        return new SmokeAnimation(ResourceLocation.fromNamespaceAndPath("alteredstates", name), raiseTicks, lowerTicks);
     }
-
-    public ResourceLocation id() { return id; }
-    public int raiseTicks() { return raiseTicks; }
-    public int lowerTicks() { return lowerTicks; }
 }

@@ -122,7 +122,7 @@ public class ModItems {
 
     //============ TABACO ====================
     public static final DeferredItem<Item> CIGARETTE = ITEMS.register("cigarette",
-            () -> new CigaretteItem(new Item.Properties()));
+            () -> new CigaretteItem(new Item.Properties(), SmokeVisuals.of("cigarette")));
 
     public static final DeferredItem<Item> TORITO_CIGAR = ITEMS.register("torito_cigar",
             () -> new CigarItem(new Item.Properties(), CigarType.TORITO));
