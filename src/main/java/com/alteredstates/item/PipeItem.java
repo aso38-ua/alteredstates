@@ -17,11 +17,12 @@ import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
+import com.alteredstates.component.CigarData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import java.util.List;
 
 /**
@@ -67,6 +68,7 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
                 if (!level.isClientSide) {
                     pipeStack.set(ModDataComponentTypes.PIPE_CONTENT.get(),
                             ItemContainerContents.fromItems(List.of(otherStack.copyWithCount(1))));
+                    pipeStack.set(ModDataComponentTypes.CIGAR_DATA.get(), CigarData.NEW);
                     if (!player.isCreative()) {
                         otherStack.shrink(1);
                     }
@@ -81,21 +83,14 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
         }
 
         // 💨 CASO 2: pipa cargada -> empezamos a fumar
-        if (!level.isClientSide) {
+        /*if (!level.isClientSide) {
             playSmokingSound(level, player, pipeStack);
         }
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(pipeStack);
+        return InteractionResultHolder.consume(pipeStack);*/
+        return super.use(level, player, hand);
     }
-
-    /*@Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        // TOOT_HORN acerca el item a la boca del jugador, visualmente es lo más parecido a fumar en pipa.
-        // Si CigarItem/CigaretteItem usan otra animación, cámbiala aquí para mantener consistencia.
-        //return UseAnim.TOOT_HORN;
-        return this.getSmokeAnimation(stack);
-    }*/
-
+    /*
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return this.getSmokeDuration(stack);
@@ -111,7 +106,7 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         if (!level.isClientSide) setSmoking(stack, false, level);
         return onSmokeFinished(stack, level, livingEntity);
-    }
+    }*/
 
     @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {
@@ -148,7 +143,7 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
 
     @Override
     public ItemStack onSmokeFinished(ItemStack stack, Level level, LivingEntity entity) {
-        if (entity instanceof ServerPlayer serverPlayer) {
+        /*if (entity instanceof ServerPlayer serverPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
         }
         if (!level.isClientSide) {
@@ -169,8 +164,20 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
                     stack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
                 }
             }
-        }
+        }*/
         return stack;
+    }
+
+    @Override
+    protected void onBurnedOut(ItemStack stack, Level level, Entity holder) {
+        stack.remove(ModDataComponentTypes.PIPE_CONTENT.get());
+        stack.remove(ModDataComponentTypes.EMBER.get());
+        stack.set(ModDataComponentTypes.CIGAR_DATA.get(), CigarData.NEW);
+        level.playSound(null, holder.getX(), holder.getY(), holder.getZ(),
+                SoundEvents.CANDLE_EXTINGUISH, SoundSource.PLAYERS, 0.8f, 1.0f);
+        if (level instanceof ServerLevel serverLevel && holder instanceof ServerPlayer serverPlayer && stack.isDamageableItem()) {
+            stack.hurtAndBreak(1, serverLevel, serverPlayer, item -> {});
+        }
     }
 
     // ─── HOVER TEXT (TOOLTIP DINÁMICO) ──────────────────────────────────────
@@ -210,6 +217,8 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
         Quality quality = Quality.byLevel(qualityLevel);
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.quality")
                 .append(quality.getTranslatedName()));
+
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
     private ItemStack getContent(ItemStack stack){

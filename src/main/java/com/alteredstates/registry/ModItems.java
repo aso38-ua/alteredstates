@@ -143,7 +143,7 @@ public class ModItems {
             () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE));
 
     public static final DeferredItem<Item> WISDOM_PIPE = ITEMS.register("wisdom_pipe",
-            () -> new PipeItem(new Item.Properties(), PipeType.WISDOM_PIPE));
+            () -> new PipeItem(new Item.Properties().stacksTo(1), PipeType.WISDOM_PIPE));
 
 
     // ════════════════════════════════════════════════════════════

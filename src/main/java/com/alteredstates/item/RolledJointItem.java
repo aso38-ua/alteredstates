@@ -25,7 +25,7 @@ import java.util.List;
 public class RolledJointItem extends SmokableItem {
 
     public RolledJointItem(Item.Properties properties) {
-        super(properties.stacksTo(1).durability(4)
+        super(properties.stacksTo(1)
                         .component(ModDataComponentTypes.QUALITY.get(), 1)
                         .component(ModDataComponentTypes.CONTENT_TYPE.get(), "unknown"),
                 SmokeVisuals.of("rolled_joint").withGlowTint(0x8CFF3C, 0.7f));
@@ -89,16 +89,11 @@ public class RolledJointItem extends SmokableItem {
 
     // ─── LÓGICA DE JUEGO NATURA (DELEGANDO A LA INTERFAZ) ───────────────────
 
-    @Override
+    /*@Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         playSmokingSound(level, player, player.getItemInHand(hand));
         return this.startSmoking(level, player, hand);
     }
-
-    /*@Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return this.getSmokeAnimation(stack);
-    }*/
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
@@ -115,7 +110,7 @@ public class RolledJointItem extends SmokableItem {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         super.finishUsingItem(stack, level, entity);
         return this.onSmokeFinished(stack, level, entity);
-    }
+    }*/
 
     // ─── IMPLEMENTACIÓN DE LA INTERFAZ ISmokableItem ────────────────────────
 
@@ -143,7 +138,7 @@ public class RolledJointItem extends SmokableItem {
 
     @Override
     public ItemStack onSmokeFinished(ItemStack stack, Level level, LivingEntity entity) {
-        if (!level.isClientSide) {
+        /*if (!level.isClientSide) {
             level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.CANDLE_EXTINGUISH, SoundSource.PLAYERS, 0.8F, 1.0F);
 
@@ -158,7 +153,7 @@ public class RolledJointItem extends SmokableItem {
                     }
                 }
             }
-        }
+        }*/
         return stack;
     }
 
@@ -197,7 +192,9 @@ public class RolledJointItem extends SmokableItem {
 
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.quality_format", qualityName).withStyle(color));
 
-        int remainingSmokes = stack.getMaxDamage() - stack.getDamageValue();
-        tooltipComponents.add(Component.translatable("tooltip.alteredstates.remaining_smokes", remainingSmokes).withStyle(ChatFormatting.DARK_GRAY));
+        //int remainingSmokes = stack.getMaxDamage() - stack.getDamageValue();
+        //tooltipComponents.add(Component.translatable("tooltip.alteredstates.remaining_smokes", remainingSmokes).withStyle(ChatFormatting.DARK_GRAY));
+
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }
