@@ -22,12 +22,13 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class RolledJointItem extends Item implements ISmokableItem {
+public class RolledJointItem extends SmokableItem {
 
-    public RolledJointItem(Properties properties) {
+    public RolledJointItem(Item.Properties properties) {
         super(properties.stacksTo(1).durability(4)
-                .component(ModDataComponentTypes.QUALITY.get(), 1)
-                .component(ModDataComponentTypes.CONTENT_TYPE.get(), "unknown"));
+                        .component(ModDataComponentTypes.QUALITY.get(), 1)
+                        .component(ModDataComponentTypes.CONTENT_TYPE.get(), "unknown"),
+                SmokeVisuals.of("rolled_joint").withGlowTint(0x8CFF3C, 0.7f));
     }
 
     // ─── LECTORES DE DATOS ──────────────────────────────────────────────────
@@ -106,11 +107,13 @@ public class RolledJointItem extends Item implements ISmokableItem {
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
+        super.onUseTick(level, entity, stack, remainingUseDuration);
         this.spawnSmokeParticles(level, entity, stack, remainingUseDuration);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        super.finishUsingItem(stack, level, entity);
         return this.onSmokeFinished(stack, level, entity);
     }
 

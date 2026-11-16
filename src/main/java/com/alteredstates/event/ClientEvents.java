@@ -3,7 +3,7 @@ package com.alteredstates.event;
 import com.alteredstates.client.render.DryingRackRenderer;
 import com.alteredstates.client.render.CuringJarRenderer;
 import com.alteredstates.client.render.BongRenderer;
-import com.alteredstates.client.render.CigaretteHeadLayer;
+import com.alteredstates.client.render.SmokableHeadLayer;
 import com.alteredstates.client.PalSetup;
 import com.alteredstates.item.CigaretteItem;
 import com.alteredstates.registry.ModBlockEntities;
@@ -61,7 +61,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
         for (PlayerSkin.Model skin : event.getSkins()) {
             PlayerRenderer renderer = event.getSkin(skin);
             if (renderer != null) {
-                renderer.addLayer(new CigaretteHeadLayer(renderer, itemRenderer));
+                renderer.addLayer(new SmokableHeadLayer(renderer, itemRenderer));
             }
         }
     }

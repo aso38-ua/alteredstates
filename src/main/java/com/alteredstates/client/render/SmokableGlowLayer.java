@@ -1,6 +1,6 @@
 package com.alteredstates.client.render;
 
-import com.alteredstates.item.CigaretteItem;
+import com.alteredstates.item.SmokableItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,14 +10,14 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 /** Brillo de la brasa. La textura (máscara) sale de los visuales del ítem. */
-public class CigaretteGlowLayer extends GeoRenderLayer<CigaretteItem> {
+public class SmokableGlowLayer extends GeoRenderLayer<SmokableItem> {
 
-    public CigaretteGlowLayer(GeoRenderer<CigaretteItem> renderer) {
+    public SmokableGlowLayer(GeoRenderer<SmokableItem> renderer) {
         super(renderer);
     }
 
     @Override
-    public void render(PoseStack poseStack, CigaretteItem animatable, BakedGeoModel bakedModel, RenderType renderType,
+    public void render(PoseStack poseStack, SmokableItem animatable, BakedGeoModel bakedModel, RenderType renderType,
                        MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick,
                        int packedLight, int packedOverlay) {
         RenderType glowRenderType = RenderType.entityTranslucent(animatable.visuals().glowTexture());

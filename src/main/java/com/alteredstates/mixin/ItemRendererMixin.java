@@ -39,7 +39,9 @@ public class ItemRendererMixin {
         if (!FirstPersonRig.isFirstPerson(ctx) || !FirstPersonRig.isMainHandContext(ctx)) return;
 
         BlockEntityWithoutLevelRenderer renderer = IClientItemExtensions.of(stack).getCustomRenderer();
-        if (!(renderer instanceof FirstPersonRig.Host)) return;
+        if (!(renderer instanceof FirstPersonRig.Host host) || !host.usesFirstPersonRig(stack)) {
+            return;
+        }
 
         // OJO: a diferencia de Immersive Eating NO salimos si el jugador está "usando" el ítem:
         // fumar ES usar el ítem y queremos que pase por el rig también entonces.

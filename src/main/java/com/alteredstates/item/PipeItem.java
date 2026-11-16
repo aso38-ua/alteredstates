@@ -31,14 +31,23 @@ import java.util.List;
  * - CARGADA + click derecho -> empieza a fumar (startUsingItem). Al terminar la calada, onSmokeFinished
  *   aplica los efectos del IPipable cargado, vacía la pipa y le mete 1 punto de daño.
  */
-public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable {
+public class PipeItem extends SmokableItem implements IProduct, Equipable {
 
-    private final PipeType type;
+    public PipeItem(Item.Properties properties, PipeType type) {
+        this(properties, type, SmokeVisuals.NONE);
+    }
 
-    public PipeItem(Properties properties, PipeType type) {
-        super(properties.component(ModDataComponentTypes.PIPE_TYPE.get(), type));
+    public PipeItem(Item.Properties properties, PipeType type, SmokeVisuals visuals) {
+        super(properties.component(ModDataComponentTypes.PIPE_TYPE.get(), type), visuals);
         this.type = type;
     }
+
+    @Override
+    public boolean isTipVisible(ItemStack stack) {
+        return !getContent(stack).isEmpty();   // pipa vacía: no hay nada que arda
+    }
+
+    private final PipeType type;
 
     public PipeType getPipeType() {
         return this.type;
@@ -94,11 +103,13 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
+        if (!level.isClientSide) setSmoking(stack, true, level);
         spawnSmokeParticles(level, livingEntity, stack, remainingUseDuration);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        if (!level.isClientSide) setSmoking(stack, false, level);
         return onSmokeFinished(stack, level, livingEntity);
     }
 
@@ -149,6 +160,7 @@ public class PipeItem extends Item implements ISmokableItem, IProduct, Equipable
 
             // 2. VACIAR LA PIPA (Removemos el componente para que vuelva a estar vacía)
             stack.remove(ModDataComponentTypes.PIPE_CONTENT.get());
+            stack.remove(ModDataComponentTypes.EMBER.get());
 
             // 3. Desgaste de la pipa por uso
             if (entity instanceof Player player) {

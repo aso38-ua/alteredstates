@@ -9,6 +9,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.GeoBone;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Fija DÓNDE aparece en pantalla el origen del modelo de Blockbench en primera persona, y recoge los
@@ -35,7 +36,12 @@ public final class FirstPersonRig {
     public static volatile float originZ = -0.80f;
 
     /** Los renderers que quieran el rig se anuncian con esta interfaz; el mixin solo actúa sobre ellos. */
-    public interface Host {}
+    public interface Host {
+        /** El mixin solo desvía el render de este ítem si devuelve true. */
+        default boolean usesFirstPersonRig(ItemStack stack) {
+            return true;
+        }
+    }
 
     private final List<ArmAnchor.Captured> captured = new ArrayList<>();
 
