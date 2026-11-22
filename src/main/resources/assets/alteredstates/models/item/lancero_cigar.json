@@ -1,6 +1,45 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "alteredstates:item/lancero_cigar"
+  "parent": "builtin/entity",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [1, 1, 1]
+    },
+    "firstperson_lefthand": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, -2.25, 0],
+      "scale": [1, 1, 1]
+    },
+    "gui": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [-4.75, -2.25, 0],
+      "scale": [0.2, 0.2, 0.2]
+    },
+    "head": {
+      "rotation": [-63.16, 62.86, -17.29],
+      "translation": [0, -4, -6.25],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "ground": {
+      "rotation": [-24.81, -14.12, -84.1],
+      "translation": [0, 0.5, 0],
+      "scale": [0.1, 0.1, 0.1]
+    },
+    "fixed": {
+      "rotation": [-24.81, 0, -84.1],
+      "translation": [-2, -1.75, 0.25],
+      "scale": [0.1, 0.1, 0.1]
+    }
   }
 }

@@ -357,6 +357,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
 
     /** Empieza (true) o deja de (false) dar caladas: la brasa sube o se apaga con el tiempo. */
     public static void setSmoking(ItemStack stack, boolean smoking, Level level) {
+        System.out.println("setSmoking " + smoking + " tick=" + level.getGameTime() + " client=" + level.isClientSide);
         EmberState old = stack.getOrDefault(ModDataComponentTypes.EMBER.get(), EmberState.OFF);
         EmberState now = old.with(smoking, level.getGameTime());
         if (now != old) {

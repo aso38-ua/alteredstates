@@ -90,23 +90,6 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
         return InteractionResultHolder.consume(pipeStack);*/
         return super.use(level, player, hand);
     }
-    /*
-    @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return this.getSmokeDuration(stack);
-    }
-
-    @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (!level.isClientSide) setSmoking(stack, true, level);
-        spawnSmokeParticles(level, livingEntity, stack, remainingUseDuration);
-    }
-
-    @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        if (!level.isClientSide) setSmoking(stack, false, level);
-        return onSmokeFinished(stack, level, livingEntity);
-    }*/
 
     @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {

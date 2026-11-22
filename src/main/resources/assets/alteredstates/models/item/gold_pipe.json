@@ -1,6 +1,117 @@
 {
-  "parent": "minecraft:item/generated",
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    20,
+    18
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        130.57999999999993,
+        -83.69000000000005,
+        85.0300000000002
+      ],
+      "translation": [
+        -0.25,
+        0.25,
+        -1
+      ],
+      "scale": [
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -156.69999999999982,
+        78.2199999999998,
+        -129.67999999999984
+      ],
+      "translation": [
+        -0.25,
+        1,
+        -0.75
+      ],
+      "scale": [
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.07,
+        0.07,
+        0.07
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -169.82000000000016,
+        8.690000000000055,
+        174.51000000000022
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "head": {
+      "rotation": [
+        8.75,
+        -75.25,
+        0
+      ],
+      "translation": [
+        -0.75,
+        -5.5,
+        -8.5
+      ],
+      "scale": [
+        0.07,
+        0.07,
+        0.07
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        -180,
+        0
+      ],
+      "scale": [
+        0.16,
+        0.16,
+        0.16
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0.25,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
   "textures": {
-    "layer0": "alteredstates:item/gold_pipe"
+    "particle": "alteredstates:item/gold_pipe"
   }
 }
