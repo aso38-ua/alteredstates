@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +32,7 @@ import java.util.List;
  * - CARGADA + click derecho -> empieza a fumar (startUsingItem). Al terminar la calada, onSmokeFinished
  *   aplica los efectos del IPipable cargado, vacía la pipa y le mete 1 punto de daño.
  */
-public class PipeItem extends SmokableItem implements IProduct, Equipable {
+public class PipeItem extends SmokableItem implements IProduct {
 
     public PipeItem(Item.Properties properties, PipeType type) {
         this(properties, type, SmokeVisuals.NONE);
@@ -215,8 +216,14 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
     }
 
     // --- Equipable ---
+
     @Override
-    public EquipmentSlot getEquipmentSlot() {
-        return EquipmentSlot.HEAD; // Slot de la cabeza
+    public float headOffsetY() { return 0.15f; }
+
+    @Override
+    protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
+        if (!entity.level().isClientSide) {
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, true, false, true));
+        }
     }
 }

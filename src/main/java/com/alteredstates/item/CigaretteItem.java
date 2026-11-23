@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class CigaretteItem extends SmokableItem implements ITobaccoProduct, Equipable {
+public class CigaretteItem extends SmokableItem implements ITobaccoProduct {
     /** Tipo de daño de la calada; el logro "vicious" y ClientEvents lo usan. */
     public static final ResourceKey<DamageType> CIGARETTE_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE,
             ResourceLocation.fromNamespaceAndPath("alteredstates", "cigarette"));
@@ -106,10 +106,6 @@ public class CigaretteItem extends SmokableItem implements ITobaccoProduct, Equi
         super.appendHoverText(stack, context, tooltip, flag); // línea de consumo (común a todos los fumables)
     }
 
-    @Override
-    public EquipmentSlot getEquipmentSlot() {
-        return EquipmentSlot.HEAD;
-    }
 
     @Override
     public float headOffsetY() { return 0.12f; }

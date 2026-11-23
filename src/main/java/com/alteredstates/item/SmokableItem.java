@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,7 +62,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  *
  * El nombre CigarData viene del cigarro, pero es el estado de combustión de cualquiera.
  */
-public abstract class SmokableItem extends Item implements ISmokableItem, GeoItem {
+public abstract class SmokableItem extends Item implements ISmokableItem, GeoItem, Equipable {
     /** Ticks manteniendo el botón para que cuente como calada (efectos, logro y sonido). */
     protected static final long PUFF_TICKS = 36L;
     private static final long HEAD_BURN_RATE = 10L;
@@ -242,7 +243,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     }
 
     /** Apaga la brasa si ya no se está fumando, apaga el ítem al caducar el encendido y gestiona el agotado. */
-    @Override
+    /*@Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
         if (level.isClientSide) {
             return;
@@ -259,7 +260,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         boolean wornOnHead = entity instanceof LivingEntity living
                 && living.getItemBySlot(EquipmentSlot.HEAD) == stack;
         if (wornOnHead && data.lit()) {
-            SmokableData burning = data.headBurn(now, HEAD_BURN_RATE);
+            SmokableData burning = data;//.headBurn(now, HEAD_BURN_RATE);
             setData(stack, burning);
             if (burning.fuel() <= 0L) {
                 this.onBurnedOut(stack, level, entity);
@@ -279,6 +280,55 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
                 return;
             }
             setData(stack, data.extinguish(now));
+            level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                    SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 0.2f, 2.0f);
+        }
+    }*/
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        if (level.isClientSide) {
+            return;
+        }
+        long now = level.getGameTime();
+        LivingEntity living = entity instanceof LivingEntity l ? l : null;
+        SmokableData data = this.getData(stack);
+        boolean wornOnHead = living != null && living.getItemBySlot(EquipmentSlot.HEAD) == stack;
+
+        if (wornOnHead && (data.headBurning() || data.isLit(now))) {
+            if (!data.headBurning()) {
+                data = data.startHeadBurn(now);      // única escritura al empezar a arder en cabeza
+                this.setData(stack, data);
+            }
+            if (data.fuelAt(now) <= 0L) {
+                this.onBurnedOut(stack, level, entity);
+                return;
+            }
+            boolean puffing = now % HEAD_PUFF_INTERVAL < HEAD_PUFF_DURATION;
+            SmokableItem.setSmoking(stack, puffing, level);   // solo escribe en los flancos on/off
+            this.applyHeadEffects(living, stack);
+            if (now % HEAD_PUFF_INTERVAL == 0L) {
+                this.playSmokingSound(level, living, stack);
+            }
+            return;
+        }
+
+        if (data.headBurning()) {                    // ya no está en la cabeza
+            data = data.stopHeadBurn(now);
+            this.setData(stack, data);
+        }
+
+        boolean activelySmoking = living != null && living.isUsingItem() && living.getUseItem() == stack;
+        if (this.emberState(stack).smoking() && !activelySmoking) {
+            SmokableItem.setSmoking(stack, false, level);
+        }
+
+        if (data.lit() && !data.isLit(now)) {
+            if (data.fuelAt(now) <= 0L) {
+                this.onBurnedOut(stack, level, entity);
+                return;
+            }
+            this.setData(stack, data.extinguish(now));
             level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 0.2f, 2.0f);
         }
@@ -400,5 +450,10 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         if (state.litTick() < 0L) {
             stack.set(ModDataComponentTypes.EMBER.get(), state.withLit(level.getGameTime()));
         }
+    }
+
+    @Override
+    public EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.HEAD;
     }
 }
