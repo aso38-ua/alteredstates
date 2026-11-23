@@ -6,9 +6,9 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 38,
 				"texture_height": 38,
-				"visible_bounds_width": 2,
-				"visible_bounds_height": 4.5,
-				"visible_bounds_offset": [0, 1.75, 0]
+				"visible_bounds_width": 7,
+				"visible_bounds_height": 6,
+				"visible_bounds_offset": [0, 1, 0]
 			},
 			"bones": [
 				{
@@ -676,11 +676,11 @@
 				{
 					"name": "paper",
 					"parent": "root",
-					"pivot": [23.75, -9, 0],
+					"pivot": [23.75, 6, 0],
 					"cubes": [
 						{
-							"origin": [20.89193, -9, -6.9],
-							"size": [5.71614, 23, 13.8],
+							"origin": [20.89193, 6, -6.9],
+							"size": [5.71614, 8, 13.8],
 							"uv": {
 								"north": {"uv": [1, 1], "uv_size": [4, 2]},
 								"east": {"uv": [1, 1], "uv_size": [4, 2]},
@@ -691,9 +691,9 @@
 							}
 						},
 						{
-							"origin": [20.89193, -9, -6.9],
-							"size": [5.71614, 23, 13.8],
-							"pivot": [23.75, 1.25, 0],
+							"origin": [20.89193, 6, -6.9],
+							"size": [5.71614, 8, 13.8],
+							"pivot": [23.75, 16.25, 0],
 							"rotation": [0, -45, 0],
 							"uv": {
 								"north": {"uv": [1, 1], "uv_size": [4, 2]},
@@ -705,8 +705,8 @@
 							}
 						},
 						{
-							"origin": [16.85, -9, -2.85807],
-							"size": [13.8, 23, 5.71614],
+							"origin": [16.85, 6, -2.85807],
+							"size": [13.8, 8, 5.71614],
 							"uv": {
 								"north": {"uv": [1, 1], "uv_size": [4, 2]},
 								"east": {"uv": [1, 1], "uv_size": [4, 2]},
@@ -717,9 +717,9 @@
 							}
 						},
 						{
-							"origin": [16.85, -9, -2.85807],
-							"size": [13.8, 23, 5.71614],
-							"pivot": [23.75, 1.25, 0],
+							"origin": [16.85, 6, -2.85807],
+							"size": [13.8, 8, 5.71614],
+							"pivot": [23.75, 16.25, 0],
 							"rotation": [0, -45, 0],
 							"uv": {
 								"north": {"uv": [1, 1], "uv_size": [4, 2]},

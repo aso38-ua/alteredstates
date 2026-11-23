@@ -2,6 +2,7 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.item.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -137,13 +138,13 @@ public class ModItems {
             () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER, SmokeVisuals.of("don_javier_cigar")));
 
     public static final DeferredItem<Item> WOOD_PIPE = ITEMS.register("wood_pipe",
-            () -> new PipeItem(new Item.Properties().durability(32), PipeType.WOOD_PIPE, SmokeVisuals.of("wood_pipe").withFpAnimation("pipe")));
+            () -> new PipeItem(new Item.Properties().durability(32), PipeType.WOOD_PIPE, SmokeVisuals.of("wood_pipe").withFpAnimation("pipe").withThirdPerson(SmokeAnimation.PIPE)));
 
     public static final DeferredItem<Item> GOLD_PIPE = ITEMS.register("gold_pipe",
-            () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE, SmokeVisuals.of("gold_pipe").withFpAnimation("pipe")));
+            () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE, SmokeVisuals.of("gold_pipe").withFpAnimation("pipe").withThirdPerson(SmokeAnimation.PIPE)));
 
     public static final DeferredItem<Item> WISDOM_PIPE = ITEMS.register("wisdom_pipe",
-            () -> new PipeItem(new Item.Properties().stacksTo(1), PipeType.WISDOM_PIPE, SmokeVisuals.of("wisdom_pipe").withFpAnimation("pipe")));
+            () -> new PipeItem(new Item.Properties().stacksTo(1), PipeType.WISDOM_PIPE, SmokeVisuals.of("wisdom_pipe").withFpAnimation("pipe").withThirdPerson(SmokeAnimation.PIPE)));
 
 
     // ════════════════════════════════════════════════════════════

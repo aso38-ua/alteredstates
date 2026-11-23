@@ -31,6 +31,10 @@ public interface ISmokableItem {
         return InteractionResultHolder.consume(itemstack);
     }
 
+    default boolean isLoaded(ItemStack stack) {
+        return true;
+    }
+
     // ------------------------------------------------------------------------------------------
     // Estado visual que leen los efectos de los huesos "paper" y "tip" (SmokeBoneEffects).
     // Todos tienen valor por defecto: un ítem solo sobrescribe lo que le aplica.

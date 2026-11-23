@@ -1,9 +1,6 @@
 package com.alteredstates.item;
 
-import com.alteredstates.component.CigarData;
-import com.alteredstates.item.ITobaccoProduct;
-import com.alteredstates.item.SmokableItem;
-import com.alteredstates.item.SmokeVisuals;
+import com.alteredstates.component.SmokableData;
 import com.alteredstates.registry.ModDataComponentTypes;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -21,7 +18,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Equipable;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -78,10 +74,10 @@ public class CigaretteItem extends SmokableItem implements ITobaccoProduct, Equi
 
     /** Índice del sprite de inventario según encendido y consumo (propiedad "visual_state"). */
     public int getVisualStateIndex(ItemStack stack, @Nullable Level level) {
-        CigarData d = this.getData(stack);
+        SmokableData d = this.getData(stack);
         long now = level != null ? level.getGameTime() : d.anchorTick();
         boolean lit = d.isLit(now);
-        boolean pristine = !lit && d.fuel() == CigarData.MAX_FUEL && d.lastLitTick() == 0L;
+        boolean pristine = !lit && d.fuel() == SmokableData.MAX_FUEL && d.lastLitTick() == 0L;
         if (pristine) {
             return 0;
         }

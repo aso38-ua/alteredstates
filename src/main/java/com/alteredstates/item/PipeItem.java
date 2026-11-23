@@ -2,7 +2,6 @@ package com.alteredstates.item;
 
 import com.alteredstates.registry.ModDataComponentTypes;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import com.alteredstates.component.CigarData;
+import com.alteredstates.component.SmokableData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import java.util.List;
@@ -68,7 +67,7 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
                 if (!level.isClientSide) {
                     pipeStack.set(ModDataComponentTypes.PIPE_CONTENT.get(),
                             ItemContainerContents.fromItems(List.of(otherStack.copyWithCount(1))));
-                    pipeStack.set(ModDataComponentTypes.CIGAR_DATA.get(), CigarData.NEW);
+                    pipeStack.set(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.NEW);
                     if (!player.isCreative()) {
                         otherStack.shrink(1);
                     }
@@ -118,9 +117,9 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
 
             level.addParticle(ParticleTypes.SMOKE, x, y, z, look.x * 0.1, 0.05, look.z * 0.1);
 
-            if (getQuality(stack) >= 2) {
+            /*if (getQuality(stack) >= 2) {
                 level.addParticle(ParticleTypes.CHERRY_LEAVES, x, y, z, 0, -0.02, 0);
-            }
+            }*/
         }
     }
 
@@ -155,7 +154,7 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
     protected void onBurnedOut(ItemStack stack, Level level, Entity holder) {
         stack.remove(ModDataComponentTypes.PIPE_CONTENT.get());
         stack.remove(ModDataComponentTypes.EMBER.get());
-        stack.set(ModDataComponentTypes.CIGAR_DATA.get(), CigarData.NEW);
+        stack.set(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.NEW);
         level.playSound(null, holder.getX(), holder.getY(), holder.getZ(),
                 SoundEvents.CANDLE_EXTINGUISH, SoundSource.PLAYERS, 0.8f, 1.0f);
         if (level instanceof ServerLevel serverLevel && holder instanceof ServerPlayer serverPlayer && stack.isDamageableItem()) {
@@ -202,6 +201,12 @@ public class PipeItem extends SmokableItem implements IProduct, Equipable {
                 .append(quality.getTranslatedName()));
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    @Override
+    public boolean isLoaded(ItemStack stack) {
+        ItemContainerContents contents = stack.getOrDefault(ModDataComponentTypes.PIPE_CONTENT.get(), ItemContainerContents.EMPTY);
+        return contents.nonEmptyStream().findAny().isPresent();
     }
 
     private ItemStack getContent(ItemStack stack){

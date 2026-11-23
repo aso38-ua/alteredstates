@@ -15,6 +15,8 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.cache.object.GeoQuad;
 import software.bernie.geckolib.cache.object.GeoVertex;
+import com.alteredstates.component.SmokableData;
+import com.alteredstates.registry.ModDataComponentTypes;
 
 /**
  * Efectos por nombre de hueso compartidos por todos los fumables.
@@ -45,6 +47,20 @@ public final class SmokeBoneEffects {
     private static final PaperStack NO_PAPER = new PaperStack(new String[0], new float[0], new float[0], new float[0]);
 
     private SmokeBoneEffects() {
+    }
+
+    public static boolean isTip(String name) {
+        return isTipName(name);
+    }
+
+    public static float ashAlpha(ISmokableItem item, ItemStack stack, @Nullable Level level, float partialTick) {
+        SmokableData data = (SmokableData) stack.get(ModDataComponentTypes.CIGAR_DATA.get());
+        if (data == null) return 0.0f;
+        float now = level == null ? (float) data.lastLitTick() : (float) level.getGameTime() + partialTick;
+        float ash = data.ashLevel(now);
+        if (ash <= 0.0f) return 0.0f;
+        float glow = Mth.clamp(item.emberState(stack).level(now), 0.0f, 1.0f);
+        return ash * (1.0f - glow);
     }
 
     public static int apply(GeoBone bone, ISmokableItem item, ItemStack stack, @Nullable Level level, float partialTick, boolean isReRender, int colour, int glowTintRgb, float glowTintMix) {
@@ -277,9 +293,9 @@ public final class SmokeBoneEffects {
         float pulse = 1.0f + 0.02f * glow * wobble; //Cambiar para el efecto del tip
 
         if (ember.smoking() || ember.levelAtChange() > 0.0f) {
-            System.out.println("tip smoking=" + ember.smoking() + " changeTick=" + ember.changeTick()
+            /*System.out.println("tip smoking=" + ember.smoking() + " changeTick=" + ember.changeTick()
                     + " levelAtChange=" + ember.levelAtChange() + " now=" + now
-                    + " lvl=" + ember.level(now) + " levelNull=" + (level == null) + " reRender=" + isReRender);
+                    + " lvl=" + ember.level(now) + " levelNull=" + (level == null) + " reRender=" + isReRender);*/
         }        bone.setScaleX(pulse * fit);
 
 

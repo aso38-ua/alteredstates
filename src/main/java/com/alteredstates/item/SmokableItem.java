@@ -1,7 +1,7 @@
 package com.alteredstates.item;
 
 import com.alteredstates.client.render.SmokableRenderer;
-import com.alteredstates.component.CigarData;
+import com.alteredstates.component.SmokableData;
 import com.alteredstates.component.EmberState;
 import com.alteredstates.registry.ModDataComponentTypes;
 import java.util.List;
@@ -69,7 +69,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     private final SmokeVisuals visuals;
 
     protected SmokableItem(Properties properties, SmokeVisuals visuals) {
-        super(properties.component(ModDataComponentTypes.CIGAR_DATA.get(), CigarData.NEW));
+        super(properties.component(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.NEW));
         this.visuals = visuals;
         GeoItem.registerSyncedAnimatable(this);
     }
@@ -108,29 +108,29 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     // Estado de combustión (componente CIGAR_DATA)
     // ------------------------------------------------------------------------------------------
 
-    protected CigarData getData(ItemStack stack) {
-        CigarData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
-        return data != null ? data : CigarData.NEW;
+    protected SmokableData getData(ItemStack stack) {
+        SmokableData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
+        return data != null ? data : SmokableData.NEW;
     }
 
-    protected void setData(ItemStack stack, CigarData data) {
+    protected void setData(ItemStack stack, SmokableData data) {
         stack.set(ModDataComponentTypes.CIGAR_DATA.get(), data);
     }
 
     /** Parte que queda: 1 = intacto, 0 = consumido. */
     public static float getBurnProgress(ItemStack stack, @Nullable Level level) {
-        CigarData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
+        SmokableData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
         if (data == null) {
-            data = CigarData.NEW;
+            data = SmokableData.NEW;
         }
         long now = level != null ? level.getGameTime() : data.anchorTick();
         return Math.max(0.0f, Math.min(1.0f, data.progress(now)));
     }
 
     public static boolean isLit(ItemStack stack, @Nullable Level level) {
-        CigarData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
+        SmokableData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
         if (data == null) {
-            data = CigarData.NEW;
+            data = SmokableData.NEW;
         }
         return data.isLit(level != null ? level.getGameTime() : data.anchorTick());
     }
@@ -171,7 +171,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         }
 
         long now = level.getGameTime();
-        CigarData data = getData(stack);
+        SmokableData data = getData(stack);
         if (!data.isLit(now)) {
             if (isLighterInOtherHand(player, hand)) {
                 ignite(player, stack, hand, level);
@@ -195,7 +195,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
             return;
         }
         long now = level.getGameTime();
-        CigarData data = getData(stack);
+        SmokableData data = getData(stack);
         if (!data.isLit(now)) {
             entity.stopUsingItem();
             return;
@@ -243,7 +243,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
             setSmoking(stack, false, level);
         }
         long now = level.getGameTime();
-        CigarData data = getData(stack);
+        SmokableData data = getData(stack);
         if (data.lit() && !data.isLit(now)) {
             if (data.fuelAt(now) <= 0L) {
                 this.onBurnedOut(stack, level, entity);
@@ -288,9 +288,9 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         if (!this.isTipVisible(stack)) {
             return; // nada que consumir (pipa vacía)
         }
-        CigarData data = getData(stack);
+        SmokableData data = getData(stack);
         Level level = context.level();
-        float progress = level != null ? data.progress(level.getGameTime()) : (float) data.fuel() / (float) CigarData.MAX_FUEL;
+        float progress = level != null ? data.progress(level.getGameTime()) : (float) data.fuel() / (float) SmokableData.MAX_FUEL;
         tooltip.add(Component.translatable("tooltip.alteredstates.burn_remaining", Math.round(progress * 100.0f))
                 .withStyle(ChatFormatting.DARK_GREEN));
     }
