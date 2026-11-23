@@ -9,5 +9,5 @@
   "overwrites": {
     "requireAnnotations": true
   },
-  "client": ["ItemRendererMixin"]
+  "client": ["ItemRendererMixin", "ItemInHandRendererMixin"]
 }

@@ -59,6 +59,10 @@ public record SmokableData(boolean lit, long fuel, long anchorTick, long lastLit
         return new SmokableData(true, Math.max(0, fuelAt(now) - (HELD_RATE - 1)), now, now);
     }
 
+    public SmokableData headBurn(long now, long rate) {
+        return new SmokableData(true, Math.max(0, fuelAt(now) - Math.max(0, rate - 1)), now, now);
+    }
+
     public SmokableData extinguish(long now) {
         return new SmokableData(false, fuelAt(now), now, lastLitTick);
     }

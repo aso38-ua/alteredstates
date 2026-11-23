@@ -64,6 +64,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public abstract class SmokableItem extends Item implements ISmokableItem, GeoItem {
     /** Ticks manteniendo el botón para que cuente como calada (efectos, logro y sonido). */
     protected static final long PUFF_TICKS = 36L;
+    private static final long HEAD_BURN_RATE = 10L;
+    private static final long HEAD_PUFF_INTERVAL = 600L;
+    private static final long HEAD_PUFF_DURATION = 10L;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final SmokeVisuals visuals;
@@ -78,6 +81,11 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         return visuals;
     }
 
+    /** Ajuste del modelo equipado en cabeza, en coordenadas locales del renderer. */
+    public float headOffsetX() { return 0.0f; }
+    public float headOffsetY() { return 0.0f; }
+    public float headOffsetZ() { return 0.0f; }
+
     @Override
     public SmokeAnimation getSmokeAnimation(ItemStack stack) {
         return visuals.thirdPerson();
@@ -89,6 +97,10 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
 
     /** Efectos del producto al dar una calada (servidor). */
     public abstract void applyProductEffects(LivingEntity entity, ItemStack stack);
+
+    /** Efectos suaves refrescados mientras el objeto encendido está equipado en cabeza. */
+    protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
+    }
 
     /** Algo extra en cada calada, después de los efectos (servidor). Por defecto nada. */
     protected void onPuff(Level level, LivingEntity entity, ItemStack stack) {
@@ -244,6 +256,23 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         }
         long now = level.getGameTime();
         SmokableData data = getData(stack);
+        boolean wornOnHead = entity instanceof LivingEntity living
+                && living.getItemBySlot(EquipmentSlot.HEAD) == stack;
+        if (wornOnHead && data.lit()) {
+            SmokableData burning = data.headBurn(now, HEAD_BURN_RATE);
+            setData(stack, burning);
+            if (burning.fuel() <= 0L) {
+                this.onBurnedOut(stack, level, entity);
+                return;
+            }
+            boolean puffing = now % HEAD_PUFF_INTERVAL < HEAD_PUFF_DURATION;
+            setSmoking(stack, puffing, level);
+            this.applyHeadEffects((LivingEntity) entity, stack);
+            if (puffing && now % HEAD_PUFF_INTERVAL == 0L) {
+                this.playSmokingSound(level, (LivingEntity) entity, stack);
+            }
+            return;
+        }
         if (data.lit() && !data.isLit(now)) {
             if (data.fuelAt(now) <= 0L) {
                 this.onBurnedOut(stack, level, entity);
@@ -357,7 +386,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
 
     /** Empieza (true) o deja de (false) dar caladas: la brasa sube o se apaga con el tiempo. */
     public static void setSmoking(ItemStack stack, boolean smoking, Level level) {
-        System.out.println("setSmoking " + smoking + " tick=" + level.getGameTime() + " client=" + level.isClientSide);
+        //System.out.println("setSmoking " + smoking + " tick=" + level.getGameTime() + " client=" + level.isClientSide);
         EmberState old = stack.getOrDefault(ModDataComponentTypes.EMBER.get(), EmberState.OFF);
         EmberState now = old.with(smoking, level.getGameTime());
         if (now != old) {

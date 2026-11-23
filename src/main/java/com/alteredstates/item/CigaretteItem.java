@@ -110,4 +110,14 @@ public class CigaretteItem extends SmokableItem implements ITobaccoProduct, Equi
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.HEAD;
     }
+
+    @Override
+    public float headOffsetY() { return 0.12f; }
+
+    @Override
+    protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
+        if (!entity.level().isClientSide) {
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, true, false, true));
+        }
+    }
 }
