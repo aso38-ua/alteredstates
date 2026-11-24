@@ -30,6 +30,12 @@ public class SmokableRenderer extends GeoItemRenderer<SmokableItem> implements F
 
     private boolean ashPass;
 
+    private boolean glowPass;
+
+    public void setGlowPass(boolean glowPass) {
+        this.glowPass = glowPass;
+    }
+
     public void setAshPass(boolean ashPass) {
         this.ashPass = ashPass;
     }
@@ -86,17 +92,17 @@ public class SmokableRenderer extends GeoItemRenderer<SmokableItem> implements F
             return;
         }
 
-        if (this.ashPass) {
+        if (this.ashPass || this.glowPass) {
             if (SmokeBoneEffects.isTip(boneName)) {
-                // Se llama a apply() solo para que el tip tenga la misma posición/escala que en la pasada base
-                SmokeBoneEffects.apply(bone, item, this.getCurrentItemStack(), (Level) Minecraft.getInstance().level,
-                        partialTick, isReRender, colour, item.visuals().glowTintRgb(), item.visuals().glowTintMix());
-                super.renderRecursively(ps, item, bone, rt, buf, vc, isReRender, partialTick, light, overlay, colour);
+                int effectColour = SmokeBoneEffects.apply(bone, item, this.getCurrentItemStack(),
+                        Minecraft.getInstance().level, partialTick, isReRender, colour,
+                        item.visuals().glowTintRgb(), item.visuals().glowTintMix());
+                super.renderRecursively(ps, item, bone, rt, buf, vc, isReRender, partialTick,
+                        light, overlay, this.glowPass ? effectColour : colour);
             } else {
-                // No se pinta este hueso, pero se mantienen sus transformaciones para los hijos
                 ps.pushPose();
                 RenderUtil.prepMatrixForBone(ps, bone);
-                this.renderChildBones(ps, (SmokableItem) item, bone, rt, buf, vc, isReRender, partialTick, light, overlay, colour);
+                this.renderChildBones(ps, item, bone, rt, buf, vc, isReRender, partialTick, light, overlay, colour);
                 ps.popPose();
             }
             return;

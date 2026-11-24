@@ -50,7 +50,7 @@ public final class SmokeVisuals {
         this.model = rl("geo/item/" + id + ".geo.json");
         this.fpModel = rl("geo/item/" + id + "_fp.geo.json");
         this.texture = rl("textures/item/" + id + ".png");
-        this.glowTexture = rl("textures/item/" + id + "_glowmask.png");
+        this.glowTexture = SmokeVisuals.rl("textures/item/glowmask.png");
         this.fpAnimation = fpAnimation;
         this.clips = clips;
         this.thirdPerson = thirdPerson;

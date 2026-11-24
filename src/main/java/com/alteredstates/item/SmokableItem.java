@@ -386,7 +386,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
             }
             LocalPlayer player = Minecraft.getInstance().player;
             if (player == null || !player.getMainHandItem().is(this)) {
-                return PlayState.STOP;
+                return state.setAndContinue(visuals.clips().idle());
             }
             FpClips clips = this.visuals.clips();
             boolean smoking = player.isUsingItem() && player.getUseItem().is(this);
