@@ -90,4 +90,13 @@ public record SmokableData(boolean lit, long fuel, long anchorTick, long lastLit
     public SmokableData extinguish(long now) {
         return new SmokableData(false, fuelAt(now), now, lastLitTick);
     }
+
+    public static SmokableData fresh(long maxFuel) {
+        return new SmokableData(false, maxFuel, 0L, 0L);
+    }
+
+    public float progress(long now, long maxFuel) {
+        return fuelAt(now) / (float) maxFuel;
+    }
+
 }

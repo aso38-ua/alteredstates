@@ -73,9 +73,13 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     private final SmokeVisuals visuals;
 
     protected SmokableItem(Properties properties, SmokeVisuals visuals) {
-        super(properties.component(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.NEW));
+        super(properties.component(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.fresh(visuals.maxFuel())));
         this.visuals = visuals;
         GeoItem.registerSyncedAnimatable(this);
+    }
+
+    public long maxFuel() {
+        return visuals.maxFuel();
     }
 
     public SmokeVisuals visuals() {
@@ -123,7 +127,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
 
     protected SmokableData getData(ItemStack stack) {
         SmokableData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
-        return data != null ? data : SmokableData.NEW;
+        return data != null ? data : SmokableData.fresh(maxFuel());
     }
 
     protected void setData(ItemStack stack, SmokableData data) {
@@ -132,12 +136,11 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
 
     /** Parte que queda: 1 = intacto, 0 = consumido. */
     public static float getBurnProgress(ItemStack stack, @Nullable Level level) {
+        long max = stack.getItem() instanceof SmokableItem si ? si.maxFuel() : SmokableData.MAX_FUEL;
         SmokableData data = stack.get(ModDataComponentTypes.CIGAR_DATA.get());
-        if (data == null) {
-            data = SmokableData.NEW;
-        }
+        if (data == null) data = SmokableData.fresh(max);
         long now = level != null ? level.getGameTime() : data.anchorTick();
-        return Math.max(0.0f, Math.min(1.0f, data.progress(now)));
+        return Math.max(0f, Math.min(1f, data.progress(now, max)));
     }
 
     public static boolean isLit(ItemStack stack, @Nullable Level level) {
@@ -242,49 +245,6 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         }
     }
 
-    /** Apaga la brasa si ya no se está fumando, apaga el ítem al caducar el encendido y gestiona el agotado. */
-    /*@Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
-        if (level.isClientSide) {
-            return;
-        }
-        EmberState ember = this.emberState(stack);
-        boolean activelySmoking = entity instanceof LivingEntity
-                && ((LivingEntity) entity).isUsingItem()
-                && ((LivingEntity) entity).getUseItem() == stack;
-        if (ember.smoking() && !activelySmoking) {
-            setSmoking(stack, false, level);
-        }
-        long now = level.getGameTime();
-        SmokableData data = getData(stack);
-        boolean wornOnHead = entity instanceof LivingEntity living
-                && living.getItemBySlot(EquipmentSlot.HEAD) == stack;
-        if (wornOnHead && data.lit()) {
-            SmokableData burning = data;//.headBurn(now, HEAD_BURN_RATE);
-            setData(stack, burning);
-            if (burning.fuel() <= 0L) {
-                this.onBurnedOut(stack, level, entity);
-                return;
-            }
-            boolean puffing = now % HEAD_PUFF_INTERVAL < HEAD_PUFF_DURATION;
-            setSmoking(stack, puffing, level);
-            this.applyHeadEffects((LivingEntity) entity, stack);
-            if (puffing && now % HEAD_PUFF_INTERVAL == 0L) {
-                this.playSmokingSound(level, (LivingEntity) entity, stack);
-            }
-            return;
-        }
-        if (data.lit() && !data.isLit(now)) {
-            if (data.fuelAt(now) <= 0L) {
-                this.onBurnedOut(stack, level, entity);
-                return;
-            }
-            setData(stack, data.extinguish(now));
-            level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                    SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 0.2f, 2.0f);
-        }
-    }*/
-
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
         if (level.isClientSide) {
@@ -369,7 +329,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         }
         SmokableData data = getData(stack);
         Level level = context.level();
-        float progress = level != null ? data.progress(level.getGameTime()) : (float) data.fuel() / (float) SmokableData.MAX_FUEL;
+        float progress = level != null ? data.progress(level.getGameTime(), maxFuel()) : (float) data.fuel() / (float) maxFuel();
         tooltip.add(Component.translatable("tooltip.alteredstates.burn_remaining", Math.round(progress * 100.0f))
                 .withStyle(ChatFormatting.DARK_GREEN));
     }

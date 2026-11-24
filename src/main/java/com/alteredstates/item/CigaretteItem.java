@@ -77,11 +77,11 @@ public class CigaretteItem extends SmokableItem implements ITobaccoProduct {
         SmokableData d = this.getData(stack);
         long now = level != null ? level.getGameTime() : d.anchorTick();
         boolean lit = d.isLit(now);
-        boolean pristine = !lit && d.fuel() == SmokableData.MAX_FUEL && d.lastLitTick() == 0L;
+        boolean pristine = !lit && d.fuel() == maxFuel() && d.lastLitTick() == 0L;
         if (pristine) {
             return 0;
         }
-        int stage = Math.min(3, (int) ((1.0f - d.progress(now)) * 4.0f));
+        int stage = Math.min(3, (int) ((1.0f - d.progress(now, maxFuel())) * 4.0f));
         return lit ? 1 + stage : 5 + stage;
     }
 
@@ -113,7 +113,8 @@ public class CigaretteItem extends SmokableItem implements ITobaccoProduct {
     @Override
     protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
         if (!entity.level().isClientSide) {
-            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, true, false, true));
+            int amplifier = this.getQuality(stack) == 4 ? 1 : 0;
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, amplifier, true, false, true));
         }
     }
 }

@@ -68,7 +68,7 @@ public class PipeItem extends SmokableItem implements IProduct {
                 if (!level.isClientSide) {
                     pipeStack.set(ModDataComponentTypes.PIPE_CONTENT.get(),
                             ItemContainerContents.fromItems(List.of(otherStack.copyWithCount(1))));
-                    pipeStack.set(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.NEW);
+                    pipeStack.set(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.fresh(maxFuel()));
                     if (!player.isCreative()) {
                         otherStack.shrink(1);
                     }
@@ -81,13 +81,6 @@ public class PipeItem extends SmokableItem implements IProduct {
             // Nada compatible en la otra mano, no hacemos nada
             return InteractionResultHolder.pass(pipeStack);
         }
-
-        // 💨 CASO 2: pipa cargada -> empezamos a fumar
-        /*if (!level.isClientSide) {
-            playSmokingSound(level, player, pipeStack);
-        }
-        player.startUsingItem(hand);
-        return InteractionResultHolder.consume(pipeStack);*/
         return super.use(level, player, hand);
     }
 
@@ -155,7 +148,7 @@ public class PipeItem extends SmokableItem implements IProduct {
     protected void onBurnedOut(ItemStack stack, Level level, Entity holder) {
         stack.remove(ModDataComponentTypes.PIPE_CONTENT.get());
         stack.remove(ModDataComponentTypes.EMBER.get());
-        stack.set(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.NEW);
+        stack.set(ModDataComponentTypes.CIGAR_DATA.get(), SmokableData.fresh(maxFuel()));
         level.playSound(null, holder.getX(), holder.getY(), holder.getZ(),
                 SoundEvents.CANDLE_EXTINGUISH, SoundSource.PLAYERS, 0.8f, 1.0f);
         if (level instanceof ServerLevel serverLevel && holder instanceof ServerPlayer serverPlayer && stack.isDamageableItem()) {
@@ -223,7 +216,9 @@ public class PipeItem extends SmokableItem implements IProduct {
     @Override
     protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
         if (!entity.level().isClientSide) {
-            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, true, false, true));
+            int amplifier = getPipeType() == PipeType.WISDOM_PIPE ? 0 : 1;
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.DIG_SPEED, 40, 0, true, false, true));
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, amplifier, true, false, true));
         }
     }
 }

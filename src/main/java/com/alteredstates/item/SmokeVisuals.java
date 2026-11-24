@@ -1,6 +1,9 @@
 package com.alteredstates.item;
 
+import com.alteredstates.component.SmokableData;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.function.LongSupplier;
 
 /**
  * TODO lo visual de un ítem fumable, en un solo sitio. Es lo único que cambia entre un cigarrillo,
@@ -43,9 +46,10 @@ public final class SmokeVisuals {
     private final boolean custom;
     private final int glowTintRgb;
     private final float glowTintMix;
+    private final long maxFuel;
 
     private SmokeVisuals(String id, ResourceLocation fpAnimation, FpClips clips, SmokeAnimation thirdPerson, boolean custom,
-                         int glowTintRgb, float glowTintMix) {
+                         int glowTintRgb, float glowTintMix, long maxFuel) {
         this.id = id;
         this.model = rl("geo/item/" + id + ".geo.json");
         this.fpModel = rl("geo/item/" + id + "_fp.geo.json");
@@ -57,6 +61,12 @@ public final class SmokeVisuals {
         this.custom = custom;
         this.glowTintRgb = glowTintRgb;
         this.glowTintMix = glowTintMix;
+        this.maxFuel = maxFuel;
+    }
+
+    private SmokeVisuals(String id, ResourceLocation fpAnimation, FpClips clips, SmokeAnimation thirdPerson,
+                         boolean custom, int glowTintRgb, float glowTintMix) {
+        this(id, fpAnimation, clips, thirdPerson, custom, glowTintRgb, glowTintMix, SmokableData.MAX_FUEL);
     }
 
     /** Visuales propios (modelo, textura, glowmask) con las animaciones por defecto del cigarrillo. */
@@ -99,5 +109,14 @@ public final class SmokeVisuals {
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD, path);
+    }
+
+    public SmokeVisuals withMaxFuel(long maxFuel) {
+        return new SmokeVisuals(this.id, this.fpAnimation, this.clips, this.thirdPerson,
+                this.custom, this.glowTintRgb, this.glowTintMix, maxFuel);
+    }
+
+    public long maxFuel() {
+        return maxFuel;
     }
 }

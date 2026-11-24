@@ -206,7 +206,9 @@ public class RolledJointItem extends SmokableItem {
     @Override
     protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
         if (!entity.level().isClientSide) {
-            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, true, false, true));
+            int amplifier = this.getQuality(stack) == 4 ? 1 : 0;
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, amplifier, true, false, true));
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.REGENERATION, 40, amplifier, true, false, true));
         }
     }
 }
