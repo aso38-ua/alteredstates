@@ -68,6 +68,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     private static final long HEAD_BURN_RATE = 10L;
     private static final long HEAD_PUFF_INTERVAL = 600L;
     private static final long HEAD_PUFF_DURATION = 10L;
+    private static final int DRAG_BATCH = 5;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final SmokeVisuals visuals;
@@ -218,7 +219,10 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         }
         setSmoking(stack, true, level);
         int held = this.getUseDuration(stack, entity) - remainingUseDuration;
-        setData(stack, data.drag(now));
+        if (held % DRAG_BATCH == 0) {
+            // en held == 0 solo cuenta 1 tick; en los demás, los 5 acumulados
+            this.setData(stack, data.drag(now, held == 0 ? 1 : DRAG_BATCH));
+        }
         if ((long) held == PUFF_TICKS) {
             if (entity instanceof ServerPlayer) {
                 CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) entity, stack);
@@ -241,7 +245,16 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         super.releaseUsing(stack, level, entity, timeLeft);
         if (!level.isClientSide) {
-            setSmoking(stack, false, level);
+            int ticksHeld = this.getUseDuration(stack, entity) - timeLeft;
+            int pending = (ticksHeld - 1) % DRAG_BATCH;
+            if (pending > 0) {
+                long now = level.getGameTime();
+                SmokableData data = this.getData(stack);
+                if (data.isLit(now)) {
+                    this.setData(stack, data.drag(now, pending));
+                }
+            }
+            SmokableItem.setSmoking(stack, false, level);
         }
     }
 
@@ -266,8 +279,9 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
             }
             boolean puffing = now % HEAD_PUFF_INTERVAL < HEAD_PUFF_DURATION;
             SmokableItem.setSmoking(stack, puffing, level);   // solo escribe en los flancos on/off
-            this.applyHeadEffects(living, stack);
-            if (now % HEAD_PUFF_INTERVAL == 0L) {
+            if ((now + entity.getId()) % 20L == 0L) {
+                this.applyHeadEffects(living, stack);
+            }            if (now % HEAD_PUFF_INTERVAL == 0L) {
                 this.playSmokingSound(level, living, stack);
             }
             return;

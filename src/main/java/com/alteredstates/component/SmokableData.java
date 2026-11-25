@@ -75,7 +75,12 @@ public record SmokableData(boolean lit, long fuel, long anchorTick, long lastLit
 
     /** Un tick de calada: re-ancla y descuenta el extra del boost. Solo lo llama onUseTick en el servidor. */
     public SmokableData drag(long now) {
-        return new SmokableData(true, Math.max(0, fuelAt(now) - (HELD_RATE - 1)), now, now);
+        return this.drag(now, 1);
+    }
+
+    /** Aplica de golpe el consumo de `ticks` ticks de calada. */
+    public SmokableData drag(long now, int ticks) {
+        return new SmokableData(true, Math.max(0L, this.fuelAt(now) - 149L * ticks), now, now);
     }
 
 
