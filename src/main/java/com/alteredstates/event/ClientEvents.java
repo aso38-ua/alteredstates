@@ -1,9 +1,6 @@
 package com.alteredstates.event;
 
-import com.alteredstates.client.render.DryingRackRenderer;
-import com.alteredstates.client.render.CuringJarRenderer;
-import com.alteredstates.client.render.BongRenderer;
-import com.alteredstates.client.render.IndustrialCauldronRenderer;
+import com.alteredstates.client.render.*;
 import com.alteredstates.client.PalSetup;
 import com.alteredstates.item.CigaretteItem;
 import com.alteredstates.registry.ModBlockEntities;
