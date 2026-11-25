@@ -31,9 +31,11 @@ public class CigarItem extends CigaretteItem implements ICurable {
         // Obtenemos los datos de forma limpia a través de la interfaz
         int quality = getQuality(stack);
 
-        if (entity instanceof Player player) {
+        super.applyProductEffects(entity, stack);
+
+        /*if (entity instanceof Player player) {
             player.hurt(player.damageSources().starve(), 2.0F); // 1.0F = medio corazón
-        }
+        }*/
 
         int duration = 500 * quality;
         int amplifier = 2;

@@ -102,7 +102,11 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     // ------------------------------------------------------------------------------------------
 
     /** Efectos del producto al dar una calada (servidor). */
-    public abstract void applyProductEffects(LivingEntity entity, ItemStack stack);
+    public void applyProductEffects(LivingEntity entity, ItemStack stack){
+        if (entity instanceof Player player) {
+            player.hurt(player.damageSources().starve(), 1.0F); // 1.0F = medio corazón
+        }
+    }
 
     /** Efectos suaves refrescados mientras el objeto encendido está equipado en cabeza. */
     protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
@@ -336,7 +340,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
     }
 
     /** Línea "queda un X %" de la barra de consumo. Las subclases la añaden llamando a super.appendHoverText al final. */
-    @Override
+    /*@Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         if (!this.isTipVisible(stack)) {
             return; // nada que consumir (pipa vacía)
@@ -346,7 +350,7 @@ public abstract class SmokableItem extends Item implements ISmokableItem, GeoIte
         float progress = level != null ? data.progress(level.getGameTime(), maxFuel()) : (float) data.fuel() / (float) maxFuel();
         tooltip.add(Component.translatable("tooltip.alteredstates.burn_remaining", Math.round(progress * 100.0f))
                 .withStyle(ChatFormatting.DARK_GREEN));
-    }
+    }*/
 
     // ------------------------------------------------------------------------------------------
     // GeckoLib: controlador de primera persona y renderer

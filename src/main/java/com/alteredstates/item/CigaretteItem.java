@@ -66,6 +66,8 @@ public class CigaretteItem extends SmokableItem implements ITobaccoProduct {
         if (entity.level().isClientSide) {
             return;
         }
+        super.applyProductEffects(entity, stack);
+
         int quality = this.getQuality(stack);
         int duration = 300 * quality;
         int amplifier = quality == 4 ? 2 : 1;

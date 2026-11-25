@@ -43,8 +43,12 @@ public class RolledJointItem extends SmokableItem {
 
     // ─── LÓGICA DEL SEMÁFORO (EFECTOS) ──────────────────────────────────────
 
+    @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {
         if (entity.level().isClientSide) return;
+
+        super.applyProductEffects(entity, stack);
+
 
         int quality = getQuality(stack);
         String content = getContentType(stack);

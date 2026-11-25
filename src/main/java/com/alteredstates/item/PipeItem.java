@@ -86,6 +86,10 @@ public class PipeItem extends SmokableItem implements IProduct {
 
     @Override
     public void applyProductEffects(LivingEntity entity, ItemStack stack) {
+        if (entity.level().isClientSide) return;
+
+        super.applyProductEffects(entity, stack);
+
         ItemStack contentStack = this.getContent(stack);
 
         // Extraemos el Item del contenido y verificamos si implementa IPipable
