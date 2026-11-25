@@ -15,6 +15,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import software.bernie.geckolib.GeckoLib;
 
 @Mod(AlteredStates.MOD_ID)
 public class AlteredStates {

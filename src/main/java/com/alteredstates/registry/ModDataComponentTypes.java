@@ -1,7 +1,8 @@
 package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
-import com.alteredstates.component.CigarData;
+import com.alteredstates.component.SmokableData;
+import com.alteredstates.component.EmberState;
 import com.alteredstates.item.CigarType;
 import com.alteredstates.item.PipeType;
 import com.alteredstates.item.TobaccoLeafType;
@@ -9,7 +10,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -59,10 +59,16 @@ public class ModDataComponentTypes {
                             .build()
             );
 
-    public static final Supplier<DataComponentType<CigarData>> CIGAR_DATA =
-            DATA_COMPONENT_TYPES.register("cigar_data", () -> DataComponentType.<CigarData>builder()
-                    .persistent(CigarData.CODEC)
-                    .networkSynchronized(CigarData.STREAM_CODEC)
+    public static final Supplier<DataComponentType<SmokableData>> CIGAR_DATA =
+            DATA_COMPONENT_TYPES.register("cigar_data", () -> DataComponentType.<SmokableData>builder()
+                    .persistent(SmokableData.CODEC)
+                    .networkSynchronized(SmokableData.STREAM_CODEC)
+                    .build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<EmberState>> EMBER =
+            DATA_COMPONENT_TYPES.register("ember", () -> DataComponentType.<EmberState>builder()
+                    .persistent(EmberState.CODEC)
+                    .networkSynchronized(EmberState.STREAM_CODEC)
                     .build());
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<PipeType>> PIPE_TYPE =

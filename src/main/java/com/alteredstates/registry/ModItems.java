@@ -2,6 +2,7 @@ package com.alteredstates.registry;
 
 import com.alteredstates.AlteredStates;
 import com.alteredstates.item.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -122,28 +123,28 @@ public class ModItems {
 
     //============ TABACO ====================
     public static final DeferredItem<Item> CIGARETTE = ITEMS.register("cigarette",
-            () -> new CigaretteItem(new Item.Properties()));
+            () -> new CigaretteItem(new Item.Properties(), SmokeVisuals.of("cigarette")));
 
     public static final DeferredItem<Item> TORITO_CIGAR = ITEMS.register("torito_cigar",
-            () -> new CigarItem(new Item.Properties(), CigarType.TORITO));
+            () -> new CigarItem(new Item.Properties(), CigarType.TORITO, SmokeVisuals.of("torito_cigar").withMaxFuel(90000)));
 
     public static final DeferredItem<Item> LANCERO_CIGAR = ITEMS.register("lancero_cigar",
-            () -> new CigarItem(new Item.Properties(), CigarType.LANCERO));
+            () -> new CigarItem(new Item.Properties(), CigarType.LANCERO, SmokeVisuals.of("lancero_cigar").withMaxFuel(90000)));
 
     public static final DeferredItem<Item> ESPLENDIDO_CIGAR = ITEMS.register("esplendido_cigar",
-            () -> new CigarItem(new Item.Properties(), CigarType.ESPLENDIDO));
+            () -> new CigarItem(new Item.Properties(), CigarType.ESPLENDIDO, SmokeVisuals.of("esplendido_cigar").withMaxFuel(90000)));
 
     public static final DeferredItem<Item> DON_JAVIER_CIGAR = ITEMS.register("don_javier_cigar",
-            () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER));
+            () -> new CigarItem(new Item.Properties(), CigarType.DON_JAVIER, SmokeVisuals.of("don_javier_cigar").withMaxFuel(90000)));
 
     public static final DeferredItem<Item> WOOD_PIPE = ITEMS.register("wood_pipe",
-            () -> new PipeItem(new Item.Properties().durability(32), PipeType.WOOD_PIPE));
+            () -> new PipeItem(new Item.Properties().durability(32), PipeType.WOOD_PIPE, SmokeVisuals.of("wood_pipe").withFpAnimation("pipe").withThirdPerson(SmokeAnimation.PIPE).withMaxFuel(30000)));
 
     public static final DeferredItem<Item> GOLD_PIPE = ITEMS.register("gold_pipe",
-            () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE));
+            () -> new PipeItem(new Item.Properties().durability(64), PipeType.GOLD_PIPE, SmokeVisuals.of("gold_pipe").withFpAnimation("pipe").withThirdPerson(SmokeAnimation.PIPE).withMaxFuel(30000)));
 
     public static final DeferredItem<Item> WISDOM_PIPE = ITEMS.register("wisdom_pipe",
-            () -> new PipeItem(new Item.Properties(), PipeType.WISDOM_PIPE));
+            () -> new PipeItem(new Item.Properties().stacksTo(1), PipeType.WISDOM_PIPE, SmokeVisuals.of("wisdom_pipe").withFpAnimation("pipe").withThirdPerson(SmokeAnimation.PIPE).withMaxFuel(30000)));
 
 
     // ════════════════════════════════════════════════════════════
