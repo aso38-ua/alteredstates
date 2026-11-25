@@ -213,6 +213,22 @@
   "tooltip.alteredstates.cocaine.desc_q4": "Calidad Premium: Escamas puras. Máxima velocidad V y prisa IV.",
   "tooltip.alteredstates.cocaine_rock.grind_hint": "Moler en un grinder para obtener polvo.",
 
+  "effect.alteredstates.withdrawal": "Abstinencia",
+  "substance.alteredstates.cocaine": "Cocaína",
+  "message.alteredstates.withdrawal.cleared": "Los temblores desaparecen... por ahora.",
+  "command.alteredstates.status.header": "Estado de sustancias de %s",
+  "command.alteredstates.status.line": "%s: tolerancia %s, dependencia %s%%, %s",
+  "command.alteredstates.status.withdrawal": "MONO",
+  "command.alteredstates.status.ok": "ok",
+  "command.alteredstates.reset.done": "Restablecido %s para %s",
+  "command.alteredstates.reset.unknown": "Sustancia desconocida: %s",
+
+  "death.attack.overdose": "%1$s se metió una raya de más",
+  "message.alteredstates.cocaine.heart": "El corazón te late con fuerza... una más podría ser la última.",
+  "message.alteredstates.cocaine.overdose.wither": "Tu cuerpo está fallando. Busca ayuda rápido.",
+  "message.alteredstates.cocaine.overdose.survive": "Apenas logras mantenerte en pie...",
+  "command.alteredstates.status.cocaine_doses": "  Dosis de cocaína: %s | riesgo de sobredosis en la siguiente: %s%% | reinicio de contador en %s s",
+
   "advancements.alteredstates.coca_farmer.title": "Cosecha de los Andes",
   "advancements.alteredstates.coca_farmer.description": "Cultiva y recolecta tus primeras hojas de coca.",
   "advancements.alteredstates.coca_paste.title": "Química de Trinchera",

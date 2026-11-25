@@ -12,7 +12,14 @@
   "criteria": {
     "obtain": {
       "trigger": "minecraft:inventory_changed",
-      "conditions": { "item": { "items": "alteredstates:horse_semen" } }    }
+      "conditions": {
+        "items": [
+          {
+            "items": "alteredstates:horse_semen"
+          }
+        ]
+      }
+    }
   },
   "requirements": [["obtain"]]
 }
