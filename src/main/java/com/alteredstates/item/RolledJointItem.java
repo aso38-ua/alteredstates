@@ -22,12 +22,13 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class RolledJointItem extends Item implements ISmokableItem {
+public class RolledJointItem extends SmokableItem {
 
-    public RolledJointItem(Properties properties) {
-        super(properties.stacksTo(1).durability(4)
-                .component(ModDataComponentTypes.QUALITY.get(), 1)
-                .component(ModDataComponentTypes.CONTENT_TYPE.get(), "unknown"));
+    public RolledJointItem(Item.Properties properties) {
+        super(properties.stacksTo(1)
+                        .component(ModDataComponentTypes.QUALITY.get(), 1)
+                        .component(ModDataComponentTypes.CONTENT_TYPE.get(), "unknown"),
+                SmokeVisuals.of("rolled_joint").withGlowTint(0x8CFF3C, 0.7f));
     }
 
     // ─── LECTORES DE DATOS ──────────────────────────────────────────────────
@@ -88,10 +89,10 @@ public class RolledJointItem extends Item implements ISmokableItem {
 
     // ─── LÓGICA DE JUEGO NATURA (DELEGANDO A LA INTERFAZ) ───────────────────
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player,
-                                                  InteractionHand hand) {
-        return startSmokingAnyHand(level, player, hand);
+    /*@Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        playSmokingSound(level, player, player.getItemInHand(hand));
+        return this.startSmoking(level, player, hand);
     }
 
     @Override
@@ -106,13 +107,15 @@ public class RolledJointItem extends Item implements ISmokableItem {
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
+        super.onUseTick(level, entity, stack, remainingUseDuration);
         this.spawnSmokeParticles(level, entity, stack, remainingUseDuration);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        super.finishUsingItem(stack, level, entity);
         return this.onSmokeFinished(stack, level, entity);
-    }
+    }*/
 
     // ─── IMPLEMENTACIÓN DE LA INTERFAZ ISmokableItem ────────────────────────
 
@@ -140,7 +143,7 @@ public class RolledJointItem extends Item implements ISmokableItem {
 
     @Override
     public ItemStack onSmokeFinished(ItemStack stack, Level level, LivingEntity entity) {
-        if (!level.isClientSide) {
+        /*if (!level.isClientSide) {
             level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                     SoundEvents.CANDLE_EXTINGUISH, SoundSource.PLAYERS, 0.8F, 1.0F);
 
@@ -162,7 +165,7 @@ public class RolledJointItem extends Item implements ISmokableItem {
                     }
                 }
             }
-        }
+        }*/
         return stack;
     }
 
@@ -201,7 +204,23 @@ public class RolledJointItem extends Item implements ISmokableItem {
 
         tooltipComponents.add(Component.translatable("tooltip.alteredstates.quality_format", qualityName).withStyle(color));
 
-        int remainingSmokes = stack.getMaxDamage() - stack.getDamageValue();
-        tooltipComponents.add(Component.translatable("tooltip.alteredstates.remaining_smokes", remainingSmokes).withStyle(ChatFormatting.DARK_GRAY));
+        //int remainingSmokes = stack.getMaxDamage() - stack.getDamageValue();
+        //tooltipComponents.add(Component.translatable("tooltip.alteredstates.remaining_smokes", remainingSmokes).withStyle(ChatFormatting.DARK_GRAY));
+
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    // EQUIPABLE
+
+    @Override
+    public float headOffsetY() { return 0.12f; }
+
+    @Override
+    protected void applyHeadEffects(LivingEntity entity, ItemStack stack) {
+        if (!entity.level().isClientSide) {
+            int amplifier = this.getQuality(stack) == 4 ? 1 : 0;
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, amplifier, true, false, true));
+            entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(MobEffects.REGENERATION, 40, amplifier, true, false, true));
+        }
     }
 }

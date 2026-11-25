@@ -1,5 +1,7 @@
 package com.alteredstates.item;
 
+import com.alteredstates.component.EmberState;
+import com.alteredstates.registry.ModDataComponentTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -7,12 +9,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public interface ISmokableItem {
-
-    // Simula llevar el ítem a la boca (la animación del arco es perfecta para esto)
-    default UseAnim getSmokeAnimation(ItemStack stack) {
-        return UseAnim.BOW;
+    default SmokeAnimation getSmokeAnimation(ItemStack stack) {
+        return SmokeAnimation.SMOKING;
     }
 
     // Cuánto dura una calada (32 ticks = 1.6 segundos)
@@ -71,5 +72,29 @@ public interface ISmokableItem {
 
     private static boolean isLighter(ItemStack stack) {
         return stack.is(net.minecraft.world.item.Items.FLINT_AND_STEEL);
+    }
+
+    default boolean isLoaded(ItemStack stack) {
+        return true;
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // Estado visual que leen los efectos de los huesos "paper" y "tip" (SmokeBoneEffects).
+    // Todos tienen valor por defecto: un ítem solo sobrescribe lo que le aplica.
+    // ------------------------------------------------------------------------------------------
+
+    /** Parte que queda del papel: 1 = intacto, 0 = consumido. Sin consumo (pipas): 1. */
+    default float burnProgress(ItemStack stack, @Nullable Level level) {
+        return 1.0f;
+    }
+
+    /** Estado de la brasa (brillo, pulso, carbonizado). Lo guarda cualquier ítem en el componente EMBER. */
+    default EmberState emberState(ItemStack stack) {
+        return stack.getOrDefault(ModDataComponentTypes.EMBER.get(), EmberState.OFF);
+    }
+
+    /** false = el hueso "tip" no se dibuja (p. ej. pipa vacía: no hay nada que arda en la cazoleta). */
+    default boolean isTipVisible(ItemStack stack) {
+        return true;
     }
 }

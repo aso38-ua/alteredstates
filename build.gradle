@@ -23,7 +23,42 @@ sourceSets.main.resources {
 
     // Exclude common development only resources from finalized outputs
     exclude("**/*.bbmodel") // BlockBench project files
+    exclude("assets/alteredstates/animations/cigarette/**") // Animation authoring sources; generated into GeckoLib and Player Animator formats below
     exclude("src/generated/**/.cache") // datagen cache files
+}
+
+def cigaretteAnimationSources = [
+        file('src/main/resources/assets/alteredstates/animations/cigarette/model.animation.json')
+]
+def cigaretteAnimationResources = layout.buildDirectory.dir('generated/cigaretteAnimationResources')
+
+tasks.register('generateCigaretteAnimationResources') {
+    inputs.files(cigaretteAnimationSources)
+    outputs.dir(cigaretteAnimationResources)
+
+    doLast {
+        def slurper = new groovy.json.JsonSlurper()
+        def generatedRoot = cigaretteAnimationResources.get().asFile
+        generatedRoot.deleteDir()
+        generatedRoot.mkdirs()
+        def sourceFile = cigaretteAnimationSources.first()
+        def source = slurper.parse(sourceFile)
+        ['idle', 'raise', 'hold', 'lower'].each { clipName ->
+            def animation = source.animations[clipName]
+            if (animation == null || animation.bones?.rightArm == null || animation.bones?.cigarette == null) {
+                throw new GradleException("${sourceFile} must define '${clipName}' with rightArm and cigarette bones")
+            }
+        }
+
+        def geckoFile = new File(generatedRoot, 'assets/alteredstates/animations/item/cigarette_fp.animation.json')
+        geckoFile.parentFile.mkdirs()
+        geckoFile.text = sourceFile.getText('UTF-8')
+    }
+}
+
+sourceSets.main.resources.srcDir(cigaretteAnimationResources)
+tasks.named('processResources').configure {
+    dependsOn('generateCigaretteAnimationResources')
 }
 
 repositories {
@@ -55,6 +90,21 @@ repositories {
         url = "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
+        }
+    }
+
+    // Maven de PlayerAnimationLibrary
+    maven {
+        name = "RedlanceMinecraft"
+        url = "https://repo.redlance.org/public"
+    }
+
+    // Maven de GeckoLib
+    maven {
+        name = 'GeckoLib'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup 'software.bernie.geckolib'
         }
     }
 }
@@ -169,6 +219,19 @@ dependencies {
 
     // --- GLITCHCORE (Vía Modrinth) ---
     localRuntime "curse.maven:glitchcore-955399:8109792"
+
+    // --- PLAYER ANIMATION LIBRARY ---
+    //implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}"
+    // --- PLAYER ANIMATION LIBRARY ---
+    implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${pal_version}") {
+        // Minecraft ya trae estas librerías con versión fija; las de PAL chocan con ellas
+        exclude group: 'com.google.code.gson'
+        exclude group: 'org.slf4j'
+        exclude group: 'it.unimi.dsi'
+        exclude group: 'io.netty'
+    }
+    // --- GECKOLIB ---
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

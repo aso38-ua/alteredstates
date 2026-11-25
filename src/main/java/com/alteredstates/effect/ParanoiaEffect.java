@@ -16,9 +16,7 @@ public class ParanoiaEffect extends MobEffect {
 
     // Le dice a Minecraft que este efecto quiere ejecutar código en cada tick del juego
     @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return true;
-    }
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) { return duration % 40 == 0; }
 
     @Override
     public boolean applyEffectTick(LivingEntity entity, int amplifier) {
@@ -26,7 +24,7 @@ public class ParanoiaEffect extends MobEffect {
             RandomSource random = player.getRandom();
 
             // 🔊 Cada 10 segundos aprox (200 ticks), hay un 15% de probabilidad de escuchar un fantasma
-            if (player.tickCount % 40 == 0 && random.nextFloat() < 0.30f) {
+            if (random.nextFloat() < 0.3f) {
 
                 // Elegimos un sonido aleatorio de "peligro" para asustar al jugador
                 net.minecraft.sounds.SoundEvent fakeSound = switch (random.nextInt(6)) {

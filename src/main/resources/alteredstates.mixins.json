@@ -8,5 +8,6 @@
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "client": ["ItemRendererMixin", "ItemInHandRendererMixin"]
 }
