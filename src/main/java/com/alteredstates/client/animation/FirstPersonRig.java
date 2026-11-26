@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.GeoBone;
 import net.minecraft.world.item.ItemStack;
@@ -50,6 +51,16 @@ public final class FirstPersonRig {
     /** Paso 1: solo FIRST_PERSON_RIGHT_HAND. El paso 1b añadirá LEFT_HAND. */
     public static boolean isFirstPerson(ItemDisplayContext ctx) {
         return ctx == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND;
+    }
+
+    /** true si este stack lo dibuja nuestro rig (brazo incluido) en primera persona. */
+    public static boolean usesRig(ItemStack stack) {
+        Minecraft mc = Minecraft.getInstance();
+        if (stack.isEmpty() || mc.player == null || mc.player.getMainArm() != HumanoidArm.RIGHT) {
+            return false;
+        }
+        return IClientItemExtensions.of(stack).getCustomRenderer() instanceof Host host
+                && host.usesFirstPersonRig(stack);
     }
 
     /** ¿Este contexto corresponde a la mano principal del jugador (y no a la secundaria)? */

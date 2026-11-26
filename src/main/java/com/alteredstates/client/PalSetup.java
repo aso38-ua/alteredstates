@@ -81,6 +81,7 @@ public final class PalSetup {
                 SmokeAnimation current = currentSmokeAnimation(player);
                 boolean smoking = current != null;
 
+
                 switch (st.phase) {
                     case IDLE -> {
                         if (!smoking) {
